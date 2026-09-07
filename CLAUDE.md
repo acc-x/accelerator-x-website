@@ -164,3 +164,30 @@ session_protocol:
     - "Go-live tracker: GitHub 'v2 Cutover' milestone; forensic line-item detail in docs/GO-LIVE-CHECKLIST.md"
     - "Session close checklist: did this session produce a review/audit/scorecard with standalone value? It gets a doc under docs/tech-architecture/, not just a chat answer"
 ```
+
+---
+
+## Repo review config
+
+**Ada's two-tier codebase health practice (ax-agent-hub `repo-review` skill — ax-agent-hub#1745):** a weekly drift pulse (autonomous, scheduled) plus a deep scored review (interactive, quarterly or event-triggered), reading the block below for baseline doc, dimension weights and the stale-content watchlist. Engineering lens only (build, security, performance, testing/CI, accessibility at the markup level, ops/docs, backlog governance) — never content honesty, SEO/AEO or conversion copy, which is Marlow's separate content pulse (ax-agent-hub#1814 item 3).
+
+```yaml
+repo_review:
+  baseline_doc: docs/tech-architecture/architecture-review-2026-08-21.md
+  dimensions:            # Ada's 7 engineering-lens dimensions, weighted; content/SEO excluded — Marlow's remit
+    build_pipeline: 20
+    security: 20
+    performance: 15
+    testing_ci: 15
+    accessibility_ux: 10
+    ops_process: 10
+    backlog_platform: 10
+  stale_content_watchlist:
+    - { file: "_templates/offerings/leadership-cohort.html", pattern: "Week of \\d", note: "cohort intake date — added after the 2026-09-04 incident" }
+  pulse:
+    cadence: "weekly, Monday 08:15 UTC"
+    channel: "#ai-driven-development"
+  deep_review:
+    quarterly_days: 91          # mechanically checked every pulse (step 3e) — the standing reminder
+    event_triggers: "migration | launch | stack-change"  # documentation only; not detectable from repo state, stay a human's own call
+```
