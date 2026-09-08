@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: March 6, 2026
+Last updated: September 8, 2026
 
 This Privacy Policy explains how Accelerator X Ltd (“Accelerator X”, “we”, “us”, or “our”) collects, uses, stores, and protects personal data when you visit our website, submit an enquiry, subscribe to our communications, or otherwise interact with us.
 
@@ -34,7 +34,7 @@ We do not intentionally collect special category personal data through the websi
 We collect personal data:
 
 - directly from you when you complete a form, email us, or otherwise contact us
-- automatically when you use the website, through cookies, analytics, and similar technologies
+- automatically when you use the website, through cookieless analytics and standard technical request data (such as IP address) captured by our hosting provider
 - occasionally from third parties where you have asked an intermediary, colleague, or partner to introduce you to us
 
 ## 4. How we use your personal data
@@ -60,11 +60,11 @@ Under UK data protection law, we rely on one or more of the following lawful bas
 
 ## 6. Analytics, cookies, and similar technologies
 
-We use cookies and similar technologies to understand how the website is used and to improve performance and content quality.
+We do not use cookies for analytics, advertising, or tracking. Our on-site analytics tool (PostHog) runs in cookieless mode — it does not write cookies or use browser storage, and it does not use a persistent identifier to track you across visits.
 
-This may include analytics tooling that helps us understand page visits, engagement patterns, and feature usage. Where required, we will rely on consent for non-essential cookies or similar technologies.
+Loading website fonts from Google's font CDN sends a request to Google's servers as part of displaying the page, but this does not set a cookie.
 
-You can manage cookies through your browser settings. Please note that disabling certain cookies may affect site functionality or performance insight.
+Because we do not currently use non-essential cookies, no cookie consent banner appears on this website. If that changes — for example, if we add a tool that does use cookies — we will update this policy and, where required by law, ask for your consent first.
 
 ## 7. Marketing communications
 
