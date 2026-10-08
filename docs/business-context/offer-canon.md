@@ -116,7 +116,7 @@ One lane, **three formats** (see §4.2): **1:1 / very small group · your exec t
 
 **Format C — Open Cohort AI Bootcamp for Business Leaders ⭐ FLAGSHIP** *(name decided 2026-06-14, was "Leadership Cohort")*
 *"Eight weeks of AI in a room of your peers."* 8 weeks · one 90-min live session a week on Zoom (use between sessions is discretionary) · in-person London element for those who can attend, incl. a small-group closing session · 12 places, vetted non-competing · **from £3,000 per place** *(C3 price, Andy 2026-09-04; was £3,500)*. **Programme spine (Andy, 2026-10-08):** participants build their own agentic Chief of Staff on Claude (knows you, chases you, reminds you, acts on request and automatically), then the method to build systems for any other part of work or life — the system that builds the system, then the system of systems. Next intake late October 2026, date TBC.
-*"A founder-led cohort for senior leaders who'd rather lead the AI conversation than be led by it."* You leave with a personal AI operating model, a shipped artefact, a peer network, and DOTS turned inward.
+*"A founder-led cohort for senior leaders who'd rather lead the AI conversation than be led by it."* You leave with a working agentic Chief of Staff, the toolkit to build more systems, a personal AI operating model, and a peer network.
 🟡 FAQ-SEED: *"How much time does this take?"* · *"What if a competitor applies?"* · *"Can my whole team join?"* · *"What if I miss a session?"*
 
 > **The relationship to make obvious in copy (Andy's design intent):** same underlying process (DOTS), three depths — on your own (A), your team behind closed doors (B), or alongside peers from other companies (C).

@@ -22,7 +22,7 @@ Two ways in:
   - [Leadership Team AI Activation](https://accelerator-x.ai/what-we-do/leadership-activation/):
     a leadership team that moves together.
   - [Open Cohort AI Bootcamp for Business Leaders](https://accelerator-x.ai/what-we-do/leadership-cohort/):
-    eight weeks of AI in a room of your peers.
+    build your own AI Chief of Staff in eight weeks, with peers.
 
 Plus [Talks & Events](https://accelerator-x.ai/talks-events/): AI keynotes,
 leadership offsites, and AI hackathons.
