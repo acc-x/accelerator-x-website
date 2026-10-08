@@ -1,6 +1,6 @@
 # Accelerator X — Offer Canon
 
-> **Status: CANONICAL SOURCE OF TRUTH for what we offer.** Version 0.6 — 2026-07-13.
+> **Status: CANONICAL SOURCE OF TRUTH for what we offer.** Version 0.7 — 2026-10-08.
 > This document supersedes `ax-offering-architecture.md` and `ax-canonical-offer-strategy.md`.
 > The website **derives** from this and from its machine-readable companion `content/data/offerings.json`.
 > **Do not edit offering names, prices, durations, or descriptions on the website directly** — change them here, then in `offerings.json`, and let the build propagate.
@@ -115,9 +115,9 @@ One lane, **three formats** (see §4.2): **1:1 / very small group · your exec t
 *"Your team, not a peer cohort. We come to you."* You leave with one shared AI operating model, a team-level artefact, aligned leadership.
 
 **Format C — Open Cohort AI Bootcamp for Business Leaders ⭐ FLAGSHIP** *(name decided 2026-06-14, was "Leadership Cohort")*
-*"Eight weeks of AI in a room of your peers."* 8 weeks · ~4 hrs/week · in-person + Zoom hybrid · 12 places, vetted non-competing · **from £3,500 per place** *(confirmed correct by Andy)*.
+*"Eight weeks of AI in a room of your peers."* 8 weeks · one 90-min live session a week on Zoom (use between sessions is discretionary) · in-person London element for those who can attend, incl. a small-group closing session · 12 places, vetted non-competing · **from £3,000 per place** *(C3 price, Andy 2026-09-04; was £3,500)*. **Programme spine (Andy, 2026-10-08):** participants build their own agentic Chief of Staff on Claude (knows you, chases you, reminds you, acts on request and automatically), then the method to build systems for any other part of work or life — the system that builds the system, then the system of systems. Next intake late October 2026, date TBC.
 *"A founder-led cohort for senior leaders who'd rather lead the AI conversation than be led by it."* You leave with a personal AI operating model, a shipped artefact, a peer network, and DOTS turned inward.
-🟡 FAQ-SEED: *"I don't have 4 hours a week"* · *"What if a competitor applies?"* · *"Can my whole team join?"* · *"What if I miss a session?"*
+🟡 FAQ-SEED: *"How much time does this take?"* · *"What if a competitor applies?"* · *"Can my whole team join?"* · *"What if I miss a session?"*
 
 > **The relationship to make obvious in copy (Andy's design intent):** same underlying process (DOTS), three depths — on your own (A), your team behind closed doors (B), or alongside peers from other companies (C).
 
@@ -157,7 +157,7 @@ The core commitment, stated plainly: **we don't want to work with anyone who doe
 
 | Offering | Built page | Strategy/dossier | Canon working value | Status |
 |---|---|---|---|---|
-| Open cohort (per place) | £3,500 | £8,000 (old table) | **£3,500** | ✅ Andy confirmed |
+| Open cohort (per place) | £3,500 | £8,000 (old table) | **£3,000** (C3, 2026-09-04) | ✅ Andy confirmed |
 | 1:1 (6 weeks) | £12k (stale page) | £4k/mo or £10k (design) | **from £10,000 / individual** | ✅ Andy 2026-06-14 |
 | Leadership Team AI Activation | £18k (stale) | — | **base £14k (≤8) + £2k/head, max 12 → £14–22k; £1,750/person at 8** | ✅ Andy 2026-06-24 |
 | Company Enablement Phase 0 | £5,000 | £2k–£9k typical | **from £5,000** | ✅ Andy 2026-06-14 |
@@ -239,7 +239,7 @@ The combination *is* the point.
 
 ### Pricing
 
-- **Your prices all say "from." What's the actual number for me — and is it plus VAT?** — "From" shouldn't mean "unknowable." The floors are genuine: cohort from £3,500/place, Phase 0 from £5,000, cycles from £20,000 each — all **+VAT** (UK businesses reclaim it; non-UK clients aren't charged UK VAT). They flex with size, on-site/travel and scope — a 2-week Phase 0 for a 30-person firm and a 2,000-person one aren't the same job. Tell us the shape and we'll give you a real figure.
+- **Your prices all say "from." What's the actual number for me — and is it plus VAT?** — "From" shouldn't mean "unknowable." The floors are genuine: cohort from £3,000/place, Phase 0 from £5,000, cycles from £20,000 each — all **+VAT** (UK businesses reclaim it; non-UK clients aren't charged UK VAT). They flex with size, on-site/travel and scope — a 2-week Phase 0 for a 30-person firm and a 2,000-person one aren't the same job. Tell us the shape and we'll give you a real figure.
 - **What ROI can I expect — and how should I think about it?** — The better question is usually *"can we afford **not** to?"* We're outcomes-focused: we tie the work to defined targets up front and aim for **a return that dwarfs the fee**. Because no two businesses measure value the same way, we help you anchor it in *your* numbers rather than waving ours at you (a 1% lift to a critical function in a big org can be millions; capacity you stop hiring for; a workforce 1.5–5× more effective; even your valuation as you become AI-native). **See §5.5 "How to think about ROI" for the full picture.** We won't claim a figure we haven't earned in your business.
 - **What's the realistic 12-month all-in cost for a company my size?** — Honestly, we can't know before Phase 0 — and that's the point. **You're not committing to a 12-month programme.** You commit to one Phase 0 (from £5,000), then **8 weeks at a time** — and you never start a cycle (from £20,000) without full clarity on what it delivers and its ROI. How many cycles depends on what we find: maybe one, maybe several, sometimes tapering to a small monthly advisory retainer (~£6,000/mo). We won't drag you through a 12-month budgeting debate or nine proposal drafts — the model exists precisely to escape that. If finance needs something to hold, we'll sketch an *illustrative* range with caveats; what we won't do is invent a fixed annual figure that fakes a certainty we don't have until we've done the work.
 
@@ -257,7 +257,7 @@ The combination *is* the point.
 
 - **What's the real difference between the three coaching formats — and why choose the closed team over sending people to the cohort?** — Same engine, three depths. All run on DOTS; what changes is the room. Format A: one founder in your corner, 1:1. Format B: your own leadership team, closed, on-site, working on your confidential context together. Format C: you alongside vetted non-competing peers. The open cohort is the lightest way in per person; the closed team buys privacy, a session built entirely around your business, and a team-level artefact your leaders own together. Different jobs, not better-or-worse.
 - **Is the open cohort a group from different companies, or somewhere I send my own team?** — A peer room: 12 vetted places, senior leaders from different non-competing companies. If you want your own team in a closed room, that's the exec-team format (B). On more than one person from your company, just ask — we vet for a good mix.
-- **I don't have 4 hours a week, and I'll miss sessions. Is this realistic for a busy CEO?** — Glad you raised it rather than bouncing. Cohort is ~4 hrs/week for 8 weeks; the 1:1 is 75 minutes a week over 6 weeks — real commitment, deliberately, because capability doesn't stick from one afternoon. The work is built around your actual job, not bolted on top. On missed sessions, ask how we handle it for your format.
+- **Is this realistic for a busy CEO, and what if I miss sessions?** — Glad you raised it rather than bouncing. Cohort is one 90-minute live session a week for 8 weeks, plus as much use between sessions as you choose; the 1:1 is 75 minutes a week over 6 weeks — real commitment, deliberately, because capability doesn't stick from one afternoon. The work is built around your actual job, not bolted on top. On missed sessions, ask how we handle it for your format.
 - **What does the closed exec-team programme (Leadership Team AI Activation) cost for, say, 8 leaders?** — It's a base plus per-head: **£14,000 for up to 8 people, then £2,000 per person above that, to a max of 12** — so a team of 8 is £14,000 (about £1,750 per person, all +VAT). Tell us your group size and we'll confirm the exact figure.
 
 ### Talks & Events
@@ -312,3 +312,4 @@ This document is the source of truth for the **offer structure and approved lang
 ---
 
 *End of document. v0.6 — Offer Canon (#57). All founder decisions closed; ROI, differentiation, "make-yes-easy", delivery-model and a draft founders/origin section (§6.5) added; FAQ bank authored. v0.6 (2026-07-13): ROI floor figure retired a second time (contradicted its own honesty guardrail); founder role/title split removed as a public label (§6.5 now internal-context-only). **Remaining (deliberately light — priority is shipping v2):** real measured client-outcome proof (#22/#55), tighten the founders/AI-pedigree specifics (§6.5), and the Phase-5 site build (derive from `offerings.json`).*
+- **2026-10-08 (Andy) — Open cohort (C3) reframed and corrected, v0.7.** C3 never started on 21 September; it is open and filling, planned start late October 2026 (date TBC). Format corrected: one 90-min live weekly session (not ~4 hrs/week), discretionary use between sessions, in-person London element for those who can attend, one small-group closing session. Programme now leads with building your own agentic Chief of Staff on Claude, then the method for any other system (system that builds the system → system of systems). No new pages or offerings yet; the op-model end-to-end offering is a later decision.
