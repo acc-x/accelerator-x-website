@@ -17,6 +17,8 @@ _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. S
 
 ### Changed
 
+- **Funnel page `/programmes/leadership-cohort/`: fixed seat counts and early/standard pricing removed** (2026-10-09, Andy, [#162](https://github.com/acc-x/accelerator-x-website/issues/162)): the page (still `noindex`, GO-LIVE-CHECKLIST §12) showed "4 seats remaining", an "8 places hard cap", a £2,950 early rate and a £3,500 standard rate. It now says "limited places" and shows the single £3,000 price from `offerings.json`; `PricingBlock` is one card, JSON-LD price is 3000. Not changed (still §12 blockers): H1, meta copy, FAQ, session-format wording (60–90 min Google Meet, 2–2.5 hrs/week), the £3,600 ROI sum, footer, start date.
+
 - **Docs reconciled with the current cohort page** (2026-10-09, [#161](https://github.com/acc-x/accelerator-x-website/issues/161)): offer canon FAQ-seed no longer cites the stale £3.5k price or a 10–12 seat count; `CLAUDE.md` cohort follow-up now reflects late-October intake and the legacy programmes page caveat. No site content changed.
 
 - **Cohort page: fixed participant numbers removed** (2026-10-09, Andy, [#159](https://github.com/acc-x/accelerator-x-website/issues/159)): we do not guarantee 12 participants, so the hero chip now reads "limited places", the peer card heading "Different industries, no competitors." and deliverable 04 "Fellow senior leaders, vetted non-competing, who you can text." Same change in `offerings.json`, the offer canon (v0.8) and the cohort page spec. Leadership Team AI Activation "max 12" is a pricing cap on a different product and is unchanged.

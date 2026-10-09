@@ -1,8 +1,8 @@
-<!-- PricingBlock — two-tier pricing: early rate (highlighted) + standard rate (muted).
+<!-- PricingBlock — single cohort price card, derived from offerings.json.
      ROI math block shows value before the reader finishes processing the price.
      Guarantee removes the last risk after the price is absorbed.
      Reusable across all funnel pages — update numbers per programme.
-     The "4 seats remaining" badge is real. Update it when seats change. -->
+     No seat count is stated: cohort size is not guaranteed (#159). -->
 
 <section class="ax-pricing-block" aria-labelledby="pricing-heading">
   <div class="ax-pricing-block__inner">
@@ -10,13 +10,14 @@
     <span class="ax-kicker">Investment</span>
     <h2 class="ax-pricing-block__heading" id="pricing-heading">Straightforward pricing.</h2>
 
-    <div class="ax-pricing-block__cards">
+    <div class="ax-pricing-block__cards ax-pricing-block__cards--single">
 
-      <!-- Early-rate card: the primary ask. Pink border signals priority. -->
+      <!-- Cohort price card: the one ask. Pink border signals priority.
+           Class keeps its "--early" name from the retired two-tier layout (#159). -->
       <div class="ax-pricing-card ax-pricing-card--early">
-        <span class="ax-pricing-card__badge">4 seats remaining at this rate</span>
-        <p class="ax-pricing-card__label">Early cohort rate</p>
-        <p class="ax-pricing-card__price">£2,950</p>
+        <span class="ax-pricing-card__badge">Limited places</span>
+        <p class="ax-pricing-card__label">Cohort place</p>
+        <p class="ax-pricing-card__price">{{offering:leadership-cohort.price_from_gbp}}</p>
         <p class="ax-pricing-card__per">per place, +VAT</p>
         <ul class="ax-pricing-card__features">
           <li class="ax-pricing-card__feature">Full 8-week programme</li>
@@ -28,21 +29,6 @@
         <div class="ax-pricing-card__cta">
           <a href="/contact/" class="btn btn--accent btn--lg">Apply to work with us</a>
         </div>
-      </div>
-
-      <!-- Standard-rate card: present for framing, not the conversion target. -->
-      <div class="ax-pricing-card ax-pricing-card--standard">
-        <p class="ax-pricing-card__label">Standard rate</p>
-        <p class="ax-pricing-card__price">£3,500</p>
-        <p class="ax-pricing-card__per">per place, +VAT</p>
-        <ul class="ax-pricing-card__features">
-          <li class="ax-pricing-card__feature">Full 8-week programme</li>
-          <li class="ax-pricing-card__feature">Weekly live sessions with Andy &amp; Toby</li>
-          <li class="ax-pricing-card__feature">Private cohort community (daily access)</li>
-          <li class="ax-pricing-card__feature">Copy-paste skills library — yours to keep</li>
-          <li class="ax-pricing-card__feature">90-day AI blueprint built around your business</li>
-        </ul>
-        <p class="ax-pricing-card__note">Early rate closes when 4 seats fill.</p>
       </div>
 
     </div>
