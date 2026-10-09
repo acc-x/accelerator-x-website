@@ -64,7 +64,7 @@ Custom 2-column hero layout (not standard PageHero — sidebar investment card o
 
 **Left column:**
 - Breadcrumb: `What we do / Leadership Cohort`
-- Chip: `Cohort · 8 weeks · 12 places · senior leaders`
+- Chip: `Cohort · 8 weeks · limited places · senior leaders`
 - H1: `Eight weeks of AI in a room of your peers.`
   - Wrap "your peers." in `<span class="ax-accent">` for pink accent
 - Body copy: `A founder-led cohort for senior leaders who'd rather lead the AI conversation than be led by it. Non-competing companies. Four hours a week. Eight weeks. One shipped artefact.`
@@ -94,7 +94,7 @@ Alt background section.
 
 | # | Eyebrow (cyan) | H4 | Body |
 |---|---|---|---|
-| 1 | The peer mix | 12 places, 12 industries. | No two cohort members from competing companies. Vetted at application. |
+| 1 | The peer mix | Different industries, no competitors. | No two cohort members from competing companies. Vetted at application. |
 | 2 | The seniority bar | Director+ / function owner. | Real decision authority. AI is on your plate, not your team's. |
 | 3 | The commitment | 4 hrs / week. 8 weeks. | Light pre-work. No certificate. A shipped artefact by week 8. |
 
@@ -130,7 +130,7 @@ Alt background.
 |---|---|---|
 | 01 | Personal AI operating model | How you actually use AI in your role — tested against your own context. |
 | 02 | A shipped artefact | By week 8 you've built something real with AI in your own workflow. |
-| 03 | A peer network | Eleven senior leaders, vetted non-competing, who you can text. |
+| 03 | A peer network | Fellow senior leaders, vetted non-competing, who you can text. |
 | 04 | DOTS, turned inward | The framework we run with corporates, applied to your own work. |
 
 ---
