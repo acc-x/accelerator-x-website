@@ -4563,7 +4563,7 @@ a:not(.btn):hover { color: var(--action-accent); }
    PricingBlock — programme pricing cards with ROI math and guarantee
    Markup: _templates/components/PricingBlock.html
    Used on: /programmes/leadership-cohort (and future funnel pages)
-   Two-tier layout: early-rate card (highlighted) + standard-rate card (muted).
+   Single highlighted price card (two-tier layout retired, #159).
    ROI math block makes the price feel earned before the reader decides.
    Guarantee removes the last remaining risk after the price is seen.
    ============================================================================= */
@@ -4618,6 +4618,12 @@ a:not(.btn):hover { color: var(--action-accent); }
     grid-template-columns: 1fr 1fr;
     align-items: start;
   }
+
+  /* One card: centre it instead of leaving an empty second column. */
+  .ax-pricing-block__cards--single {
+    grid-template-columns: minmax(0, 28rem);
+    justify-content: center;
+  }
 }
 
 /* Individual card ----------------------------------------------------------- */
@@ -4638,12 +4644,7 @@ a:not(.btn):hover { color: var(--action-accent); }
   box-shadow: var(--shadow-md);
 }
 
-/* Standard card: muted — present but not the hero */
-.ax-pricing-card--standard {
-  opacity: 0.75;
-}
-
-/* Badge (early rate only) --------------------------------------------------- */
+/* Badge --------------------------------------------------- */
 
 .ax-pricing-card__badge {
   display: inline-flex;
@@ -4726,16 +4727,6 @@ a:not(.btn):hover { color: var(--action-accent); }
 }
 
 /* Standard-rate note (no CTA — directs to early-rate card) ----------------- */
-
-.ax-pricing-card__note {
-  margin: 0;
-  font-size: var(--text-xs);
-  color: var(--fg-4);
-  font-style: italic;
-  text-align: center;
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--border-1);
-}
 
 /* ROI math block ------------------------------------------------------------ */
 /* Appears after pricing cards. Makes the value case before the reader second-guesses the price. */
