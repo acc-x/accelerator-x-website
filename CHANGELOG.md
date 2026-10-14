@@ -17,6 +17,8 @@ _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. S
 
 ### Changed
 
+- **Session close: leftover cohort size and stale docs fixed** (2026-10-14, [#169](https://github.com/acc-x/accelerator-x-website/issues/169)): the independent review of #157–#164 found the 1:1 coaching page FAQ (template, built page and JSON-LD) still said "a room of 10–12", so it now says "a room of peers". Also removed an orphaned `PricingBlock.css` comment, updated the `CLAUDE.md` funnel-page line and marked the §12 "4 seats" and JSON-LD price rows resolved in `docs/GO-LIVE-CHECKLIST.md`. Raised [#170](https://github.com/acc-x/accelerator-x-website/issues/170) for the hub card that labels £1,750 as "open cohort".
+
 - **Funnel page `/programmes/leadership-cohort/`: fixed seat counts and early/standard pricing removed** (2026-10-09, Andy, [#162](https://github.com/acc-x/accelerator-x-website/issues/162)): the page (still `noindex`, GO-LIVE-CHECKLIST §12) showed "4 seats remaining", an "8 places hard cap", a £2,950 early rate and a £3,500 standard rate. It now says "limited places" and shows the single £3,000 price from `offerings.json`; `PricingBlock` is one card, JSON-LD price is 3000. Not changed (still §12 blockers): H1, meta copy, FAQ, session-format wording (60–90 min Google Meet, 2–2.5 hrs/week), the £3,600 ROI sum, footer, start date.
 
 - **Docs reconciled with the current cohort page** (2026-10-09, [#161](https://github.com/acc-x/accelerator-x-website/issues/161)): offer canon FAQ-seed no longer cites the stale £3.5k price or a 10–12 seat count; `CLAUDE.md` cohort follow-up now reflects late-October intake and the legacy programmes page caveat. No site content changed.
@@ -772,7 +774,7 @@ _Pre-v2 release history (`0.1.0`–`1.0.0`, Feb–Mar 2026) moved to
 [#80](https://github.com/acc-x/accelerator-x-website/issues/80). Project started: February 2026._
 
 <!-- SESSION_PROTOCOL:START -->
-- Session ID: 20260822-221231
-- Updated: 2026-08-22T21:12:33.626Z
+- Session ID: 20261014-211239
+- Updated: 2026-10-14T21:12:42.571Z
 - Mode: write
 <!-- SESSION_PROTOCOL:END -->

@@ -463,8 +463,8 @@ Source template: `_templates/programmes/leadership-cohort.html`
 > search circulation) and the unapproved £16,000/Mark story has been removed
 > entirely (from this page, `PricingBlock.html`, and the deleted `cohort.html`)
 > rather than left unapproved and live. The price (£2,950 vs £3,500 canon) and
-> the "4 seats remaining" count are still wrong — deliberately not touched,
-> since fixing them wasn't the decision made; they remain blocking below.
+> the "4 seats remaining" count were still wrong then; both were fixed 2026-10-09 (#164).
+> Remaining format, ROI and guarantee wording is tracked in #165.
 
 | Item | Blocking go-live? | Status |
 |---|---|---|
@@ -473,11 +473,11 @@ Source template: `_templates/programmes/leadership-cohort.html`
 | ~~"£16,000 legal dispute" figure — confirmed accurate and approved for use in marketing~~ | No | `[~]` **Moot 2026-08-22 (#108):** figure removed, not approved. |
 | H1 headline — confirmed by founders (current draft: "The AI bootcamp built for leaders who run real businesses.") | **Yes** | `[ ]` |
 | Meta description — 155-char outcome-first copy written and confirmed | **Yes** | `[ ]` |
-| "4 seats remaining" — who owns this number and how/when it gets updated | **Yes** | `[ ]` |
+| ~~"4 seats remaining" — who owns this number and how/when it gets updated~~ | No | `[~]` **Moot 2026-10-09 (#164):** no seat count is stated anywhere; the page says "limited places" because cohort size is not guaranteed (#159). |
 | FAQ answers (6 questions) — reviewed and approved by founders | **Yes** | `[ ]` |
 | Andy + Toby portrait images confirmed OK at `/assets/images/andy-black-t-400.*` and `/assets/images/toby-green-shirt-400.*` | **Yes** | `[ ]` |
 | Cohort start date — show specific date or keep "Next intake forming"? | **Yes** | `[ ]` |
 | Footer decision — stripped footer (current) or full footer? | Yes | `[ ]` |
-| JSON-LD Course schema — price inclusion (`"price": "2950"`) confirmed intentional | No | `[ ]` |
+| JSON-LD Course schema — price inclusion (`"price": "3000"`, now from the single £3,000 price) confirmed intentional | No | `[ ]` |
 | `robots: index, follow` — confirmed (not `noindex`; this page should be crawlable) | No | `[ ]` |
 | Page title — confirm or replace draft: "Claude Bootcamp for Business Leaders \| 8-Week Cohort \| Accelerator X" | **Yes** | `[ ]` |
