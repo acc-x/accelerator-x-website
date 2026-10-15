@@ -326,8 +326,12 @@ test('unrecognised interest slug falls back to showing the raw value, not a blan
 test('every ApplyForm interest slug maps to its offerings.json name via the function (no silent label drift)', async () => {
   const offerings = JSON.parse(fs.readFileSync(OFFERINGS_PATH, 'utf8')).offerings;
   const applyForm = fs.readFileSync(APPLYFORM_PATH, 'utf8');
-  const slugs = [...applyForm.matchAll(/name="interest"\s+value="([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(slugs.length >= 2, 'expected to find interest radio values in ApplyForm.html');
+  const formSlugs = [...applyForm.matchAll(/name="interest"\s+value="([^"]+)"/g)].map((m) => m[1]);
+  assert.ok(formSlugs.length >= 2, 'expected to find interest radio values in ApplyForm.html');
+  // Slugs the form no longer offers but the function still maps, because older cached pages
+  // may post them: the cohort moved to its own form (#177). Kept under the same guard.
+  const LEGACY_SLUGS = ['leadership-cohort'];
+  const slugs = [...new Set([...formSlugs, ...LEGACY_SLUGS])];
 
   for (const slug of slugs) {
     if (slug === 'just-exploring') continue; // not an offering — has its own literal label

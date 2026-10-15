@@ -852,8 +852,9 @@ a:not(.btn):hover { color: var(--action-accent); }
   color: var(--fg-2);
 }
 
+/* The darker hover cyan, because the base cyan falls under 4.5:1 on the tinted panel. */
 .ax-apply-form__signpost-link {
-  color: var(--action-primary);
+  color: var(--action-primary-hover);
   font-weight: var(--fw-semibold);
   text-decoration: underline;
   text-underline-offset: 2px;
