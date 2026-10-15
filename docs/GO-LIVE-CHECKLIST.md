@@ -495,6 +495,6 @@ On-page cohort application on `/what-we-do/leadership-cohort/` → `cohort-appli
 | One real production submission: Airtable row linked to C3, Slack ping with working record link; test row deleted | Yes | `[ ]` needs a human (the agent sandbox cannot reach the site) |
 | No-JS submission verified on production (lands on `#cohort-applied`) | No | `[ ]` |
 | "Cohort applications" Airtable view | No | `[ ]` manual (API cannot create views) |
-| Toby's brochure "Apply now" repointed from `/contact/` to `/what-we-do/leadership-cohort/#cohort-apply?utm_source=brochure` | No | `[ ]` |
+| Toby's brochure "Apply now" repointed from `/contact/` to `/what-we-do/leadership-cohort/?utm_source=brochure#cohort-apply` | No | `[ ]` |
 | Rate limiting on public functions | No (decided 2026-10-15) | `[~]` deferred to #123; trigger: first junk submission past the honeypot |
 
