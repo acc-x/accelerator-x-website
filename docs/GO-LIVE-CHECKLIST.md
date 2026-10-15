@@ -481,3 +481,20 @@ Source template: `_templates/programmes/leadership-cohort.html`
 | JSON-LD Course schema — price inclusion (`"price": "3000"`, now from the single £3,000 price) confirmed intentional | No | `[ ]` |
 | `robots: index, follow` — confirmed (not `noindex`; this page should be crawlable) | No | `[ ]` |
 | Page title — confirm or replace draft: "Claude Bootcamp for Business Leaders \| 8-Week Cohort \| Accelerator X" | **Yes** | `[ ]` |
+
+---
+
+## 13 · Cohort application form (#172, shipped 2026-10-15)
+
+On-page cohort application on `/what-we-do/leadership-cohort/` → `cohort-application` function → Airtable Coaching Enrollments + Slack. Live in production since PR #181; these items are what remains before it is fully verified.
+
+| Item | Blocking? | Status |
+|---|---|---|
+| Airtable fields on Coaching Enrollments (Consent Given/Timestamp, Application AI Use/Confidence/Source, Created) | Yes | `[x]` 2026-10-15 (#173) |
+| `#cohort-applications` channel + webhook; `SLACK_COHORT_WEBHOOK_URL` + `COHORT_PROGRAMME_RECORD_ID` set in Netlify | No (falls back to waitlist mode + `#website-leads`) | `[ ]` #174, Andy |
+| One real production submission: Airtable row linked to C3, Slack ping with working record link; test row deleted | Yes | `[ ]` needs a human (the agent sandbox cannot reach the site) |
+| No-JS submission verified on production (lands on `#cohort-applied`) | No | `[ ]` |
+| "Cohort applications" Airtable view | No | `[ ]` manual (API cannot create views) |
+| Toby's brochure "Apply now" repointed from `/contact/` to `/what-we-do/leadership-cohort/#cohort-apply?utm_source=brochure` | No | `[ ]` |
+| Rate limiting on public functions | No (decided 2026-10-15) | `[~]` deferred to #123; trigger: first junk submission past the honeypot |
+

@@ -3,7 +3,7 @@
 _This is a living document. It connects our high-level business strategy with daily execution.
 It operates on a "Now, Next, Later" horizon to maintain momentum without administrative drag._
 
-_Last updated: 2026-08-21 (reconciliation pass from the [2026-08-21 architecture review](docs/tech-architecture/architecture-review-2026-08-21.md): the v2 Cutover shipped 2026-07-14; stale NOW items below marked done or reframed to post-launch reality. The repo now lives at `acc-x/accelerator-x-website`.)_
+_Last updated: 2026-10-15 (cohort application form added to Post-Launch Polish, #172). Previous: 2026-08-21 (reconciliation pass from the [2026-08-21 architecture review](docs/tech-architecture/architecture-review-2026-08-21.md): the v2 Cutover shipped 2026-07-14; stale NOW items below marked done or reframed to post-launch reality. The repo now lives at `acc-x/accelerator-x-website`.)_
 
 ---
 
@@ -36,6 +36,8 @@ transparent, anti-agency positioning.
 - [x] **Offer Canon + site derivation** ([#57](https://github.com/acc-x/accelerator-x-website/issues/57), closed 2026-06-14): `{{offering:…}}` token engine, **Two Doors** restored, four offering pages reconciled + tokenised, **Check #10** drift-guard, `/faq/` hub + FAQPage JSON-LD.
 
 ### Post-Launch Polish (site is live — real visitors landing now)
+
+- [-] **Cohort application form** ([#172](https://github.com/acc-x/accelerator-x-website/issues/172)): shipped to production 2026-10-15 (PR #181). Cohort applicants apply on the cohort page and land in Airtable Coaching Enrollments, not Accounts; general apply form signposts to it (#177). **Remaining:** Slack channel + Netlify env vars (#174, Andy), one live submission check, then close #175/#176.
 
 - [-] **P0 → hygiene: Indexation** ([#81](https://github.com/acc-x/accelerator-x-website/issues/81)) — technical half shipped 2026-08-05; **the 2026-08-21 review re-tested live search: the site now ranks #1 for its own name**, so the old "invisible until GSC" framing is stale. Remaining: Andy verifies GSC (~10 min) for coverage/query data — worth doing, no longer an emergency.
 - [x] **P1: Cohort surfaces honesty fix, decided and shipped 2026-08-22 (#108)** — Andy's calls: `cohort.html` 301-redirected to the canonical page and deleted; `/programmes/leadership-cohort/` noindexed pending its remaining GO-LIVE-CHECKLIST §12 items; the canonical intake date switched to undated phrasing ("dates on application") ahead of the 2026-09-01 falsity deadline; the unapproved £16,000/Mark story removed everywhere it appeared (not just the deleted page). **Still open, deliberately untouched:** `/programmes/leadership-cohort/`'s off-canon £2,950 price and unmaintained "4 seats remaining" count — noindexing only contained the exposure, it didn't resolve §12.
@@ -174,7 +176,7 @@ enough that manual protocol overhead becomes measurable.
 <!-- Session 20260329-180314 logged -->
 
 <!-- SESSION_PROTOCOL:START -->
-- Session ID: 20261014-211239
-- Updated: 2026-10-14T21:12:42.568Z
+- Session ID: 20261015-120103
+- Updated: 2026-10-15T12:01:06.821Z
 - Mode: write
 <!-- SESSION_PROTOCOL:END -->
