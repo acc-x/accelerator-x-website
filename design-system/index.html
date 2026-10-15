@@ -1133,6 +1133,13 @@
           <label class="field-label" for="apply-problem">What's the main thing you're trying to solve?</label>
           <input id="apply-problem" type="text" name="problem" class="input" placeholder="e.g. leadership doesn't know where to start with AI">
         </div>
+        <!-- Cohort applicants are people joining a programme, not company leads, so they apply
+             on the cohort page (Coaching Enrollments) rather than here (Accounts): #172/#177.
+             lead-capture.js keeps the leadership-cohort label for older cached pages. -->
+        <p class="ax-apply-form__signpost">
+          Applying for the open cohort?
+          <a href="/what-we-do/leadership-cohort/#cohort-apply" class="ax-apply-form__signpost-link">Apply on the cohort page</a>, it takes about a minute.
+        </p>
         <fieldset class="ax-apply-form__fieldset">
           <legend class="field-label">Which best fits? <span class="required" aria-hidden="true">*</span></legend>
           <div class="ax-apply-form__chip-group">
@@ -1144,9 +1151,6 @@
 
             <input type="radio" id="interest-1to1" name="interest" value="senior-leader-acceleration" class="chip-radio">
             <label for="interest-1to1" class="chip">1:1 Exec AI Fast Track Coaching</label>
-
-            <input type="radio" id="interest-cohort" name="interest" value="leadership-cohort" class="chip-radio">
-            <label for="interest-cohort" class="chip">Open Cohort AI Bootcamp for Business Leaders</label>
 
             <input type="radio" id="interest-exploring" name="interest" value="just-exploring" class="chip-radio">
             <label for="interest-exploring" class="chip">Just exploring</label>

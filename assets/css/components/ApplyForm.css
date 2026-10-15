@@ -50,6 +50,24 @@
   gap: var(--space-5);
 }
 
+/* ── Cohort signpost (#177) ───────────────────────────── */
+
+.ax-apply-form__signpost {
+  margin: 0;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-md);
+  background: var(--surface-primary-subtle);
+  font-size: var(--text-sm);
+  color: var(--fg-2);
+}
+
+.ax-apply-form__signpost-link {
+  color: var(--action-primary);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 /* ── Chip radio group ────────────────────────────────── */
 
 .ax-apply-form__fieldset {
@@ -199,6 +217,8 @@
 .ax-apply-section .ax-apply-form__consent-text { color: var(--fg-muted-on-dark); }
 .ax-apply-section .ax-apply-form__consent-link:hover { color: var(--fg-on-dark); }
 .ax-apply-section .ax-apply-form__sla { color: var(--fg-muted-on-dark); }
+.ax-apply-section .ax-apply-form__signpost { background: rgba(255, 255, 255, 0.08); color: var(--fg-muted-on-dark); }
+.ax-apply-section .ax-apply-form__signpost-link { color: var(--fg-on-dark); }
 
 .ax-apply-section .ax-apply-form__submit { background: var(--action-accent); }
 .ax-apply-section .ax-apply-form__submit:hover { background: var(--action-accent-hover); }
