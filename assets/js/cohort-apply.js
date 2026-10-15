@@ -21,6 +21,10 @@
   const success = card.querySelector('[data-cohort-apply-success]');
   const errorEl = card.querySelector('[data-cohort-apply-error]');
   const submitBtn = form.querySelector('button[type="submit"]');
+
+  // The markup leaves native validation on for the no-JS path; with JS we validate on
+  // submit ourselves, after trimming, so whitespace-only answers can't slip through.
+  form.noValidate = true;
   const submitLabel = submitBtn ? submitBtn.textContent.trim() : '';
 
   // Same contract as forms.js: fire-and-forget, never PII. ai_use and confidence are
@@ -57,9 +61,13 @@
 
     dialog.querySelector('[data-cohort-apply-close]').addEventListener('click', () => dialog.close());
 
-    // A click on the backdrop lands on the <dialog> element itself, not its content.
+    // A backdrop click targets the <dialog> element itself, but so does a click on its own
+    // scrollbar (the dialog is the scroll container). Only close for clicks outside its box.
     dialog.addEventListener('click', (e) => {
-      if (e.target === dialog) dialog.close();
+      if (e.target !== dialog) return;
+      const box = dialog.getBoundingClientRect();
+      const inside = e.clientX >= box.left && e.clientX <= box.right && e.clientY >= box.top && e.clientY <= box.bottom;
+      if (!inside) dialog.close();
     });
 
     // Fires for Esc, the close button and backdrop clicks alike. Put the card back so the
@@ -95,7 +103,9 @@
     e.preventDefault();
     if (submitting) return;
 
-    // novalidate keeps the browser from validating on its own schedule; run it here.
+    form.querySelectorAll('input[type="text"], input[type="email"]').forEach((input) => {
+      input.value = input.value.trim();
+    });
     if (!form.checkValidity()) {
       form.reportValidity();
       const firstInvalid = form.querySelector(':invalid');

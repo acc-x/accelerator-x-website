@@ -603,7 +603,9 @@
                Apply button on this page, and the card the dialog borrows when JS is on. -->
           <!-- CohortApplyForm: the open-cohort application (#172/#176).
      One form instance, two presentations, so nobody leaves the cohort page:
-       - no JS: renders inline at #cohort-apply and submits from there;
+       - no JS: renders inline at #cohort-apply and does a native urlencoded POST to the
+         function, which 303s back to #cohort-applied or #cohort-apply-failed; the matching
+         notice below is revealed by CSS :target, so the outcome shows with no script;
        - JS (assets/js/cohort-apply.js): any [data-cohort-apply-open] trigger moves the card
          into the <dialog> below, and closing moves it back.
      Submission target: /.netlify/functions/cohort-application → Coaching Enrollments
@@ -613,9 +615,19 @@
      Never reword the options or the 1-10 scale here alone: they must match the Airtable
      options (#173) and every later survey's scale. -->
 <div class="ax-cohort-apply" id="cohort-apply" data-cohort-apply-home>
+  <div class="ax-cohort-apply__notice ax-cohort-apply__notice--ok" id="cohort-applied" role="status">
+    <strong>Application received.</strong> Andy or Toby will reply personally within 1 business day to arrange a short call.
+  </div>
+  <div class="ax-cohort-apply__notice ax-cohort-apply__notice--error" id="cohort-apply-failed" role="alert">
+    <strong>Your application was not sent.</strong> Please check every field is filled in and try again, or email
+    <a href="mailto:info@accelerator-x.ai">info@accelerator-x.ai</a>.
+  </div>
+
   <div class="ax-cohort-apply__card" data-cohort-apply-card>
 
-    <form class="ax-cohort-apply__form" data-cohort-apply-form novalidate>
+    <!-- method/action are the no-JS path; cohort-apply.js takes over submit (and sets
+         noValidate so it runs validation itself) when it loads. -->
+    <form class="ax-cohort-apply__form" method="post" action="/.netlify/functions/cohort-application" data-cohort-apply-form>
       <h3 class="ax-cohort-apply__title" id="cohort-apply-title">Apply to join</h3>
       <p class="ax-cohort-apply__intro">Takes about a minute. We reply personally within 1 business day to arrange a short call.</p>
 
@@ -629,7 +641,7 @@
         </div>
         <div class="field">
           <label class="field-label" for="cohort-email">Email <span class="required" aria-hidden="true">*</span></label>
-          <input id="cohort-email" type="email" name="email" class="input" autocomplete="email" maxlength="320" required aria-required="true">
+          <input id="cohort-email" type="email" name="email" class="input" autocomplete="email" maxlength="320" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="An email address, like jane@company.com" required aria-required="true">
         </div>
         <div class="field">
           <label class="field-label" for="cohort-company">Company <span class="required" aria-hidden="true">*</span></label>
@@ -663,9 +675,9 @@
         </div>
       </fieldset>
 
-      <fieldset class="ax-apply-form__fieldset ax-cohort-apply__fieldset">
+      <fieldset class="ax-apply-form__fieldset ax-cohort-apply__fieldset" aria-describedby="cohort-confidence-ends">
         <legend class="field-label">How confident do you feel using AI tools like Claude in your work right now? <span class="required" aria-hidden="true">*</span></legend>
-        <div class="ax-cohort-apply__scale" aria-describedby="cohort-confidence-ends">
+        <div class="ax-cohort-apply__scale">
           <input type="radio" id="cohort-confidence-1" name="confidence" value="1" class="chip-radio" required>
           <label for="cohort-confidence-1" class="chip ax-cohort-apply__scale-chip">1</label>
           <input type="radio" id="cohort-confidence-2" name="confidence" value="2" class="chip-radio">

@@ -98,6 +98,7 @@
   --surface-green-subtle:    rgba(31, 189, 83, 0.15);   /* 15% green */
   --surface-muted-subtle:    rgba(100, 116, 139, 0.15); /* 15% slate */
   --surface-navy-subtle:     rgba(27, 42, 74, 0.10);    /* 10% navy */
+  --overlay-backdrop:        rgba(19, 29, 48, 0.6);     /* 60% navy-deep: modal backdrops */
 
   /* Action */
   --action-primary:     var(--ax-cyan);
@@ -1553,6 +1554,26 @@ a:not(.btn):hover { color: var(--action-accent); }
   margin-inline: auto;
 }
 
+/* No-JS outcome notices: hidden until the function's 303 lands on their #id. */
+.ax-cohort-apply__notice {
+  display: none;
+  margin-bottom: var(--space-4);
+  padding: var(--space-4) var(--space-5);
+  border-radius: var(--radius-lg);
+  background: var(--bg-1);
+  color: var(--fg-1);
+  text-align: left;
+  font-size: var(--text-sm);
+}
+
+.ax-cohort-apply__notice:target { display: block; }
+.ax-cohort-apply__notice--ok { border-left: 4px solid var(--ax-navy); }
+.ax-cohort-apply__notice--error { border-left: 4px solid var(--ax-pink); }
+.ax-cohort-apply__notice a { color: var(--action-primary); text-decoration: underline; }
+
+/* Once applied, the form underneath has done its job. */
+#cohort-applied:target ~ .ax-cohort-apply__card { display: none; }
+
 .ax-cohort-apply__card {
   background: var(--bg-1);
   color: var(--fg-1);
@@ -1661,7 +1682,7 @@ a:not(.btn):hover { color: var(--action-accent); }
 }
 
 .ax-cohort-apply-dialog::backdrop {
-  background: rgba(10, 22, 40, 0.6);
+  background: var(--overlay-backdrop);
 }
 
 .ax-cohort-apply-dialog .ax-cohort-apply__card { box-shadow: none; }

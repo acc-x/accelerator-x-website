@@ -1,5 +1,6 @@
 // Netlify Function: cohort-application
-// Triggered by: same-origin JSON POST from the cohort apply form (assets/js/cohort-apply.js)
+// Triggered by: same-origin JSON POST from the cohort apply form (assets/js/cohort-apply.js),
+//   or, when JS is off or failed to load, the same form's native urlencoded POST
 // Handles: open-cohort applications → Airtable Coaching Enrollments (consent-stamped,
 //   linked to the open cohort's Coaching Programmes record) + Slack #cohort-applications
 // NOT responsible for: company leads (lead-capture.js → Accounts) or newsletter signups.
@@ -37,6 +38,12 @@ const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+
 
 const SOURCE_KEYS = ['page', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer'];
 
+// Where a native (no-JS) form post lands afterwards. The cohort page reveals the matching
+// notice with CSS :target, so the outcome is visible without any script.
+const NO_JS_RETURN = '/what-we-do/leadership-cohort/';
+const NO_JS_SUCCESS = `${NO_JS_RETURN}#cohort-applied`;
+const NO_JS_FAILED = `${NO_JS_RETURN}#cohort-apply-failed`;
+
 const json = (statusCode, body) => ({
   statusCode,
   headers: { 'Content-Type': 'application/json' },
@@ -61,6 +68,34 @@ function describeSource(source) {
     }
   }
   return parts.join(' · ');
+}
+
+const redirect = (location) => ({ statusCode: 303, headers: { Location: location }, body: '' });
+
+// A no-JS submit arrives urlencoded with every value as a string and no client timestamp
+// or UTM capture, so normalise it into the JSON shape: consent "true" becomes a boolean,
+// consent time is left empty (server time is then used, which is accurate for a post that
+// just arrived), and page + UTM tags come from the Referer the browser sent.
+function fromFormPost(body, headers) {
+  const params = new URLSearchParams(body);
+  const data = {};
+  for (const key of ['name', 'email', 'company', 'role', 'ai_use', 'confidence', '_honeypot']) {
+    data[key] = params.get(key) || '';
+  }
+  data.consent_given = params.get('consent_given') === 'true';
+  const referer = headers.referer || headers.Referer || '';
+  try {
+    const ref = new URL(referer);
+    data.source = {
+      page: ref.pathname,
+      utm_source: ref.searchParams.get('utm_source') || '',
+      utm_medium: ref.searchParams.get('utm_medium') || '',
+      utm_campaign: ref.searchParams.get('utm_campaign') || ''
+    };
+  } catch (_) {
+    data.source = { page: 'no-js form post' };
+  }
+  return data;
 }
 
 function validate(data) {
@@ -88,21 +123,31 @@ exports.handler = async (event) => {
   if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
   if (event.body && event.body.length > 10_000) return json(413, { error: 'Payload too large' });
 
-  let data;
-  try {
-    data = JSON.parse(event.body);
-  } catch (_) {
-    return json(400, { error: 'Invalid JSON' });
-  }
-  if (!data || typeof data !== 'object') return json(400, { error: 'Invalid JSON' });
+  const headers = event.headers || {};
+  const contentType = String(headers['content-type'] || headers['Content-Type'] || '');
+  const isFormPost = contentType.includes('application/x-www-form-urlencoded');
+  const rawBody = event.isBase64Encoded ? Buffer.from(event.body || '', 'base64').toString('utf8') : event.body;
 
-  if (data._honeypot) return json(200, { skipped: 'spam' });
+  let data;
+  if (isFormPost) {
+    data = fromFormPost(rawBody || '', headers);
+  } else {
+    try {
+      data = JSON.parse(rawBody);
+    } catch (_) {
+      return json(400, { error: 'Invalid JSON' });
+    }
+    if (!data || typeof data !== 'object') return json(400, { error: 'Invalid JSON' });
+  }
+
+  // A bot gets the same answer a person would, so the honeypot isn't advertised.
+  if (data._honeypot) return isFormPost ? redirect(NO_JS_SUCCESS) : json(200, { skipped: 'spam' });
 
   // Unlike lead-capture.js, a validation failure is a 400, not a silent 200: the form must
   // show an error rather than a false "application received". Client-side validation means
   // a real applicant should never see this.
   const { fields, invalid } = validate(data);
-  if (invalid.length) return json(400, { error: 'invalid', fields: invalid });
+  if (invalid.length) return isFormPost ? redirect(NO_JS_FAILED) : json(400, { error: 'invalid', fields: invalid });
 
   // Same hostile-input posture as lead-capture.js (#106): an unparseable timestamp would
   // 422 the whole record on the dateTime field, so fall back to server time and keep the
@@ -208,10 +253,13 @@ exports.handler = async (event) => {
     });
   } else {
     // Every submitted field is already in the blocks above, so a human can add the record
-    // by hand; the raw error says why it needs to.
+    // by hand; the error says why it needs to. Truncated because Slack rejects a section over
+    // 3,000 characters, and an outage can return a multi-KB HTML error page: an oversized
+    // block would lose the applicant on exactly the path where Slack is the only record.
+    const reason = escapeSlack(String(airtableError || 'unknown error').slice(0, 1500)).replace(/\n/g, '\n>');
     blocks.push({
       type: 'section',
-      text: { type: 'mrkdwn', text: `*Add this applicant to Coaching Enrollments by hand.* Airtable said:\n>${escapeSlack(airtableError || 'unknown error')}` }
+      text: { type: 'mrkdwn', text: `*Add this applicant to Coaching Enrollments by hand.* Airtable said:\n>${reason}` }
     });
   }
   blocks.push({
@@ -233,6 +281,7 @@ exports.handler = async (event) => {
   }
 
   // Only a total loss is an error to the applicant. Raw error detail stays in the logs.
-  if (!saved && !slackOk) return json(500, { error: 'Server error' });
+  if (!saved && !slackOk) return isFormPost ? redirect(NO_JS_FAILED) : json(500, { error: 'Server error' });
+  if (isFormPost) return redirect(NO_JS_SUCCESS);
   return json(200, { success: true, airtable: saved ? 'created' : 'failed', slack: slackOk ? 'sent' : 'failed' });
 };

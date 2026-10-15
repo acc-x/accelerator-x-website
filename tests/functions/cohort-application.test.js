@@ -308,3 +308,104 @@ test('missing Airtable env vars: nothing written, Slack still gets the full appl
     assert.ok(slackText(slackCalls(stub)[0]).includes('NOT saved to Airtable'));
   });
 });
+
+// ── No-JS path: the form's native urlencoded POST (review finding, #176) ────────────────
+
+const formPost = (fields, referer = 'https://accelerator-x.ai/what-we-do/leadership-cohort/?utm_source=brochure&utm_campaign=c3') => ({
+  httpMethod: 'POST',
+  headers: { 'content-type': 'application/x-www-form-urlencoded', referer },
+  body: new URLSearchParams(fields).toString(),
+});
+
+const FORM_FIELDS = {
+  _honeypot: '', name: 'Jane Doe', email: 'jane@example.com', company: 'Acme Ltd',
+  role: 'Managing Director', ai_use: 'embedded', confidence: '9', consent_given: 'true',
+};
+
+test('no-JS form post: writes the same record, server consent time, UTM from Referer, 303 to the success notice', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([AIRTABLE_OK, SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(formPost(FORM_FIELDS));
+    assert.equal(res.statusCode, 303);
+    assert.equal(res.headers.Location, '/what-we-do/leadership-cohort/#cohort-applied');
+    const fields = airtableCalls(stub)[0].body.fields;
+    assert.equal(fields['Application AI Use'], 'AI is embedded in how I work day to day');
+    assert.equal(fields['Application Confidence'], 9);
+    assert.equal(fields['Consent Given'], true);
+    assert.ok(Math.abs(Date.parse(fields['Consent Timestamp']) - Date.now()) < 60_000);
+    assert.equal(fields['Application Source'], 'Website cohort form · page=/what-we-do/leadership-cohort/ · utm_source=brochure · utm_campaign=c3');
+  });
+});
+
+test('no-JS form post: base64-encoded body is decoded', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([AIRTABLE_OK, SLACK_OK]);
+    global.fetch = stub;
+    const ev = formPost(FORM_FIELDS);
+    ev.body = Buffer.from(ev.body).toString('base64');
+    ev.isBase64Encoded = true;
+    const res = await mod.handler(ev);
+    assert.equal(res.statusCode, 303);
+    assert.equal(airtableCalls(stub)[0].body.fields['Participant Name'], 'Jane Doe');
+  });
+});
+
+test('no-JS form post: missing consent or an invalid field 303s to the failure notice, no writes', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    global.fetch = makeFetchStub([]);
+    for (const override of [{ consent_given: '' }, { confidence: '' }, { email: 'a@b' }]) {
+      const res = await mod.handler(formPost({ ...FORM_FIELDS, ...override }));
+      assert.equal(res.statusCode, 303);
+      assert.equal(res.headers.Location, '/what-we-do/leadership-cohort/#cohort-apply-failed');
+    }
+  });
+});
+
+test('no-JS form post: a filled honeypot gets the success redirect a person would, with no writes', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    global.fetch = makeFetchStub([]);
+    const res = await mod.handler(formPost({ ...FORM_FIELDS, _honeypot: 'bot' }));
+    assert.equal(res.statusCode, 303);
+    assert.equal(res.headers.Location, '/what-we-do/leadership-cohort/#cohort-applied');
+  });
+});
+
+test('no-JS form post: total failure 303s to the failure notice', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    global.fetch = makeFetchStub([
+      { match: 'api.airtable.com', status: 500, text: 'down' },
+      { match: 'hooks.slack.test/cohort', status: 500 },
+    ]);
+    const res = await mod.handler(formPost(FORM_FIELDS));
+    assert.equal(res.statusCode, 303);
+    assert.equal(res.headers.Location, '/what-we-do/leadership-cohort/#cohort-apply-failed');
+  });
+});
+
+test('a multi-KB Airtable error page cannot push the Slack fallback past its 3,000-char section limit', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([{ match: 'api.airtable.com', status: 502, text: '<html>' + 'x'.repeat(5000) + '</html>' }, SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.equal(res.statusCode, 200);
+    for (const block of slackCalls(stub)[0].body.blocks) {
+      if (block.text && block.text.text) assert.ok(block.text.text.length <= 3000, `section is ${block.text.text.length} chars`);
+    }
+  });
+});
+
+test('the form template offers exactly the four ai_use keys, labelled with the C4 anchors the function writes', () => {
+  const fs = require('node:fs');
+  const html = fs.readFileSync(path.join(__dirname, '..', '..', '_templates', 'components', 'CohortApplyForm.html'), 'utf8');
+  const pairs = [...html.matchAll(/name="ai_use" value="(\w+)"[^>]*>\s*<span class="check-field__label">([^<]+)<\/span>/g)]
+    .map(([, key, label]) => [key, label.trim()]);
+  assert.deepEqual(Object.fromEntries(pairs), {
+    none: "I don't use AI tools yet",
+    experimenting: "I experiment occasionally but don't have a consistent pattern",
+    regular: 'I use AI regularly for specific tasks',
+    embedded: 'AI is embedded in how I work day to day',
+  });
+  const scale = [...html.matchAll(/name="confidence" value="(\d+)"/g)].map((m) => Number(m[1]));
+  assert.deepEqual(scale, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+});
