@@ -38,6 +38,13 @@ const escapeSlack = (val = '') => String(val).replace(/&/g, '&amp;').replace(/</
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/;
 
+// A lookup must not eat Netlify's 10s budget: if Airtable is slow, abort and fail open so the
+// write and the Slack fallback still run (review of #183).
+const LOOKUP_TIMEOUT_MS = 2500;
+// Rows for the open cohort in these states are not a live application, so applying again is a
+// fresh start (new row), not a repeat (#183 review, Andy's statuses as of 2026-10-15).
+const NOT_LIVE_STATUSES = new Set(['Abandoned', 'Dropped out - future prospect']);
+
 const SOURCE_KEYS = ['page', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer'];
 
 // Where a native (no-JS) form post lands afterwards. The cohort page reveals the matching
@@ -108,11 +115,18 @@ function fromFormPost(body, headers) {
 async function findPriorEnrolments({ baseId, token, email, programmeId }) {
   const none = { sameCohort: null, earlier: null };
   try {
-    const auth = { headers: { Authorization: `Bearer ${token}` } };
+    const auth = { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) };
     // Airtable formula string literal: escape backslashes and double quotes. The email has
     // already passed EMAIL_PATTERN, but that still allows quote characters.
     const literal = email.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
-    const params = new URLSearchParams({ filterByFormula: `LOWER({Email}) = "${literal}"`, maxRecords: '20' });
+    // TRIM because hand-entered rows can carry stray spaces; newest first so a returning
+    // participant is named against their most recent programme.
+    const params = new URLSearchParams({
+      filterByFormula: `LOWER(TRIM({Email})) = "${literal}"`,
+      maxRecords: '20',
+      'sort[0][field]': 'Created',
+      'sort[0][direction]': 'desc'
+    });
     for (const f of ['Programme', 'Enrollment Status']) params.append('fields[]', f);
     const res = await fetch(`https://api.airtable.com/v0/${baseId}/${ENROLLMENTS_TABLE_ID}?${params}`, auth);
     if (!res.ok) throw new Error(`lookup ${res.status}`);
@@ -120,7 +134,8 @@ async function findPriorEnrolments({ baseId, token, email, programmeId }) {
 
     const programmesOf = (r) => (r.fields && Array.isArray(r.fields.Programme) ? r.fields.Programme : []);
     // In waitlist mode the "same cohort" is the unlinked waitlist itself.
-    const sameCohort = records.find((r) => (programmeId
+    const statusOf = (r) => (r.fields && r.fields['Enrollment Status']) || '';
+    const sameCohort = records.find((r) => !NOT_LIVE_STATUSES.has(statusOf(r)) && (programmeId
       ? programmesOf(r).includes(programmeId)
       : programmesOf(r).length === 0)) || null;
     if (sameCohort) return { sameCohort, earlier: null };

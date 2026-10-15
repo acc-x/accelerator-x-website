@@ -71,7 +71,7 @@ function makeFetchStub(responses) {
       ok: match.status === undefined || (match.status >= 200 && match.status < 300),
       status: match.status ?? 200,
       text: async () => match.text ?? '',
-      json: async () => match.json ?? {},
+      json: async () => { if (match.badJson) throw new SyntaxError('Unexpected token <'); return match.json ?? {}; },
     };
   };
   fn.calls = calls;
@@ -519,6 +519,94 @@ test('lookup matches email case-insensitively and escapes quotes in the formula'
     global.fetch = stub;
     await mod.handler(makeEvent({ ...VALID, email: 'Ja"ne@Example.COM' }));
     const formula = new URL(lookupCalls(stub)[0].url).searchParams.get('filterByFormula');
-    assert.equal(formula, 'LOWER({Email}) = "ja\\"ne@example.com"');
+    assert.equal(formula, 'LOWER(TRIM({Email})) = "ja\\"ne@example.com"');
+    const params = new URL(lookupCalls(stub)[0].url).searchParams;
+    assert.equal(params.get('sort[0][field]'), 'Created');
+    assert.equal(params.get('sort[0][direction]'), 'desc');
+  });
+});
+
+test('formula escaping: a backslash is escaped before quotes, so it cannot break out of the literal', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    await mod.handler(makeEvent({ ...VALID, email: 'a\\"b@x.co' }));
+    const formula = new URL(lookupCalls(stub)[0].url).searchParams.get('filterByFormula');
+    assert.equal(formula, 'LOWER(TRIM({Email})) = "a\\\\\\"b@x.co"');
+  });
+});
+
+test('normal mode: an existing unlinked row (hand-added, no programme) is neither a repeat nor returning', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([{ id: 'recMANUAL00000001', fields: { 'Enrollment Status': 'Interested' } }]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    assert.equal('Notes' in airtableCalls(stub)[0].body.fields, false);
+  });
+});
+
+test('a row linked to several programmes including the open cohort is a repeat', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([{ id: 'recMULTI000000001', fields: { Programme: ['recC2PROGRAMME001', 'recPROGRAMME00000'], 'Enrollment Status': 'Interested' } }]), SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, duplicate: true });
+  });
+});
+
+test('an Abandoned or Dropped-out row for the open cohort is not a repeat: a new row is created and flagged', async () => {
+  for (const status of ['Abandoned', 'Dropped out - future prospect']) {
+    await withEnv(FULL_ENV, async (mod) => {
+      const stub = makeFetchStub([
+        LOOKUP([{ id: 'recGONE0000000001', fields: { Programme: ['recPROGRAMME00000'], 'Enrollment Status': status } }]),
+        PROGRAMME_NAME('AX Bootcamp: Cohort 3 (Nov to Dec 2026)'),
+        WRITE_OK,
+        SLACK_OK,
+      ]);
+      global.fetch = stub;
+      const res = await mod.handler(makeEvent(VALID));
+      assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+      assert.equal(airtableCalls(stub)[0].body.fields.Notes, `Returning participant: previously AX Bootcamp: Cohort 3 (Nov to Dec 2026) (${status})`);
+    });
+  }
+});
+
+test('lookup fails open on a network throw and on a non-JSON body', async () => {
+  for (const lookup of [
+    { match: 'tblFNkbk58DhsRZed?', method: 'GET', throws: 'socket hang up' },
+    { match: 'tblFNkbk58DhsRZed?', method: 'GET', badJson: true, text: '<html>' },
+  ]) {
+    await withEnv(FULL_ENV, async (mod) => {
+      const stub = makeFetchStub([lookup, WRITE_OK, SLACK_OK]);
+      global.fetch = stub;
+      const res = await mod.handler(makeEvent(VALID));
+      assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    });
+  }
+});
+
+test('lookup requests carry an abort signal so a hanging Airtable fails open in time', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    await mod.handler(makeEvent(VALID));
+    assert.ok(lookupCalls(stub)[0].opts.signal instanceof AbortSignal);
+  });
+});
+
+test('Airtable-sourced cohort name and status are escaped in Slack', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      LOOKUP([{ id: 'recC2SEAT00000001', fields: { Programme: ['recC2PROGRAMME001'], 'Enrollment Status': 'Done' } }]),
+      PROGRAMME_NAME('C2 <!channel> & co'),
+      WRITE_OK,
+      SLACK_OK,
+    ]);
+    global.fetch = stub;
+    await mod.handler(makeEvent(VALID));
+    const text = slackText(slackCalls(stub)[0]);
+    assert.ok(text.includes('C2 &lt;!channel&gt; &amp; co'));
+    assert.ok(!text.includes('<!channel>'));
   });
 });
