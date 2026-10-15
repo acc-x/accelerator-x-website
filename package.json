@@ -18,7 +18,7 @@
     "build": "npm run build:homepage && node scripts/build-testimonials.js && npm run build:hero-media && npm run build:design-system && npm run build:inner-pages && node scripts/build-hub.js && npm run build:css && npm run build:css-bundle",
     "prepare": "git config core.hooksPath .githooks",
     "check": "node scripts/check.js",
-    "test": "node --test tests/functions/lead-capture.test.js tests/functions/newsletter-subscribe.test.js tests/build/hub-utils.test.js tests/build/built-site.test.js tests/build/marker-injection.test.js tests/build/atomic-write.test.js && npm run test:session-protocols",
+    "test": "node --test tests/functions/lead-capture.test.js tests/functions/newsletter-subscribe.test.js tests/functions/cohort-application.test.js tests/build/hub-utils.test.js tests/build/built-site.test.js tests/build/marker-injection.test.js tests/build/atomic-write.test.js && npm run test:session-protocols",
     "test:session-protocols": "node scripts/test-session-protocols.js",
     "skills:sync": "node scripts/skills-sync.js",
     "skills:sync:force": "node scripts/skills-sync.js --force",

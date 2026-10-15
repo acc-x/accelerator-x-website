@@ -27,6 +27,7 @@ Last updated: 2026-06-27
 | **Vercel CLI** | `vercel` global (`54.14.5`) | ⬜ `vercel login` optional (Andy's Vercel empty) | Per-project deploy/link |
 | **Brevo** | Netlify function + env vars | ✅ Live | Newsletter capture (list #9) |
 | **Slack** | Connected MCP connector | ✅ Available | Lead/exec notifications |
+| **Airtable (forms)** | Netlify functions + env vars | ✅ Live (cohort form: 🔑 needs #174 env vars) | Company leads → Accounts; cohort applications → Coaching Enrollments |
 
 Legend: ✅ ready · 🔑 needs a one-time human auth · ⬜ not set up yet.
 
@@ -147,10 +148,27 @@ Hosts the AI-readiness quiz (separate Next.js app, **not in this repo**).
 
 ---
 
+## Website form functions (Airtable + Slack)
+
+Each signup type writes to its own place (#172, 2026-10-15). Never route one form's data
+into another's table.
+
+| Function | Form | Writes to | Slack | Env vars |
+|---|---|---|---|---|
+| `lead-capture` | General apply form (`ApplyForm`, `/contact/` + homepage) | CRM & Delivery › **Accounts** | `#website-leads` | `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE`, `SLACK_WEBHOOK_URL` |
+| `cohort-application` | Cohort form (`CohortApplyForm`, `/what-we-do/leadership-cohort/`) | CRM & Delivery › **Coaching Enrollments** (`tblFNkbk58DhsRZed`), linked to the open cohort | `#cohort-applications` (falls back to `#website-leads`) | `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `SLACK_COHORT_WEBHOOK_URL`, `COHORT_PROGRAMME_RECORD_ID` |
+| `newsletter-subscribe` | Newsletter signup | Brevo list #9 | `#website-leads` | `BREVO_API_KEY`, `SLACK_WEBHOOK_URL` |
+
+- **`COHORT_PROGRAMME_RECORD_ID` is the cohort switch.** Set it to the open cohort's
+  Coaching Programmes record (C3: `recc2kh6YWpe4WZOJ`). Change it for the next cohort, or
+  leave it empty for waitlist mode (applications saved unlinked, labelled "waitlist" in Slack).
+- **Verifying an `AIRTABLE_TOKEN` rotation takes two form submissions:** one general apply
+  form, one cohort form (they write to different tables).
+
 ## Slack
 
-- **Wiring:** connected MCP connector. Channels: `#website-leads` (lead notifications),
-  `#ax-business-building` (exec summaries).
+- **Wiring:** connected MCP connector. Channels: `#website-leads` (company leads, newsletter),
+  `#cohort-applications` (cohort applications, #174), `#ax-business-building` (exec summaries).
 - **Used for:** session exec summaries (human-in-the-loop) and lead alerts.
 
 ---

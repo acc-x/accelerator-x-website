@@ -93,6 +93,7 @@
   --surface-green-subtle:    rgba(31, 189, 83, 0.15);   /* 15% green */
   --surface-muted-subtle:    rgba(100, 116, 139, 0.15); /* 15% slate */
   --surface-navy-subtle:     rgba(27, 42, 74, 0.10);    /* 10% navy */
+  --overlay-backdrop:        rgba(19, 29, 48, 0.6);     /* 60% navy-deep: modal backdrops */
 
   /* Action */
   --action-primary:     var(--ax-cyan);

@@ -1,0 +1,144 @@
+<!-- CohortApplyForm: the open-cohort application (#172/#176).
+     One form instance, two presentations, so nobody leaves the cohort page:
+       - no JS: renders inline at #cohort-apply and does a native urlencoded POST to the
+         function, which 303s back to #cohort-applied or #cohort-apply-failed; the matching
+         notice below is revealed by CSS :target, so the outcome shows with no script;
+       - JS (assets/js/cohort-apply.js): any [data-cohort-apply-open] trigger moves the card
+         into the <dialog> below, and closing moves it back.
+     Submission target: /.netlify/functions/cohort-application → Coaching Enrollments
+     (not Accounts) + Slack #cohort-applications.
+     The two AI questions are core questions C4 + C3, verbatim, from
+     ax-agent-hub/plugins/ax-delivery/skills/ax-survey-builder/references/core-questions.md.
+     Never reword the options or the 1-10 scale here alone: they must match the Airtable
+     options (#173) and every later survey's scale. -->
+<div class="ax-cohort-apply" id="cohort-apply" data-cohort-apply-home>
+  <div class="ax-cohort-apply__notice ax-cohort-apply__notice--ok" id="cohort-applied" role="status">
+    <strong>Application received.</strong> Andy or Toby will reply personally within 1 business day to arrange a short call.
+  </div>
+  <div class="ax-cohort-apply__notice ax-cohort-apply__notice--error" id="cohort-apply-failed" role="alert">
+    <strong>Your application was not sent.</strong> Please check every field is filled in and try again, or email
+    <a href="mailto:{{site:INFO_EMAIL}}">{{site:INFO_EMAIL}}</a>.
+  </div>
+
+  <div class="ax-cohort-apply__card" data-cohort-apply-card>
+
+    <!-- method/action are the no-JS path; cohort-apply.js takes over submit (and sets
+         noValidate so it runs validation itself) when it loads. -->
+    <form class="ax-cohort-apply__form" method="post" action="/.netlify/functions/cohort-application" data-cohort-apply-form>
+      <h3 class="ax-cohort-apply__title" id="cohort-apply-title">Apply to join</h3>
+      <p class="ax-cohort-apply__intro">Takes about a minute. We reply personally within 1 business day to arrange a short call.</p>
+
+      <!-- Honeypot: must stay hidden from real users -->
+      <input type="text" name="_honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" class="ax-cohort-apply__hp">
+
+      <div class="ax-cohort-apply__grid">
+        <div class="field">
+          <label class="field-label" for="cohort-name">Full name <span class="required" aria-hidden="true">*</span></label>
+          <input id="cohort-name" type="text" name="name" class="input" autocomplete="name" maxlength="200" required aria-required="true">
+        </div>
+        <div class="field">
+          <label class="field-label" for="cohort-email">Email <span class="required" aria-hidden="true">*</span></label>
+          <input id="cohort-email" type="email" name="email" class="input" autocomplete="email" maxlength="320" pattern="[^\s@]+@[^\s@]+\.[^\s@]+" title="An email address, like jane@company.com" required aria-required="true">
+        </div>
+        <div class="field">
+          <label class="field-label" for="cohort-company">Company <span class="required" aria-hidden="true">*</span></label>
+          <input id="cohort-company" type="text" name="company" class="input" autocomplete="organization" maxlength="200" required aria-required="true">
+        </div>
+        <div class="field">
+          <label class="field-label" for="cohort-role">Your role <span class="required" aria-hidden="true">*</span></label>
+          <input id="cohort-role" type="text" name="role" class="input" autocomplete="organization-title" maxlength="200" required aria-required="true">
+        </div>
+      </div>
+
+      <fieldset class="ax-apply-form__fieldset ax-cohort-apply__fieldset">
+        <legend class="field-label">How would you describe your use of AI tools like Claude today? <span class="required" aria-hidden="true">*</span></legend>
+        <div class="ax-cohort-apply__options">
+          <label class="check-field ax-cohort-apply__option">
+            <input type="radio" name="ai_use" value="none" required>
+            <span class="check-field__label">I don't use AI tools yet</span>
+          </label>
+          <label class="check-field ax-cohort-apply__option">
+            <input type="radio" name="ai_use" value="experimenting">
+            <span class="check-field__label">I experiment occasionally but don't have a consistent pattern</span>
+          </label>
+          <label class="check-field ax-cohort-apply__option">
+            <input type="radio" name="ai_use" value="regular">
+            <span class="check-field__label">I use AI regularly for specific tasks</span>
+          </label>
+          <label class="check-field ax-cohort-apply__option">
+            <input type="radio" name="ai_use" value="embedded">
+            <span class="check-field__label">AI is embedded in how I work day to day</span>
+          </label>
+        </div>
+      </fieldset>
+
+      <fieldset class="ax-apply-form__fieldset ax-cohort-apply__fieldset" aria-describedby="cohort-confidence-ends">
+        <legend class="field-label">How confident do you feel using AI tools like Claude in your work right now? <span class="required" aria-hidden="true">*</span></legend>
+        <div class="ax-cohort-apply__scale">
+          <input type="radio" id="cohort-confidence-1" name="confidence" value="1" class="chip-radio" required>
+          <label for="cohort-confidence-1" class="chip ax-cohort-apply__scale-chip">1</label>
+          <input type="radio" id="cohort-confidence-2" name="confidence" value="2" class="chip-radio">
+          <label for="cohort-confidence-2" class="chip ax-cohort-apply__scale-chip">2</label>
+          <input type="radio" id="cohort-confidence-3" name="confidence" value="3" class="chip-radio">
+          <label for="cohort-confidence-3" class="chip ax-cohort-apply__scale-chip">3</label>
+          <input type="radio" id="cohort-confidence-4" name="confidence" value="4" class="chip-radio">
+          <label for="cohort-confidence-4" class="chip ax-cohort-apply__scale-chip">4</label>
+          <input type="radio" id="cohort-confidence-5" name="confidence" value="5" class="chip-radio">
+          <label for="cohort-confidence-5" class="chip ax-cohort-apply__scale-chip">5</label>
+          <input type="radio" id="cohort-confidence-6" name="confidence" value="6" class="chip-radio">
+          <label for="cohort-confidence-6" class="chip ax-cohort-apply__scale-chip">6</label>
+          <input type="radio" id="cohort-confidence-7" name="confidence" value="7" class="chip-radio">
+          <label for="cohort-confidence-7" class="chip ax-cohort-apply__scale-chip">7</label>
+          <input type="radio" id="cohort-confidence-8" name="confidence" value="8" class="chip-radio">
+          <label for="cohort-confidence-8" class="chip ax-cohort-apply__scale-chip">8</label>
+          <input type="radio" id="cohort-confidence-9" name="confidence" value="9" class="chip-radio">
+          <label for="cohort-confidence-9" class="chip ax-cohort-apply__scale-chip">9</label>
+          <input type="radio" id="cohort-confidence-10" name="confidence" value="10" class="chip-radio">
+          <label for="cohort-confidence-10" class="chip ax-cohort-apply__scale-chip">10</label>
+        </div>
+        <p class="ax-cohort-apply__scale-ends" id="cohort-confidence-ends">
+          <span>1 = Not confident at all</span>
+          <span>10 = Very confident</span>
+        </p>
+      </fieldset>
+
+      <div class="ax-apply-form__footer ax-cohort-apply__footer">
+        <label class="ax-apply-form__consent">
+          <input type="checkbox" name="consent_given" value="true" class="ax-apply-form__consent-check" required aria-required="true">
+          <span class="ax-apply-form__consent-text">
+            I agree to be contacted about my application and for my details to be stored securely by Accelerator X Ltd in line with our
+            <a href="/privacy.html" class="ax-apply-form__consent-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
+          </span>
+        </label>
+
+        <p class="field-helper field-helper--error" role="alert" data-cohort-apply-error hidden>
+          Something went wrong and your application was not sent. Please try again, or email
+          <a href="mailto:{{site:INFO_EMAIL}}">{{site:INFO_EMAIL}}</a>.
+        </p>
+
+        <button type="submit" class="btn btn--accent btn--lg ax-apply-form__submit">
+          Send application
+        </button>
+      </div>
+    </form>
+
+    <!-- Success state, revealed by cohort-apply.js. Process wording matches the C3
+         brochure's Apply → Talk → Confirm steps (canonical for messaging, 2026-10-15). -->
+    <div class="ax-apply-form__success ax-cohort-apply__success" role="status" aria-live="polite" tabindex="-1" data-cohort-apply-success hidden>
+      <span class="material-symbols-outlined ax-apply-form__success-icon" aria-hidden="true">check_circle</span>
+      <h3 class="ax-apply-form__success-heading">Application received.</h3>
+      <p class="ax-apply-form__success-body">
+        Thank you<span data-cohort-apply-first-name></span>. Andy or Toby will reply personally within
+        1 business day to arrange a short call. Keep an eye on your inbox<span data-cohort-apply-email></span>.
+      </p>
+    </div>
+
+  </div>
+</div>
+
+<dialog class="ax-cohort-apply-dialog" aria-labelledby="cohort-apply-title" data-cohort-apply-dialog>
+  <button type="button" class="ax-cohort-apply-dialog__close" aria-label="Close application form" data-cohort-apply-close>
+    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+  <div data-cohort-apply-slot></div>
+</dialog>
