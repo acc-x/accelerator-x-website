@@ -130,7 +130,7 @@
     <main id="main-content">
 
       <!-- === OFFERING HERO === -->
-      <!-- Cohort number dropped from public copy (2026-07-11, Andy): next paid intake is C3, not "04" (C0 was free); programme is diversifying into multiple cohort types, so a single running counter is inaccurate + brittle. Date shown as a target window until 2026-08-22 (#108): "Late July / Aug 2026" went false 2026-09-01, so it went undated ("dates on application") until a real C3 date was locked. The 21 September 2026 date never held (Andy, 2026-10-08): C3 is open and filling, planned start late October 2026, exact date on application. Availability softened to "limited places" (no maintained count). -->
+      <!-- Cohort number dropped from public copy (2026-07-11, Andy): next paid intake is C3, not "04" (C0 was free); programme is diversifying into multiple cohort types, so a single running counter is inaccurate + brittle. Date shown as a target window until 2026-08-22 (#108): "Late July / Aug 2026" went false 2026-09-01, so it went undated ("dates on application") until a real C3 date was locked. The 21 September 2026 date never held (Andy, 2026-10-08): C3 is open and filling, planned start late October 2026, exact date on application. Superseded 2026-10-15 (Andy, #178): Toby's C3 brochure is canonical for dates, so early November 2026 (runs to Christmas), exact dates to confirm. Availability softened to "limited places" (no maintained count). -->
       <section class="ax-offering-hero" aria-labelledby="offering-hero-heading">
         <div class="ax-offering-hero__inner">
 
@@ -189,15 +189,16 @@
               </div>
               <div class="ax-offering-hero__spec-row">
                 <dt>Next intake</dt>
-                <dd>Late October 2026 · date on application</dd>
+                <dd>Early November 2026 · exact dates to confirm</dd>
               </div>
               <div class="ax-offering-hero__spec-row">
                 <dt>Availability</dt>
                 <dd class="ax-lc-spec-highlight">Open now · limited places</dd>
               </div>
             </dl>
-            <a href="/contact/" class="btn btn--accent btn--lg ax-offering-hero__cta">
-              Apply to work with us <span aria-hidden="true">→</span>
+            <!-- Opens the on-page cohort form (#176); without JS it jumps to #cohort-apply. -->
+            <a href="#cohort-apply" class="btn btn--accent btn--lg ax-offering-hero__cta" data-cohort-apply-open="hero_card">
+              Apply to join <span aria-hidden="true">→</span>
             </a>
             <p class="ax-offering-hero__card-guarantee"><strong>No value, no payment.</strong> Two full sessions, the resources are yours to keep. Cancel before the third for a full refund.</p>
             <p class="ax-offering-hero__card-note">Short application form · we reply within 1 business day.</p>
@@ -531,15 +532,14 @@
         <div class="ax-lc-cta__inner">
           <span class="chip chip--on-dark">Apply</span>
           <h2 class="ax-lc-cta__heading" id="lc-cta-heading">
-            Next cohort starts late October 2026. <span class="ax-accent">Apply to secure your place.</span>
+            Next cohort starts early November 2026. <span class="ax-accent">Apply to secure your place.</span>
           </h2>
           <p class="ax-lc-cta__sub">
-            If you've read this far, you should apply. Worst case, we say no, and you've spent 5 minutes.
+            If you've read this far, you should apply. Worst case, we say no, and you've spent a minute.
           </p>
-          <a href="/contact/" class="btn btn--accent btn--lg">
-            Apply to work with us <span aria-hidden="true">→</span>
-          </a>
-          <p class="ax-lc-cta__note">Short application form · no calendars to book · we reply within 1 business day.</p>
+          <!-- The cohort application lives here, inline (#176): it is the no-JS target of every
+               Apply button on this page, and the card the dialog borrows when JS is on. -->
+          {{component:CohortApplyForm}}
         </div>
       </section>
 
@@ -549,6 +549,7 @@
 
     <script defer src="/assets/js/nav.js"></script>
     <script defer src="/assets/js/forms.js"></script>
+    <script defer src="/assets/js/cohort-apply.js"></script>
     <script defer src="/assets/js/faq-init.js"></script>
     <script defer src="/assets/js/main.js"></script>
   </body>

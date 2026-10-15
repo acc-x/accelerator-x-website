@@ -1,0 +1,153 @@
+/* CohortApplyForm: the open-cohort application (#176)
+   Namespace: ax-cohort-apply
+   Reuses the ApplyForm field, chip-radio, consent and success styles; this file only adds
+   the card, the two question layouts and the <dialog> shell. The card is always a light
+   surface, so it reads the same inline on the dark closing band and inside the dialog. */
+
+/* The [hidden] attribute must win over any display rule a reused class sets. */
+.ax-cohort-apply [hidden],
+.ax-cohort-apply-dialog [hidden] { display: none !important; }
+
+.ax-cohort-apply {
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+}
+
+.ax-cohort-apply__card {
+  background: var(--bg-1);
+  color: var(--fg-1);
+  text-align: left;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg);
+  padding: var(--space-6) var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .ax-cohort-apply__card { padding: var(--space-8); }
+}
+
+.ax-cohort-apply__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  color: var(--fg-1);
+}
+
+.ax-cohort-apply__intro {
+  margin: var(--space-2) 0 var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--fg-3);
+}
+
+/* Off-screen rather than display:none: some bots skip fields that are display:none. */
+.ax-cohort-apply__hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.ax-cohort-apply__grid {
+  display: grid;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .ax-cohort-apply__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.ax-cohort-apply__fieldset { margin-top: var(--space-6); }
+
+.ax-cohort-apply__options {
+  display: grid;
+  gap: var(--space-2);
+  clear: left;
+}
+
+.ax-cohort-apply__option {
+  padding: var(--space-3);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-md);
+}
+
+.ax-cohort-apply__option:has(input:checked) { border-color: var(--ax-navy); }
+
+/* 1-10 confidence scale: one row of ten on wide screens, two rows of five at 375px. */
+.ax-cohort-apply__scale {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: var(--space-2);
+  clear: left;
+}
+
+@media (min-width: 560px) {
+  .ax-cohort-apply__scale { grid-template-columns: repeat(10, minmax(0, 1fr)); }
+}
+
+.ax-cohort-apply__scale-chip {
+  justify-content: center;
+  min-height: 44px;
+  padding-inline: 0;
+  cursor: pointer;
+}
+
+.ax-cohort-apply__scale-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  color: var(--fg-3);
+}
+
+.ax-cohort-apply__footer { margin-top: var(--space-6); padding-top: var(--space-6); }
+
+.ax-cohort-apply__success { padding: var(--space-8) var(--space-2); }
+.ax-cohort-apply__success:focus { outline: none; }
+
+/* ── Dialog shell ────────────────────────────────────── */
+
+.ax-cohort-apply-dialog {
+  width: min(640px, calc(100% - 2 * var(--gutter-mobile)));
+  max-height: calc(100dvh - 2 * var(--space-6));
+  padding: 0;
+  border: none;
+  border-radius: var(--radius-xl);
+  background: transparent;
+  overflow: auto;
+  position: fixed;
+}
+
+.ax-cohort-apply-dialog::backdrop {
+  background: rgba(10, 22, 40, 0.6);
+}
+
+.ax-cohort-apply-dialog .ax-cohort-apply__card { box-shadow: none; }
+.ax-cohort-apply-dialog .ax-cohort-apply__title { padding-right: 52px; }
+
+/* Scrolls away with the card rather than sticking, so it never sits on top of a question
+   at 375px; Esc and a backdrop click still close the dialog from anywhere. */
+.ax-cohort-apply-dialog__close {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border: none;
+  border-radius: var(--radius-full);
+  background: var(--bg-2);
+  color: var(--fg-1);
+  cursor: pointer;
+}
+
+.ax-cohort-apply-dialog__close:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+}

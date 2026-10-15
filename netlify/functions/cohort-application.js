@@ -1,0 +1,238 @@
+// Netlify Function: cohort-application
+// Triggered by: same-origin JSON POST from the cohort apply form (assets/js/cohort-apply.js)
+// Handles: open-cohort applications → Airtable Coaching Enrollments (consent-stamped,
+//   linked to the open cohort's Coaching Programmes record) + Slack #cohort-applications
+// NOT responsible for: company leads (lead-capture.js → Accounts) or newsletter signups.
+// Kept separate from lead-capture.js on purpose (#172): a cohort applicant is a person
+// joining a programme, not a company prospect, so it writes to a different table, and a
+// change to either path can't break the other.
+// Env vars: AIRTABLE_TOKEN, AIRTABLE_BASE_ID (shared with lead-capture),
+//   SLACK_COHORT_WEBHOOK_URL (falls back to SLACK_WEBHOOK_URL / #website-leads),
+//   COHORT_PROGRAMME_RECORD_ID (the open cohort; empty = waitlist mode, no programme link)
+
+// Coaching Enrollments in the CRM & Delivery base. A stable, non-secret id, so it lives in
+// code where a change is reviewed; the per-cohort switch is the env var above.
+const ENROLLMENTS_TABLE_ID = 'tblFNkbk58DhsRZed';
+
+// Core question C4 (adoption pattern), verbatim. Canonical source:
+// ax-agent-hub/plugins/ax-delivery/skills/ax-survey-builder/references/core-questions.md
+// These strings must match the Airtable "Application AI Use" options character for
+// character (#173): the scale is shared with the intake, pulse and end-of-phase surveys,
+// so the wording is never edited here alone.
+const AI_USE = {
+  none: { label: "I don't use AI tools yet", short: 'Not yet' },
+  experimenting: { label: "I experiment occasionally but don't have a consistent pattern", short: 'Experimenting' },
+  regular: { label: 'I use AI regularly for specific tasks', short: 'Regular' },
+  embedded: { label: 'AI is embedded in how I work day to day', short: 'Embedded' }
+};
+
+// Helpers below are deliberately duplicated from lead-capture.js rather than extracted to
+// a shared module: extraction would mean editing the hardened company-lead path in the
+// same change. If you change one, check its twin there.
+const safeTrim = (val = '', maxLen = Infinity) => String(val ?? '').trim().slice(0, maxLen);
+// Slack mrkdwn treats &, <, > as markup (https://api.slack.com/reference/surfaces/formatting#escaping)
+const escapeSlack = (val = '') => String(val).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/;
+
+const SOURCE_KEYS = ['page', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer'];
+
+const json = (statusCode, body) => ({
+  statusCode,
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(body)
+});
+
+const postJson = (url, payload, extraHeaders = {}) => fetch(url, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json', ...extraHeaders },
+  body: JSON.stringify(payload)
+});
+
+// Flattens page + UTM tags into one readable line for the Application Source field, e.g.
+// "Website cohort form · page=/what-we-do/leadership-cohort/ · utm_source=linkedin".
+// Non-empty is also how a website applicant is told apart from a hand-added row.
+function describeSource(source) {
+  const parts = ['Website cohort form'];
+  if (source && typeof source === 'object') {
+    for (const key of SOURCE_KEYS) {
+      const value = safeTrim(source[key], 200);
+      if (value) parts.push(`${key}=${value}`);
+    }
+  }
+  return parts.join(' · ');
+}
+
+function validate(data) {
+  const fields = {
+    name: safeTrim(data.name, 200),
+    email: safeTrim(data.email, 320),
+    company: safeTrim(data.company, 200),
+    role: safeTrim(data.role, 200),
+    aiUse: safeTrim(data.ai_use, 40),
+    confidence: Number(data.confidence)
+  };
+  const invalid = [];
+  if (!fields.name) invalid.push('name');
+  if (!EMAIL_PATTERN.test(fields.email)) invalid.push('email');
+  if (!fields.company) invalid.push('company');
+  if (!fields.role) invalid.push('role');
+  if (!Object.prototype.hasOwnProperty.call(AI_USE, fields.aiUse)) invalid.push('ai_use');
+  if (!Number.isInteger(fields.confidence) || fields.confidence < 1 || fields.confidence > 10) invalid.push('confidence');
+  if (data.consent_given !== true) invalid.push('consent_given');
+  return { fields, invalid };
+}
+
+exports.handler = async (event) => {
+  // No CORS headers by design: the form posts same-origin (same stance as lead-capture.js).
+  if (event.httpMethod !== 'POST') return json(405, { error: 'Method not allowed' });
+  if (event.body && event.body.length > 10_000) return json(413, { error: 'Payload too large' });
+
+  let data;
+  try {
+    data = JSON.parse(event.body);
+  } catch (_) {
+    return json(400, { error: 'Invalid JSON' });
+  }
+  if (!data || typeof data !== 'object') return json(400, { error: 'Invalid JSON' });
+
+  if (data._honeypot) return json(200, { skipped: 'spam' });
+
+  // Unlike lead-capture.js, a validation failure is a 400, not a silent 200: the form must
+  // show an error rather than a false "application received". Client-side validation means
+  // a real applicant should never see this.
+  const { fields, invalid } = validate(data);
+  if (invalid.length) return json(400, { error: 'invalid', fields: invalid });
+
+  // Same hostile-input posture as lead-capture.js (#106): an unparseable timestamp would
+  // 422 the whole record on the dateTime field, so fall back to server time and keep the
+  // rejected raw value in Notes.
+  const consentTimestampRaw = safeTrim(data.consent_timestamp, 64);
+  const consentTimestampRejected = Boolean(consentTimestampRaw)
+    && !(ISO_TIMESTAMP.test(consentTimestampRaw) && !Number.isNaN(Date.parse(consentTimestampRaw)));
+  const consentTimestamp = consentTimestampRaw && !consentTimestampRejected
+    ? consentTimestampRaw
+    : new Date().toISOString();
+
+  const aiUse = AI_USE[fields.aiUse];
+  const applicationSource = describeSource(data.source);
+  const programmeId = safeTrim(process.env.COHORT_PROGRAMME_RECORD_ID, 40);
+  const baseId = process.env.AIRTABLE_BASE_ID;
+  const token = process.env.AIRTABLE_TOKEN;
+  const slackUrl = process.env.SLACK_COHORT_WEBHOOK_URL || process.env.SLACK_WEBHOOK_URL;
+
+  // ── 1. Airtable first, so the Slack ping can link straight to the record ──
+  let recordId = null;
+  let airtableError = null;
+  if (baseId && token) {
+    const notes = consentTimestampRejected
+      ? `Consent timestamp (rejected, server time used): ${consentTimestampRaw}`
+      : '';
+    const recordFields = {
+      'Participant Name': fields.name,
+      Email: fields.email,
+      Company: fields.company,
+      Role: fields.role,
+      ...(programmeId ? { Programme: [programmeId] } : {}),
+      'Enrollment Status': 'Interested',
+      'Application AI Use': aiUse.label,
+      'Application Confidence': fields.confidence,
+      'Application Source': applicationSource,
+      'Consent Given': true,
+      'Consent Timestamp': consentTimestamp,
+      ...(notes ? { Notes: notes } : {})
+    };
+    const url = `https://api.airtable.com/v0/${baseId}/${ENROLLMENTS_TABLE_ID}`;
+    const auth = { Authorization: `Bearer ${token}` };
+    try {
+      let res = await postJson(url, { fields: recordFields }, auth);
+      if (!res.ok) {
+        const text = await res.text();
+        // Select drift costs a label, never the applicant (same recovery as lead-capture.js,
+        // #106): the PAT has no schema rights, so strip the rejected select(s) into Notes
+        // and retry exactly once.
+        if (res.status === 422 && /INVALID_MULTIPLE_CHOICE_OPTIONS|select option/i.test(text)) {
+          const selects = ['Enrollment Status', 'Application AI Use'];
+          const named = selects.filter((f) => text.includes(recordFields[f]));
+          const retryFields = { ...recordFields };
+          const stripped = (named.length ? named : selects).map((f) => {
+            const value = retryFields[f];
+            delete retryFields[f];
+            return `${f} (Airtable rejected the choice, kept here): ${value}`;
+          });
+          retryFields.Notes = [retryFields.Notes, ...stripped].filter(Boolean).join('\n\n');
+          console.warn('Airtable rejected a select choice, retrying without:', stripped.join(' | '));
+          res = await postJson(url, { fields: retryFields }, auth);
+          if (!res.ok) {
+            const retryText = await res.text();
+            throw new Error(`Airtable error after select retry: ${res.status} ${retryText} (first attempt: 422 ${text})`);
+          }
+        } else {
+          throw new Error(`Airtable error: ${res.status} ${text}`);
+        }
+      }
+      const created = await res.json();
+      recordId = created && created.id ? created.id : null;
+    } catch (err) {
+      airtableError = err.message;
+      console.error('cohort-application Airtable insert error:', err.message);
+    }
+  } else {
+    airtableError = 'Airtable env vars missing';
+    console.warn('cohort-application: Airtable env vars missing; record not written');
+  }
+
+  // ── 2. Slack ──
+  const saved = Boolean(recordId);
+  const header = !saved
+    ? '⚠️ Cohort application NOT saved to Airtable'
+    : programmeId ? '🎓 New cohort application' : '🎓 New cohort waitlist sign-up';
+  const blocks = [
+    { type: 'header', text: { type: 'plain_text', text: header, emoji: true } },
+    {
+      type: 'section',
+      fields: [
+        { type: 'mrkdwn', text: `*Name:*\n${escapeSlack(fields.name)}` },
+        { type: 'mrkdwn', text: `*Role:*\n${escapeSlack(fields.role)} at ${escapeSlack(fields.company)}` },
+        { type: 'mrkdwn', text: `*Email:*\n${escapeSlack(fields.email)}` },
+        { type: 'mrkdwn', text: `*AI use:*\n${aiUse.short}` },
+        { type: 'mrkdwn', text: `*Confidence:*\n${fields.confidence}/10` },
+        { type: 'mrkdwn', text: `*Source:*\n${escapeSlack(applicationSource)}` }
+      ]
+    }
+  ];
+  if (saved) {
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text: `<https://airtable.com/${baseId}/${ENROLLMENTS_TABLE_ID}/${recordId}|Open in Airtable>` }
+    });
+  } else {
+    // Every submitted field is already in the blocks above, so a human can add the record
+    // by hand; the raw error says why it needs to.
+    blocks.push({
+      type: 'section',
+      text: { type: 'mrkdwn', text: `*Add this applicant to Coaching Enrollments by hand.* Airtable said:\n>${escapeSlack(airtableError || 'unknown error')}` }
+    });
+  }
+  blocks.push({
+    type: 'context',
+    elements: [{ type: 'mrkdwn', text: `🕐 ${new Date().toISOString()} · Reply within 1 business day` }]
+  });
+
+  let slackOk = false;
+  if (slackUrl) {
+    try {
+      const res = await postJson(slackUrl, { text: header, blocks });
+      if (!res.ok) throw new Error(`Slack webhook error: ${res.status}`);
+      slackOk = true;
+    } catch (err) {
+      console.error('cohort-application Slack error:', err.message);
+    }
+  } else {
+    console.warn('cohort-application: no Slack webhook configured');
+  }
+
+  // Only a total loss is an error to the applicant. Raw error detail stays in the logs.
+  if (!saved && !slackOk) return json(500, { error: 'Server error' });
+  return json(200, { success: true, airtable: saved ? 'created' : 'failed', slack: slackOk ? 'sent' : 'failed' });
+};
