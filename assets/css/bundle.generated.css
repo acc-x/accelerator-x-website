@@ -1571,7 +1571,8 @@ a:not(.btn):hover { color: var(--action-accent); }
 .ax-cohort-apply__notice--error { border-left: 4px solid var(--ax-pink); }
 .ax-cohort-apply__notice a { color: var(--action-primary); text-decoration: underline; }
 
-/* Once applied, the form underneath has done its job. */
+/* Hide the form once applied: a no-JS applicant who still sees a filled form under the
+   notice may assume it failed and submit a duplicate. */
 #cohort-applied:target ~ .ax-cohort-apply__card { display: none; }
 
 .ax-cohort-apply__card {

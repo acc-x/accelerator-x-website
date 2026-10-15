@@ -41,6 +41,10 @@
 
   const canDialog = Boolean(dialog && slot && typeof dialog.showModal === 'function');
   let lastTrigger = null;
+  // True while a submission is in flight. The dialog refuses to close meanwhile: closing
+  // would move the card back to the inline section below the fold, so the applicant would
+  // never see whether it worked (PR #181 review).
+  let submitting = false;
 
   const openDialog = (trigger) => {
     lastTrigger = trigger;
@@ -59,12 +63,19 @@
       });
     });
 
-    dialog.querySelector('[data-cohort-apply-close]').addEventListener('click', () => dialog.close());
+    dialog.querySelector('[data-cohort-apply-close]').addEventListener('click', () => {
+      if (!submitting) dialog.close();
+    });
+
+    // Esc fires `cancel` before `close`; cancelling it keeps the dialog open mid-submit.
+    dialog.addEventListener('cancel', (e) => {
+      if (submitting) e.preventDefault();
+    });
 
     // A backdrop click targets the <dialog> element itself, but so does a click on its own
     // scrollbar (the dialog is the scroll container). Only close for clicks outside its box.
     dialog.addEventListener('click', (e) => {
-      if (e.target !== dialog) return;
+      if (e.target !== dialog || submitting) return;
       const box = dialog.getBoundingClientRect();
       const inside = e.clientX >= box.left && e.clientX <= box.right && e.clientY >= box.top && e.clientY <= box.bottom;
       if (!inside) dialog.close();
@@ -96,8 +107,6 @@
     submitBtn.disabled = busy;
     submitBtn.textContent = busy ? 'Sending…' : submitLabel;
   };
-
-  let submitting = false;
 
   form.addEventListener('submit', (e) => {
     e.preventDefault();
