@@ -1,7 +1,8 @@
 <!-- CohortApplyForm: the open-cohort application (#172/#176).
      One form instance, two presentations, so nobody leaves the cohort page:
        - no JS: renders inline at #cohort-apply and does a native urlencoded POST to the
-         function, which 303s back to #cohort-applied or #cohort-apply-failed; the matching
+         function, which 303s back to #cohort-applied, #cohort-apply-duplicate (#183) or
+         #cohort-apply-failed; the matching
          notice below is revealed by CSS :target, so the outcome shows with no script;
        - JS (assets/js/cohort-apply.js): any [data-cohort-apply-open] trigger moves the card
          into the <dialog> below, and closing moves it back.
@@ -14,6 +15,9 @@
 <div class="ax-cohort-apply" id="cohort-apply" data-cohort-apply-home>
   <div class="ax-cohort-apply__notice ax-cohort-apply__notice--ok" id="cohort-applied" role="status">
     <strong>Application received.</strong> Andy or Toby will reply personally within 1 business day to arrange a short call.
+  </div>
+  <div class="ax-cohort-apply__notice ax-cohort-apply__notice--ok" id="cohort-apply-duplicate" role="status">
+    <strong>Sit tight.</strong> We've already got an application for that email address, and we'll be in touch shortly.
   </div>
   <div class="ax-cohort-apply__notice ax-cohort-apply__notice--error" id="cohort-apply-failed" role="alert">
     <strong>Your application was not sent.</strong> Please check every field is filled in and try again, or email
@@ -131,6 +135,14 @@
         Thank you<span data-cohort-apply-first-name></span>. Andy or Toby will reply personally within
         1 business day to arrange a short call. Keep an eye on your inbox<span data-cohort-apply-email></span>.
       </p>
+    </div>
+
+    <!-- Repeat application for the open cohort (#183): the function found this email already
+         applied, so no second record was made. Wording is Andy's (2026-10-15). -->
+    <div class="ax-apply-form__success ax-cohort-apply__success" role="status" aria-live="polite" tabindex="-1" data-cohort-apply-duplicate hidden>
+      <span class="material-symbols-outlined ax-apply-form__success-icon" aria-hidden="true">schedule</span>
+      <h3 class="ax-apply-form__success-heading">Sit tight.</h3>
+      <p class="ax-apply-form__success-body">We've already got an application for that email address, and we'll be in touch shortly.</p>
     </div>
 
   </div>

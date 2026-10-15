@@ -19,6 +19,7 @@
   const dialog = document.querySelector('[data-cohort-apply-dialog]');
   const slot = dialog ? dialog.querySelector('[data-cohort-apply-slot]') : null;
   const success = card.querySelector('[data-cohort-apply-success]');
+  const duplicate = card.querySelector('[data-cohort-apply-duplicate]');
   const errorEl = card.querySelector('[data-cohort-apply-error]');
   const submitBtn = form.querySelector('button[type="submit"]');
 
@@ -50,7 +51,7 @@
     lastTrigger = trigger;
     slot.appendChild(card);
     dialog.showModal();
-    const first = card.querySelector('[data-cohort-apply-success]:not([hidden])') || form.querySelector('input:not([type="hidden"]):not([tabindex="-1"])');
+    const first = card.querySelector('[data-cohort-apply-success]:not([hidden]), [data-cohort-apply-duplicate]:not([hidden])') || form.querySelector('input:not([type="hidden"]):not([tabindex="-1"])');
     if (first) first.focus();
     track('cohort_apply_open', { location: trigger.dataset.cohortApplyOpen || 'unknown' });
   };
@@ -148,7 +149,7 @@
       .then((res) => res.json().then((body) => ({ ok: res.ok, body })))
       .then(({ ok, body }) => {
         if (!ok || !body || body.error) throw new Error((body && body.error) || 'request failed');
-        track('cohort_apply_submit', { ai_use: payload.ai_use, confidence: payload.confidence });
+        track('cohort_apply_submit', { ai_use: payload.ai_use, confidence: payload.confidence, duplicate: Boolean(body.duplicate) });
 
         const firstName = payload.name.split(/\s+/)[0];
         const nameSlot = success.querySelector('[data-cohort-apply-first-name]');
@@ -157,9 +158,11 @@
         if (nameSlot && firstName) nameSlot.textContent = `, ${firstName}`;
         if (emailSlot && payload.email) emailSlot.textContent = ` at ${payload.email}`;
 
+        // A repeat for the open cohort (#183) gets its own message; no second record exists.
+        const outcome = body.duplicate && duplicate ? duplicate : success;
         form.hidden = true;
-        success.hidden = false;
-        success.focus();
+        outcome.hidden = false;
+        outcome.focus();
       })
       .catch((err) => {
         console.error('Cohort application error:', err);
