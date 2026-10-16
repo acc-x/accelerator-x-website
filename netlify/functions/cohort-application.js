@@ -14,6 +14,8 @@
 // Coaching Enrollments in the CRM & Delivery base. A stable, non-secret id, so it lives in
 // code where a change is reviewed; the per-cohort switch is the env var above.
 const ENROLLMENTS_TABLE_ID = 'tblFNkbk58DhsRZed';
+// Coaching Programmes, read only to name a returning participant's earlier cohort.
+const PROGRAMMES_TABLE_ID = 'tblTuSr8AJUu9HlHx';
 
 // Core question C4 (adoption pattern), verbatim. Canonical source:
 // ax-agent-hub/plugins/ax-delivery/skills/ax-survey-builder/references/core-questions.md
@@ -36,6 +38,13 @@ const escapeSlack = (val = '') => String(val).replace(/&/g, '&amp;').replace(/</
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const ISO_TIMESTAMP = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,3})?(?:Z|[+-]\d{2}:\d{2})$/;
 
+// A lookup must not eat Netlify's 10s budget: if Airtable is slow, abort and fail open so the
+// write and the Slack fallback still run (review of #183).
+const LOOKUP_TIMEOUT_MS = 2500;
+// Rows for the open cohort in these states are not a live application, so applying again is a
+// fresh start (new row), not a repeat (#183 review, Andy's statuses as of 2026-10-15).
+const NOT_LIVE_STATUSES = new Set(['Abandoned', 'Dropped out - future prospect']);
+
 const SOURCE_KEYS = ['page', 'utm_source', 'utm_medium', 'utm_campaign', 'referrer'];
 
 // Where a native (no-JS) form post lands afterwards. The cohort page reveals the matching
@@ -43,6 +52,7 @@ const SOURCE_KEYS = ['page', 'utm_source', 'utm_medium', 'utm_campaign', 'referr
 const NO_JS_RETURN = '/what-we-do/leadership-cohort/';
 const NO_JS_SUCCESS = `${NO_JS_RETURN}#cohort-applied`;
 const NO_JS_FAILED = `${NO_JS_RETURN}#cohort-apply-failed`;
+const NO_JS_DUPLICATE = `${NO_JS_RETURN}#cohort-apply-duplicate`;
 
 const json = (statusCode, body) => ({
   statusCode,
@@ -96,6 +106,53 @@ function fromFormPost(body, headers) {
     data.source = { page: 'no-js form post' };
   }
   return data;
+}
+
+// Looks up earlier Coaching Enrollments rows for this email (#183), so a repeat application
+// for the open cohort doesn't create a duplicate row and a returning participant is flagged.
+// Fails open: any lookup problem returns "nothing found" and the application goes through as
+// new, because a lookup must never cost us an applicant.
+async function findPriorEnrolments({ baseId, token, email, programmeId }) {
+  const none = { sameCohort: null, earlier: null };
+  try {
+    const auth = { headers: { Authorization: `Bearer ${token}` }, signal: AbortSignal.timeout(LOOKUP_TIMEOUT_MS) };
+    // Airtable formula string literal: escape backslashes and double quotes. The email has
+    // already passed EMAIL_PATTERN, but that still allows quote characters.
+    const literal = email.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+    // TRIM because hand-entered rows can carry stray spaces; newest first so a returning
+    // participant is named against their most recent programme.
+    const params = new URLSearchParams({
+      filterByFormula: `LOWER(TRIM({Email})) = "${literal}"`,
+      maxRecords: '20',
+      'sort[0][field]': 'Created',
+      'sort[0][direction]': 'desc'
+    });
+    for (const f of ['Programme', 'Enrollment Status']) params.append('fields[]', f);
+    const res = await fetch(`https://api.airtable.com/v0/${baseId}/${ENROLLMENTS_TABLE_ID}?${params}`, auth);
+    if (!res.ok) throw new Error(`lookup ${res.status}`);
+    const records = ((await res.json()) || {}).records || [];
+
+    const programmesOf = (r) => (r.fields && Array.isArray(r.fields.Programme) ? r.fields.Programme : []);
+    // In waitlist mode the "same cohort" is the unlinked waitlist itself.
+    const statusOf = (r) => (r.fields && r.fields['Enrollment Status']) || '';
+    const sameCohort = records.find((r) => !NOT_LIVE_STATUSES.has(statusOf(r)) && (programmeId
+      ? programmesOf(r).includes(programmeId)
+      : programmesOf(r).length === 0)) || null;
+    if (sameCohort) return { sameCohort, earlier: null };
+
+    const earlierRow = records.find((r) => programmesOf(r).length > 0);
+    if (!earlierRow) return none;
+    const status = (earlierRow.fields && earlierRow.fields['Enrollment Status']) || 'status unknown';
+    let cohort = 'an earlier programme';
+    try {
+      const pr = await fetch(`https://api.airtable.com/v0/${baseId}/${PROGRAMMES_TABLE_ID}/${programmesOf(earlierRow)[0]}`, auth);
+      if (pr.ok) cohort = (((await pr.json()) || {}).fields || {})['Cohort name'] || cohort;
+    } catch (_) { /* the name is a nicety; the flag still stands without it */ }
+    return { sameCohort: null, earlier: { cohort: safeTrim(cohort, 200), status: safeTrim(status, 60) } };
+  } catch (err) {
+    console.warn('cohort-application: prior-enrolment lookup failed, treating as new:', err.message);
+    return none;
+  }
 }
 
 function validate(data) {
@@ -166,13 +223,64 @@ exports.handler = async (event) => {
   const token = process.env.AIRTABLE_TOKEN;
   const slackUrl = process.env.SLACK_COHORT_WEBHOOK_URL || process.env.SLACK_WEBHOOK_URL;
 
+  const postSlack = async (text, blocks) => {
+    if (!slackUrl) {
+      console.warn('cohort-application: no Slack webhook configured');
+      return false;
+    }
+    try {
+      const res = await postJson(slackUrl, { text, blocks });
+      if (!res.ok) throw new Error(`Slack webhook error: ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error('cohort-application Slack error:', err.message);
+      return false;
+    }
+  };
+  const applicantFields = (extra = []) => ({
+    type: 'section',
+    fields: [
+      { type: 'mrkdwn', text: `*Name:*\n${escapeSlack(fields.name)}` },
+      { type: 'mrkdwn', text: `*Role:*\n${escapeSlack(fields.role)} at ${escapeSlack(fields.company)}` },
+      { type: 'mrkdwn', text: `*Email:*\n${escapeSlack(fields.email)}` },
+      { type: 'mrkdwn', text: `*AI use:*\n${aiUse.short}` },
+      { type: 'mrkdwn', text: `*Confidence:*\n${fields.confidence}/10` },
+      { type: 'mrkdwn', text: `*Source:*\n${escapeSlack(applicationSource)}` },
+      ...extra
+    ]
+  });
+  const recordLink = (id) => `<https://airtable.com/${baseId}/${ENROLLMENTS_TABLE_ID}/${id}|Open in Airtable>`;
+
+  // ── 0. Already applied? (#183) ──
+  const prior = baseId && token
+    ? await findPriorEnrolments({ baseId, token, email: fields.email, programmeId })
+    : { sameCohort: null, earlier: null };
+
+  if (prior.sameCohort) {
+    // No second row: the existing one stays the record. The ping still goes out, because a
+    // repeat usually means someone keen or chasing, and it links to the row they already have.
+    const header = '🔁 Repeat application (already in Airtable)';
+    await postSlack(header, [
+      { type: 'header', text: { type: 'plain_text', text: header, emoji: true } },
+      applicantFields(),
+      { type: 'section', text: { type: 'mrkdwn', text: `No new row created. Existing record: ${recordLink(prior.sameCohort.id)}` } }
+    ]);
+    if (isFormPost) return redirect(NO_JS_DUPLICATE);
+    return json(200, { success: true, duplicate: true });
+  }
+
+  const returningNote = prior.earlier
+    ? `Returning participant: previously ${prior.earlier.cohort} (${prior.earlier.status})`
+    : '';
+
   // ── 1. Airtable first, so the Slack ping can link straight to the record ──
   let recordId = null;
   let airtableError = null;
   if (baseId && token) {
-    const notes = consentTimestampRejected
-      ? `Consent timestamp (rejected, server time used): ${consentTimestampRaw}`
-      : '';
+    const notes = [
+      returningNote,
+      consentTimestampRejected ? `Consent timestamp (rejected, server time used): ${consentTimestampRaw}` : ''
+    ].filter(Boolean).join('\n\n');
     const recordFields = {
       'Participant Name': fields.name,
       Email: fields.email,
@@ -229,28 +337,18 @@ exports.handler = async (event) => {
 
   // ── 2. Slack ──
   const saved = Boolean(recordId);
-  const header = !saved
+  const baseHeader = !saved
     ? '⚠️ Cohort application NOT saved to Airtable'
     : programmeId ? '🎓 New cohort application' : '🎓 New cohort waitlist sign-up';
+  const header = prior.earlier ? `${baseHeader} · returning participant` : baseHeader;
   const blocks = [
     { type: 'header', text: { type: 'plain_text', text: header, emoji: true } },
-    {
-      type: 'section',
-      fields: [
-        { type: 'mrkdwn', text: `*Name:*\n${escapeSlack(fields.name)}` },
-        { type: 'mrkdwn', text: `*Role:*\n${escapeSlack(fields.role)} at ${escapeSlack(fields.company)}` },
-        { type: 'mrkdwn', text: `*Email:*\n${escapeSlack(fields.email)}` },
-        { type: 'mrkdwn', text: `*AI use:*\n${aiUse.short}` },
-        { type: 'mrkdwn', text: `*Confidence:*\n${fields.confidence}/10` },
-        { type: 'mrkdwn', text: `*Source:*\n${escapeSlack(applicationSource)}` }
-      ]
-    }
+    applicantFields(prior.earlier
+      ? [{ type: 'mrkdwn', text: `*Previously:*\n${escapeSlack(prior.earlier.cohort)} (${escapeSlack(prior.earlier.status)})` }]
+      : [])
   ];
   if (saved) {
-    blocks.push({
-      type: 'section',
-      text: { type: 'mrkdwn', text: `<https://airtable.com/${baseId}/${ENROLLMENTS_TABLE_ID}/${recordId}|Open in Airtable>` }
-    });
+    blocks.push({ type: 'section', text: { type: 'mrkdwn', text: recordLink(recordId) } });
   } else {
     // Every submitted field is already in the blocks above, so a human can add the record
     // by hand; the error says why it needs to. Truncated because Slack rejects a section over
@@ -267,18 +365,7 @@ exports.handler = async (event) => {
     elements: [{ type: 'mrkdwn', text: `🕐 ${new Date().toISOString()} · Reply within 1 business day` }]
   });
 
-  let slackOk = false;
-  if (slackUrl) {
-    try {
-      const res = await postJson(slackUrl, { text: header, blocks });
-      if (!res.ok) throw new Error(`Slack webhook error: ${res.status}`);
-      slackOk = true;
-    } catch (err) {
-      console.error('cohort-application Slack error:', err.message);
-    }
-  } else {
-    console.warn('cohort-application: no Slack webhook configured');
-  }
+  const slackOk = await postSlack(header, blocks);
 
   // Only a total loss is an error to the applicant. Raw error detail stays in the logs.
   if (!saved && !slackOk) return isFormPost ? redirect(NO_JS_FAILED) : json(500, { error: 'Server error' });

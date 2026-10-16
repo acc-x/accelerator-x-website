@@ -162,6 +162,7 @@ into another's table.
 - **`COHORT_PROGRAMME_RECORD_ID` is the cohort switch.** Set it to the open cohort's
   Coaching Programmes record (C3: `recc2kh6YWpe4WZOJ`). Change it for the next cohort, or
   leave it empty for waitlist mode (applications saved unlinked, labelled "waitlist" in Slack).
+- **Repeat applications (#183):** `cohort-application` reads Coaching Enrollments by email before writing. Same email for the open cohort means no new row, a "Sit tight" message and a repeat ping; an earlier programme flags a returning participant. The read fails open.
 - **Verifying an `AIRTABLE_TOKEN` rotation takes two form submissions:** one general apply
   form, one cohort form (they write to different tables).
 

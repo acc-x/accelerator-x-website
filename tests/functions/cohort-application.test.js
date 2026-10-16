@@ -62,7 +62,8 @@ function makeFetchStub(responses) {
   const calls = [];
   const fn = async (url, opts) => {
     calls.push({ url, opts, body: opts?.body ? JSON.parse(opts.body) : undefined });
-    const match = responses.find((r) => url.includes(r.match) && !(r.once && r.used));
+    const method = (opts && opts.method) || 'GET';
+    const match = responses.find((r) => url.includes(r.match) && (!r.method || r.method === method) && !(r.once && r.used));
     if (match?.once) match.used = true;
     if (!match) throw new Error(`Unstubbed fetch call to ${url}`);
     if (match.throws) throw new Error(match.throws);
@@ -70,7 +71,7 @@ function makeFetchStub(responses) {
       ok: match.status === undefined || (match.status >= 200 && match.status < 300),
       status: match.status ?? 200,
       text: async () => match.text ?? '',
-      json: async () => match.json ?? {},
+      json: async () => { if (match.badJson) throw new SyntaxError('Unexpected token <'); return match.json ?? {}; },
     };
   };
   fn.calls = calls;
@@ -80,7 +81,9 @@ function makeFetchStub(responses) {
 const AIRTABLE_OK = { match: 'api.airtable.com', json: { id: 'recNEWAPPLICANT01' } };
 const SLACK_OK = { match: 'hooks.slack.test/cohort' };
 
-const airtableCalls = (stub) => stub.calls.filter((c) => c.url.includes('api.airtable.com'));
+// Record writes only; the prior-enrolment lookup (#183) is a GET and has its own helper.
+const airtableCalls = (stub) => stub.calls.filter((c) => c.url.includes('api.airtable.com') && c.opts && c.opts.method === 'POST');
+const lookupCalls = (stub) => stub.calls.filter((c) => c.url.includes('api.airtable.com') && !(c.opts && c.opts.method));
 const slackCalls = (stub) => stub.calls.filter((c) => c.url.includes('hooks.slack.test'));
 const slackText = (call) => JSON.stringify(call.body.blocks);
 
@@ -116,9 +119,11 @@ test('Airtable is written before Slack, and the Slack ping links straight to the
     const stub = makeFetchStub([AIRTABLE_OK, SLACK_OK]);
     global.fetch = stub;
     await mod.handler(makeEvent(VALID));
-    assert.ok(stub.calls[0].url.includes('api.airtable.com'));
-    assert.ok(stub.calls[1].url.includes('hooks.slack.test/cohort'));
-    const text = slackText(stub.calls[1]);
+    // Lookup (GET), then the record write (POST), then Slack.
+    assert.ok(stub.calls[0].url.includes('tblFNkbk58DhsRZed?') && !stub.calls[0].opts.method);
+    assert.equal(stub.calls[1].opts.method, 'POST');
+    assert.ok(stub.calls[2].url.includes('hooks.slack.test/cohort'));
+    const text = slackText(stub.calls[2]);
     assert.ok(text.includes('🎓 New cohort application'));
     assert.ok(text.includes('https://airtable.com/appTEST0000000000/tblFNkbk58DhsRZed/recNEWAPPLICANT01|Open in Airtable'));
     assert.ok(text.includes('Managing Director at Acme Ltd'));
@@ -247,7 +252,7 @@ test('a malformed consent timestamp still writes the record: server time used, r
 test('a select choice Airtable rejects is retried once without it, kept in Notes', async () => {
   await withEnv(FULL_ENV, async (mod) => {
     const stub = makeFetchStub([
-      { match: 'api.airtable.com', once: true, status: 422, text: '{"error":{"type":"INVALID_MULTIPLE_CHOICE_OPTIONS","message":"Insufficient permissions to create new select option ""I use AI regularly for specific tasks"""}}' },
+      { match: 'api.airtable.com', method: 'POST', once: true, status: 422, text: '{"error":{"type":"INVALID_MULTIPLE_CHOICE_OPTIONS","message":"Insufficient permissions to create new select option ""I use AI regularly for specific tasks"""}}' },
       AIRTABLE_OK,
       SLACK_OK,
     ]);
@@ -408,4 +413,200 @@ test('the form template offers exactly the four ai_use keys, labelled with the C
   });
   const scale = [...html.matchAll(/name="confidence" value="(\d+)"/g)].map((m) => Number(m[1]));
   assert.deepEqual(scale, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
+});
+
+
+// ── Repeat applications and returning participants (#183) ──────────────────────────────
+
+const LOOKUP = (records) => ({ match: 'tblFNkbk58DhsRZed?', method: 'GET', json: { records } });
+const WRITE_OK = { match: 'api.airtable.com', method: 'POST', json: { id: 'recNEWAPPLICANT01' } };
+const PROGRAMME_NAME = (name) => ({ match: 'tblTuSr8AJUu9HlHx/', method: 'GET', json: { fields: { 'Cohort name': name } } });
+
+test('same email, same cohort: no new row, a duplicate response and a repeat ping linking the existing record', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      LOOKUP([{ id: 'recEXISTING000001', fields: { Programme: ['recPROGRAMME00000'], 'Enrollment Status': 'Interested' } }]),
+      SLACK_OK,
+    ]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.equal(res.statusCode, 200);
+    assert.deepEqual(JSON.parse(res.body), { success: true, duplicate: true });
+    assert.equal(airtableCalls(stub).length, 0);
+    const text = slackText(slackCalls(stub)[0]);
+    assert.ok(text.includes('Repeat application'));
+    assert.ok(text.includes('tblFNkbk58DhsRZed/recEXISTING000001'));
+  });
+});
+
+test('same email, same cohort via the no-JS form: 303 to the duplicate notice', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    global.fetch = makeFetchStub([LOOKUP([{ id: 'recEXISTING000001', fields: { Programme: ['recPROGRAMME00000'] } }]), SLACK_OK]);
+    const res = await mod.handler(formPost(FORM_FIELDS));
+    assert.equal(res.statusCode, 303);
+    assert.equal(res.headers.Location, '/what-we-do/leadership-cohort/#cohort-apply-duplicate');
+  });
+});
+
+test('the duplicate response stands even if the repeat ping fails: the record already exists', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    global.fetch = makeFetchStub([
+      LOOKUP([{ id: 'recEXISTING000001', fields: { Programme: ['recPROGRAMME00000'] } }]),
+      { match: 'hooks.slack.test/cohort', status: 500 },
+    ]);
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, duplicate: true });
+  });
+});
+
+test('waitlist mode: an existing unlinked row is the same cohort', async () => {
+  await withEnv({ ...FULL_ENV, COHORT_PROGRAMME_RECORD_ID: '' }, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([{ id: 'recWAITLIST000001', fields: {} }]), SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, duplicate: true });
+    assert.equal(airtableCalls(stub).length, 0);
+  });
+});
+
+test('same email, earlier cohort: new row, returning note in Notes, flagged in Slack with the cohort name', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      LOOKUP([{ id: 'recC2SEAT00000001', fields: { Programme: ['recC2PROGRAMME001'], 'Enrollment Status': 'Done' } }]),
+      PROGRAMME_NAME('Claude Bootcamp for Leaders: Cohort 2'),
+      WRITE_OK,
+      SLACK_OK,
+    ]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    const written = airtableCalls(stub)[0].body.fields;
+    assert.deepEqual(written.Programme, ['recPROGRAMME00000']);
+    assert.equal(written.Notes, 'Returning participant: previously Claude Bootcamp for Leaders: Cohort 2 (Done)');
+    const text = slackText(slackCalls(stub)[0]);
+    assert.ok(text.includes('returning participant'));
+    assert.ok(text.includes('Claude Bootcamp for Leaders: Cohort 2 (Done)'));
+  });
+});
+
+test('returning participant whose programme name cannot be fetched is still flagged', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      LOOKUP([{ id: 'recC2SEAT00000001', fields: { Programme: ['recC2PROGRAMME001'], 'Enrollment Status': 'Done' } }]),
+      { match: 'tblTuSr8AJUu9HlHx/', method: 'GET', status: 500 },
+      WRITE_OK,
+      SLACK_OK,
+    ]);
+    global.fetch = stub;
+    await mod.handler(makeEvent(VALID));
+    assert.equal(airtableCalls(stub)[0].body.fields.Notes, 'Returning participant: previously an earlier programme (Done)');
+  });
+});
+
+test('lookup fails open: an Airtable read error still creates the application as new', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([{ match: 'tblFNkbk58DhsRZed?', method: 'GET', status: 500, text: 'down' }, WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    assert.equal(airtableCalls(stub).length, 1);
+  });
+});
+
+test('lookup matches email case-insensitively and escapes quotes in the formula', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    await mod.handler(makeEvent({ ...VALID, email: 'Ja"ne@Example.COM' }));
+    const formula = new URL(lookupCalls(stub)[0].url).searchParams.get('filterByFormula');
+    assert.equal(formula, 'LOWER(TRIM({Email})) = "ja\\"ne@example.com"');
+    const params = new URL(lookupCalls(stub)[0].url).searchParams;
+    assert.equal(params.get('sort[0][field]'), 'Created');
+    assert.equal(params.get('sort[0][direction]'), 'desc');
+  });
+});
+
+test('formula escaping: a backslash is escaped before quotes, so it cannot break out of the literal', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    await mod.handler(makeEvent({ ...VALID, email: 'a\\"b@x.co' }));
+    const formula = new URL(lookupCalls(stub)[0].url).searchParams.get('filterByFormula');
+    assert.equal(formula, 'LOWER(TRIM({Email})) = "a\\\\\\"b@x.co"');
+  });
+});
+
+test('normal mode: an existing unlinked row (hand-added, no programme) is neither a repeat nor returning', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([{ id: 'recMANUAL00000001', fields: { 'Enrollment Status': 'Interested' } }]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    assert.equal('Notes' in airtableCalls(stub)[0].body.fields, false);
+  });
+});
+
+test('a row linked to several programmes including the open cohort is a repeat', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([{ id: 'recMULTI000000001', fields: { Programme: ['recC2PROGRAMME001', 'recPROGRAMME00000'], 'Enrollment Status': 'Interested' } }]), SLACK_OK]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(VALID));
+    assert.deepEqual(JSON.parse(res.body), { success: true, duplicate: true });
+  });
+});
+
+test('an Abandoned or Dropped-out row for the open cohort is not a repeat: a new row is created and flagged', async () => {
+  for (const status of ['Abandoned', 'Dropped out - future prospect']) {
+    await withEnv(FULL_ENV, async (mod) => {
+      const stub = makeFetchStub([
+        LOOKUP([{ id: 'recGONE0000000001', fields: { Programme: ['recPROGRAMME00000'], 'Enrollment Status': status } }]),
+        PROGRAMME_NAME('AX Bootcamp: Cohort 3 (Nov to Dec 2026)'),
+        WRITE_OK,
+        SLACK_OK,
+      ]);
+      global.fetch = stub;
+      const res = await mod.handler(makeEvent(VALID));
+      assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+      assert.equal(airtableCalls(stub)[0].body.fields.Notes, `Returning participant: previously AX Bootcamp: Cohort 3 (Nov to Dec 2026) (${status})`);
+    });
+  }
+});
+
+test('lookup fails open on a network throw and on a non-JSON body', async () => {
+  for (const lookup of [
+    { match: 'tblFNkbk58DhsRZed?', method: 'GET', throws: 'socket hang up' },
+    { match: 'tblFNkbk58DhsRZed?', method: 'GET', badJson: true, text: '<html>' },
+  ]) {
+    await withEnv(FULL_ENV, async (mod) => {
+      const stub = makeFetchStub([lookup, WRITE_OK, SLACK_OK]);
+      global.fetch = stub;
+      const res = await mod.handler(makeEvent(VALID));
+      assert.deepEqual(JSON.parse(res.body), { success: true, airtable: 'created', slack: 'sent' });
+    });
+  }
+});
+
+test('lookup requests carry an abort signal so a hanging Airtable fails open in time', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([LOOKUP([]), WRITE_OK, SLACK_OK]);
+    global.fetch = stub;
+    await mod.handler(makeEvent(VALID));
+    assert.ok(lookupCalls(stub)[0].opts.signal instanceof AbortSignal);
+  });
+});
+
+test('Airtable-sourced cohort name and status are escaped in Slack', async () => {
+  await withEnv(FULL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      LOOKUP([{ id: 'recC2SEAT00000001', fields: { Programme: ['recC2PROGRAMME001'], 'Enrollment Status': 'Done' } }]),
+      PROGRAMME_NAME('C2 <!channel> & co'),
+      WRITE_OK,
+      SLACK_OK,
+    ]);
+    global.fetch = stub;
+    await mod.handler(makeEvent(VALID));
+    const text = slackText(slackCalls(stub)[0]);
+    assert.ok(text.includes('C2 &lt;!channel&gt; &amp; co'));
+    assert.ok(!text.includes('<!channel>'));
+  });
 });

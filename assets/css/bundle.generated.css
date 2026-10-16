@@ -1594,7 +1594,8 @@ a:not(.btn):hover { color: var(--action-accent); }
 
 /* Hide the form once applied: a no-JS applicant who still sees a filled form under the
    notice may assume it failed and submit a duplicate. */
-#cohort-applied:target ~ .ax-cohort-apply__card { display: none; }
+#cohort-applied:target ~ .ax-cohort-apply__card,
+#cohort-apply-duplicate:target ~ .ax-cohort-apply__card { display: none; }
 
 .ax-cohort-apply__card {
   background: var(--bg-1);
