@@ -25,6 +25,8 @@ _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. S
 
 ### Changed
 
+- **Cohort form: success copy and icon** (2026-10-17, Andy, during the [#172](https://github.com/acc-x/accelerator-x-website/issues/172) live test): the confirmation now reads "You'll receive a personal reply within 1 business day" instead of naming Andy or Toby (on-page panel and the no-JS notice), and the outcome icon is brand green (`--ax-green`) at 4rem instead of the shared ApplyForm pink at 3rem. Scoped to the cohort form; the general ApplyForm is unchanged.
+
 - **C3 intake date: early November 2026, not late October** (2026-10-15, Andy, [#178](https://github.com/acc-x/accelerator-x-website/issues/178)): Toby's C3 brochure is canonical for dates for now. Cohort page hero card and closing heading updated; offer canon bumped to v0.9 with a decision-log entry. Dates only: the wider page-to-brochure messaging alignment was explicitly not scoped.
 
 - **Session close: leftover cohort size and stale docs fixed** (2026-10-14, [#169](https://github.com/acc-x/accelerator-x-website/issues/169)): the independent review of #157–#164 found the 1:1 coaching page FAQ (template, built page and JSON-LD) still said "a room of 10–12", so it now says "a room of peers". Also removed an orphaned `PricingBlock.css` comment, updated the `CLAUDE.md` funnel-page line and marked the §12 "4 seats" and JSON-LD price rows resolved in `docs/GO-LIVE-CHECKLIST.md`. Raised [#170](https://github.com/acc-x/accelerator-x-website/issues/170) for the hub card that labels £1,750 as "open cohort".

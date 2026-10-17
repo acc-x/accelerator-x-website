@@ -1691,6 +1691,14 @@ a:not(.btn):hover { color: var(--action-accent); }
 .ax-cohort-apply__success { padding: var(--space-8) var(--space-2); }
 .ax-cohort-apply__success:focus { outline: none; }
 
+/* Green, not the shared ApplyForm pink: on an outcome panel the icon reads as status, and
+   pink is the brand's call-to-action colour (Andy, 2026-10-17). Decorative (aria-hidden),
+   so the heading carries the meaning and 1.4.11 contrast does not apply. */
+.ax-cohort-apply__success .ax-apply-form__success-icon {
+  font-size: 4rem;
+  color: var(--ax-green);
+}
+
 /* ── Dialog shell ────────────────────────────────────── */
 
 .ax-cohort-apply-dialog {
