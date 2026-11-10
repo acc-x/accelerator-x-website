@@ -59,7 +59,10 @@
     const interval = Number.parseInt(library.dataset.heroInterval || '6500', 10);
     if (!Number.isFinite(interval) || interval < 3000) return;
 
+    let paused = false;
+
     window.setInterval(() => {
+      if (paused) return;
       slides[activeIndex].classList.remove('is-active');
       activeIndex = (activeIndex + 1) % slides.length;
       hydrateSlide(slides[activeIndex]);
@@ -68,6 +71,35 @@
       }
       slides[activeIndex].classList.add('is-active');
     }, interval);
+
+    // WCAG 2.2.2 (Pause, Stop, Hide): content that auto-advances for more than 5s needs a
+    // user control. Added here, not in the generated markup, so it exists only when the
+    // rotation actually runs (prefers-reduced-motion returns before this point and gets
+    // a static hero with nothing to pause). The label carries the state, and a polite
+    // live region announces the change.
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'hero-media-toggle';
+    const status = document.createElement('span');
+    status.className = 'hero-media-status';
+    status.setAttribute('role', 'status');
+
+    const renderToggle = () => {
+      toggle.dataset.state = paused ? 'paused' : 'playing';
+      toggle.setAttribute(
+        'aria-label',
+        paused ? 'Play hero image rotation' : 'Pause hero image rotation'
+      );
+    };
+
+    toggle.addEventListener('click', () => {
+      paused = !paused;
+      renderToggle();
+      status.textContent = paused ? 'Hero image rotation paused' : 'Hero image rotation playing';
+    });
+
+    renderToggle();
+    library.append(toggle, status);
   };
 
   if (prefersReducedMotion) {

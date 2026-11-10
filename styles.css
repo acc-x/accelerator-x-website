@@ -332,6 +332,65 @@
   object-position: center center;
 }
 
+/* Pause / play control for the auto-advancing hero (WCAG 2.2.2). Injected by
+   assets/js/main.js only when the rotation runs; 44px touch target. Sits in the
+   image's top-right corner (slides start at 4.25rem): clear of the pills above it and
+   the note card below it at every width. */
+.hero-media-toggle {
+  position: absolute;
+  top: 4.75rem;
+  right: 1.5rem;
+  z-index: 4;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  padding: 0;
+  border: 1px solid rgba(27, 42, 74, 0.16);
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: var(--color-navy);
+  box-shadow: 0 4px 10px rgba(15, 23, 42, 0.12);
+  cursor: pointer;
+}
+
+.hero-media-toggle:focus-visible {
+  outline: 3px solid var(--color-navy);
+  outline-offset: 2px;
+}
+
+/* Pause glyph: two bars. */
+.hero-media-toggle::before {
+  content: '';
+  width: 0.75rem;
+  height: 0.875rem;
+  background: linear-gradient(90deg, currentColor 0 33%, transparent 33% 67%, currentColor 67% 100%);
+}
+
+/* Play glyph: a triangle. */
+.hero-media-toggle[data-state='paused']::before {
+  width: 0;
+  height: 0;
+  background: none;
+  border-style: solid;
+  border-width: 0.4375rem 0 0.4375rem 0.75rem;
+  border-color: transparent transparent transparent currentColor;
+  margin-left: 0.125rem;
+}
+
+.hero-media-status {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .hero-media-note {
   position: absolute;
   bottom: 1rem;
