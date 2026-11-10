@@ -17,6 +17,8 @@ _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. S
 
 ### Fixed
 
+- **Homepage testimonials now render as the v2 `.ax-testimonial-card` component** (2026-11-10, [#130](https://github.com/acc-x/accelerator-x-website/issues/130)): `build-testimonials.js` runs after `build-homepage.js` and overwrites everything between the `TESTIMONIALS_COMPONENT` markers, and it was emitting the retired v1 markup (`.card-hoverable`, `.stars-5`), so the v2 partial (`_templates/homepage-testimonials.html`) never reached production. The generator now emits the v2 card with its scroll-in stagger, keeping `content/data/testimonials.json` as the single source of the words, so the wording on the live page does not change, only the markup and styling. `tests/build/testimonials.test.js` guards it: one v2 card per JSON entry, no v1 markup, names present, staggered reveal (confirmed to fail on the old output). The tailwind output shrank because v1-only utilities are no longer used. **Flagged for a decision, not changed:** the unused partial and the JSON word things differently (JSON: plain hyphens, "W R Bennett Group / Premium Car Parks", "Founder, CEO"; partial: em dashes, "W R Bennett Group", "Founder & CEO"). The partial is now dead code.
+
 - **Check #6 let an unclassified "We never" rule pass beside a classified one** (found by the new fixtures, #134): the classification window looked three lines ahead without stopping at the next bullet, so a rule with no annotation was counted as classified whenever the following rule carried a `<!-- check: -->` comment. The window now stops at the next bullet. The real `standards.md` still passes.
 
 ### Changed
