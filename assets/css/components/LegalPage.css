@@ -1,0 +1,108 @@
+/* =============================================================================
+   LegalPage — /privacy.html and /terms.html (#87)
+   Long-form reading page rendered from legal/*.md by scripts/build-legal-pages.js.
+   All values reference design tokens.
+   ============================================================================= */
+
+.ax-legal {
+  max-width: 46rem;
+  margin: 0 auto;
+  padding: var(--space-12) var(--gutter-mobile) var(--space-20);
+}
+
+@media (min-width: 48rem) {
+  .ax-legal { padding-left: var(--gutter-tablet); padding-right: var(--gutter-tablet); }
+}
+
+.ax-legal__header {
+  margin-bottom: var(--space-10);
+  padding-bottom: var(--space-6);
+  border-bottom: 1px solid var(--border-1);
+}
+
+.ax-legal__title {
+  margin: var(--space-3) 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-3xl), 4vw, var(--text-5xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+}
+
+.ax-legal__updated {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--fg-3);
+}
+
+.ax-legal__body {
+  font-size: var(--text-base);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-3);
+}
+
+.ax-legal__body h2 {
+  margin: var(--space-10) 0 var(--space-3);
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  color: var(--fg-1);
+}
+
+.ax-legal__body h3 {
+  margin: var(--space-6) 0 var(--space-2);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-1);
+}
+
+.ax-legal__body p,
+.ax-legal__body ul,
+.ax-legal__body ol {
+  margin: 0 0 var(--space-4);
+}
+
+.ax-legal__body ul { list-style: disc; padding-left: var(--space-6); }
+.ax-legal__body ol { list-style: decimal; padding-left: var(--space-6); }
+.ax-legal__body li { margin-bottom: var(--space-2); }
+
+.ax-legal__body strong { color: var(--fg-1); }
+
+.ax-legal__body a {
+  color: var(--fg-1);
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+}
+
+.ax-legal__body code {
+  padding: 0 var(--space-1);
+  background: var(--bg-2);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+  color: var(--fg-1);
+}
+
+.ax-legal__body table {
+  width: 100%;
+  margin: 0 0 var(--space-6);
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.ax-legal__body th,
+.ax-legal__body td {
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--border-1);
+  text-align: left;
+  vertical-align: top;
+}
+
+.ax-legal__body th { background: var(--bg-2); color: var(--fg-1); }
+
+@media print {
+  .ax-legal { padding-top: 0; }
+}

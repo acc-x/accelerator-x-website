@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{legal_title}} | Accelerator X</title>
+    <meta name="description" content="{{legal_description}}" />
+    <link rel="canonical" href="https://accelerator-x.ai/{{legal_file}}" />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Fonts -->
+    <!-- Figtree loads via <link> so the fetch runs parallel to the CSS bundle. -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;900&display=swap" />
+
+    <!-- Styles -->
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/assets/css/bundle.generated.css" />
+
+    <!-- Material Symbols -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+      onload="this.onload=null;this.rel='stylesheet'"
+    />
+    <noscript>
+      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" />
+    </noscript>
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{legal_title}} | Accelerator X" />
+    <meta property="og:description" content="{{legal_description}}" />
+    <meta property="og:image" content="https://accelerator-x.ai/assets/images/og-image-1200.webp" />
+    <meta property="og:image:alt" content="Accelerator X" />
+    <meta property="og:url" content="https://accelerator-x.ai/{{legal_file}}" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Accelerator X" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="{{legal_title}} | Accelerator X" />
+    <meta name="twitter:description" content="{{legal_description}}" />
+    <meta name="twitter:image" content="https://accelerator-x.ai/assets/images/og-image-1200.webp" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/icons/AX-icon.png" sizes="any" />
+    <link rel="shortcut icon" type="image/png" href="/assets/icons/AX-icon.png" />
+    <meta name="theme-color" content="#00C4CC" />
+
+    <script defer src="/assets/js/analytics.js"></script>
+  </head>
+  <body class="bg-background text-navy">
+
+    {{component:Nav}}
+
+    <main id="main-content">
+      <!-- The body is rendered from {{legal_source}} at build time by scripts/build-legal-pages.js. -->
+      <article class="ax-legal">
+        <header class="ax-legal__header">
+          <span class="ax-kicker">Legal</span>
+          <h1 class="ax-legal__title">{{legal_title}}</h1>
+          <p class="ax-legal__updated">Last updated: {{legal_updated}}</p>
+        </header>
+
+        <div class="ax-legal__body">
+{{legal_body}}
+        </div>
+      </article>
+    </main>
+
+    {{component:Footer}}
+
+    <script defer src="/assets/js/nav.js"></script>
+    <script defer src="/assets/js/forms.js"></script>
+    <script defer src="/assets/js/main.js"></script>
+  </body>
+</html>

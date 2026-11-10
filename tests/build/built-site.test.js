@@ -37,11 +37,12 @@ test('insights hub and articles render footer and author card', () => {
   assertIncludes(article, 'Co-founder', 'Insights article author role missing.');
 });
 
-test('legal pages carry the fallback legal identity', () => {
-  // privacy.html / terms.html are v1 orphans outside check.js's scan scope
-  // (#87), so this is the only automated eye on them until they're rebuilt.
-  const privacy = read('privacy.html');
-  const terms = read('terms.html');
-  assertIncludes(privacy, 'Accelerator X Ltd is a company registered in England and Wales under company number 16974247.', 'Privacy fallback legal identity missing.');
-  assertIncludes(terms, 'The website is operated by Accelerator X Ltd, a company registered in England and Wales under company number 16974247.', 'Terms fallback legal identity missing.');
+test('legal pages carry the legal identity', () => {
+  // privacy.html / terms.html are rendered from legal/*.md by build-legal-pages.js (#87);
+  // compare on text so inline markup (bold, links) does not matter.
+  const text = (html) => html.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ');
+  const privacy = text(read('privacy.html'));
+  const terms = text(read('terms.html'));
+  assertIncludes(privacy, 'Accelerator X Ltd is a company registered in England and Wales under company number 16974247.', 'Privacy legal identity missing.');
+  assertIncludes(terms, 'The website is operated by Accelerator X Ltd, a company registered in England and Wales under company number 16974247.', 'Terms legal identity missing.');
 });
