@@ -234,3 +234,457 @@
   color: var(--fg-muted-on-dark);
   opacity: 0.7;
 }
+
+/* =============================================================================
+   7. BROCHURE-ALIGNED SECTIONS (#203) — week by week, what you build, voices,
+   operating model, founders, join details. Section shells share one pattern.
+   ============================================================================= */
+
+.ax-lc-build,
+.ax-lc-voices,
+.ax-lc-ops,
+.ax-lc-founders,
+.ax-lc-join {
+  padding: var(--space-16) 0;
+}
+
+.ax-lc-build__inner,
+.ax-lc-voices__inner,
+.ax-lc-ops__inner,
+.ax-lc-founders__inner,
+.ax-lc-join__inner {
+  max-width: var(--container-default);
+  margin: 0 auto;
+  padding: 0 var(--gutter-mobile);
+}
+
+@media (min-width: 768px) {
+  .ax-lc-build__inner,
+  .ax-lc-voices__inner,
+  .ax-lc-ops__inner,
+  .ax-lc-founders__inner,
+  .ax-lc-join__inner { padding: 0 var(--gutter-tablet); }
+}
+@media (min-width: 1024px) {
+  .ax-lc-build__inner,
+  .ax-lc-voices__inner,
+  .ax-lc-ops__inner,
+  .ax-lc-founders__inner,
+  .ax-lc-join__inner { padding: 0 var(--gutter-desktop); }
+}
+
+.ax-lc-build__heading,
+.ax-lc-voices__heading,
+.ax-lc-ops__heading,
+.ax-lc-founders__heading,
+.ax-lc-join__heading {
+  margin: 0 0 var(--space-6);
+  font-family: var(--font-display);
+  font-size: clamp(var(--text-2xl), 3vw, var(--text-4xl));
+  font-weight: var(--fw-bold);
+  line-height: var(--lh-snug);
+  letter-spacing: var(--tracking-snug);
+  color: var(--fg-1);
+  text-wrap: balance;
+}
+
+.ax-lc-lede {
+  margin: 0 0 var(--space-4);
+  max-width: 68ch;
+  font-size: var(--text-lg);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-3);
+}
+
+.ax-lc-who__sub { margin-top: calc(-1 * var(--space-6)); margin-bottom: var(--space-8); }
+
+.ax-lc-subhead {
+  margin: var(--space-12) 0 var(--space-4);
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-1);
+}
+
+.ax-lc-subhead--tight { margin-top: 0; }
+
+.ax-lc-trio {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+@media (min-width: 640px) {
+  .ax-lc-trio { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Week by week */
+.ax-lc-weeks {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 0;
+  border-top: 1px solid var(--border-1);
+}
+
+.ax-lc-week {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  padding: var(--space-5) 0;
+  border-bottom: 1px solid var(--border-1);
+}
+
+@media (min-width: 768px) {
+  .ax-lc-week {
+    grid-template-columns: 11rem 14rem 1fr;
+    gap: var(--space-6);
+    align-items: baseline;
+  }
+}
+
+.ax-lc-week__when {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+}
+
+.ax-lc-week__title {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-lg);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-1);
+}
+
+.ax-lc-week__body {
+  margin: 0;
+  font-size: var(--text-base);
+  line-height: var(--lh-relaxed);
+  color: var(--fg-3);
+}
+
+/* What you build: a day with the Chief of Staff */
+.ax-lc-build { background: var(--bg-1); }
+
+.ax-lc-day-note {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-4);
+  font-size: var(--text-sm);
+  color: var(--fg-3);
+}
+
+.ax-lc-day { margin: 0; border-top: 1px solid var(--border-1); }
+
+.ax-lc-day__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-1);
+}
+
+@media (min-width: 640px) {
+  .ax-lc-day__row { grid-template-columns: 10rem 1fr; gap: var(--space-6); }
+}
+
+.ax-lc-day__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-1);
+}
+
+.ax-lc-day__row dd { margin: 0; color: var(--fg-3); line-height: var(--lh-relaxed); }
+
+/* What you'll need */
+.ax-lc-need {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+  color: var(--fg-3);
+}
+
+@media (min-width: 640px) {
+  .ax-lc-need { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ax-lc-need li {
+  padding: var(--space-3) var(--space-4);
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-md);
+}
+
+/* Past participants */
+.ax-lc-voices { background: var(--bg-2); border-top: 1px solid var(--border-1); }
+
+.ax-lc-voices__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-8);
+}
+
+@media (min-width: 768px) {
+  .ax-lc-voices__grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+.ax-lc-voice {
+  margin: 0;
+  padding: var(--space-6);
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+}
+
+.ax-lc-voice blockquote { margin: 0 0 var(--space-4); }
+.ax-lc-voice p { margin: 0; color: var(--fg-1); line-height: var(--lh-relaxed); }
+.ax-lc-voice figcaption { font-size: var(--text-sm); color: var(--fg-3); }
+.ax-lc-voice figcaption strong { color: var(--fg-1); }
+
+.ax-lc-voices__stat {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: var(--text-xl);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-1);
+}
+
+/* How we run Accelerator X */
+.ax-lc-flow {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+  counter-reset: flow;
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 900px) {
+  .ax-lc-flow { grid-template-columns: repeat(5, 1fr); }
+}
+
+.ax-lc-flow li {
+  counter-increment: flow;
+  padding: var(--space-4);
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-md);
+  color: var(--fg-1);
+  line-height: var(--lh-snug);
+}
+
+.ax-lc-flow li::before {
+  content: counter(flow);
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-3);
+}
+
+.ax-lc-ops__close { margin: 0; color: var(--fg-3); font-size: var(--text-lg); line-height: var(--lh-relaxed); }
+.ax-lc-ops { background: var(--bg-2); border-top: 1px solid var(--border-1); }
+
+/* Founders */
+.ax-lc-founders__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  margin-bottom: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .ax-lc-founders__grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+.ax-lc-founder {
+  display: flex;
+  gap: var(--space-4);
+  align-items: flex-start;
+  padding: var(--space-6);
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-lg);
+}
+
+.ax-lc-founder picture { flex: none; }
+
+.ax-lc-founder__photo {
+  display: block;
+  flex: none;
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: var(--radius-full);
+}
+
+.ax-lc-founder__name { margin: 0; font-family: var(--font-display); font-size: var(--text-lg); font-weight: var(--fw-semibold); color: var(--fg-1); }
+.ax-lc-founder__role { margin: 0 0 var(--space-3); font-size: var(--text-sm); color: var(--fg-3); }
+.ax-lc-founder__bio { margin: 0; color: var(--fg-3); line-height: var(--lh-relaxed); }
+
+/* Join details */
+.ax-lc-join { background: var(--bg-2); border-top: 1px solid var(--border-1); }
+
+.ax-lc-join__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+}
+
+@media (min-width: 900px) {
+  .ax-lc-join__grid { grid-template-columns: 1fr 1fr; }
+}
+
+.ax-lc-join__details { margin: 0; border-top: 1px solid var(--border-1); }
+
+.ax-lc-join__row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--border-1);
+}
+
+@media (min-width: 640px) {
+  .ax-lc-join__row { grid-template-columns: 8rem 1fr; gap: var(--space-6); }
+}
+
+.ax-lc-join__row dt {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-3);
+}
+
+.ax-lc-join__row dd { margin: 0; color: var(--fg-1); line-height: var(--lh-relaxed); }
+
+.ax-lc-join__list {
+  margin: 0;
+  padding-left: var(--space-5);
+  color: var(--fg-3);
+  line-height: var(--lh-relaxed);
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ax-lc-joinsteps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: joinstep;
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 900px) {
+  .ax-lc-joinsteps { grid-template-columns: repeat(4, 1fr); }
+}
+
+.ax-lc-joinsteps li {
+  counter-increment: joinstep;
+  padding: var(--space-4);
+  background: var(--bg-1);
+  border: 1px solid var(--border-1);
+  border-radius: var(--radius-md);
+  color: var(--fg-3);
+  line-height: var(--lh-relaxed);
+}
+
+.ax-lc-joinsteps li::before {
+  content: counter(joinstep);
+  display: block;
+  margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--fg-3);
+}
+
+.ax-lc-joinsteps li strong { color: var(--fg-1); }
+
+.ax-lc-join__pdf { margin: var(--space-8) 0 0; color: var(--fg-3); }
+
+/* Six outcomes read as 3 x 2; the shared grid is built for four across. */
+@media (min-width: 1024px) {
+  .ax-deliverables-grid--six .ax-deliverables-grid__items { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* =============================================================================
+   8. PRINT — the offline brochure PDF is this page, printed (#203).
+   `npm run build:pdf` prints it with headless Chrome, so one edit feeds both.
+   Site chrome, the apply form and the download link are dropped; reveal and
+   accordion states are forced open; cards are kept whole across page breaks.
+   ============================================================================= */
+
+.ax-lc-print-only { display: none; }
+
+@page { size: A4; margin: 12mm; }
+
+@media print {
+  .ax-lc-page {
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .ax-lc-page .ax-skip-link,
+  .ax-lc-page .ax-nav,
+  .ax-lc-page .ax-footer,
+  .ax-lc-page .ax-lc-cta,
+  .ax-lc-page .ax-lc-join__pdf,
+  .ax-lc-page .ax-offering-hero__cta,
+  .ax-lc-page .ax-faq-item__icon,
+  .ax-lc-page dialog { display: none !important; }
+
+  .ax-lc-page .ax-lc-print-only { display: block; margin: var(--space-6) 0 0; color: var(--fg-1); font-weight: var(--fw-semibold); }
+
+  .ax-lc-page .reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  /* Closed <details> hide their answers in print; show them all. */
+  .ax-lc-page details::details-content {
+    content-visibility: visible;
+    display: block;
+    height: auto;
+  }
+
+  .ax-lc-build,
+  .ax-lc-voices,
+  .ax-lc-ops,
+  .ax-lc-founders,
+  .ax-lc-join { padding: var(--space-8) 0; }
+
+  .ax-lc-peer-card,
+  .ax-lc-week,
+  .ax-lc-day__row,
+  .ax-deliverable,
+  .ax-lc-voice,
+  .ax-lc-flow li,
+  .ax-lc-founder,
+  .ax-lc-join__row,
+  .ax-lc-joinsteps li,
+  .ax-fit-check__col,
+  .ax-faq-item,
+  .ax-plan-layers__step,
+  .ax-lc-proof { break-inside: avoid; }
+
+  .ax-lc-page h2,
+  .ax-lc-page h3,
+  .ax-lc-subhead,
+  .ax-kicker { break-after: avoid; }
+
+  /* A4 is too narrow for three phase columns. */
+  .ax-lc-page .ax-lc-steps { grid-template-columns: 1fr; }
+}

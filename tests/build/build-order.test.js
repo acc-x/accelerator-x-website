@@ -43,7 +43,9 @@ test('every build step resolves to a real script or file', () => {
 
 // Dropping a generator from the chain leaves every order assertion below green while its
 // committed output goes stale, so the chain must still reach every generator script.
-const LIBRARY_ONLY = new Set(['build-components.js']);
+// build-components.js is a library; build-brochure-pdf.js needs a local Chrome, so it is
+// run by hand (`npm run build:pdf`) and guarded by tests/build/brochure-pdf.test.js instead.
+const LIBRARY_ONLY = new Set(['build-components.js', 'build-brochure-pdf.js']);
 
 test('every scripts/build-*.js generator is reached by the build', () => {
   const reached = new Set();
