@@ -52,10 +52,9 @@ function filesIn(relDir, ext) {
 }
 
 // Every HTML file npm run build generates — the surface Checks #3 and #8 scan.
-// Deliberately excluded (legacy v1 orphans, reconciliation tracked separately):
-//   privacy.html / terms.html — v1 legal pages awaiting v2 reconciliation (#87)
-// They predate the token/component system and would fail checks written for v2
-// output; extending coverage to them belongs to their own tracked rebuilds.
+// privacy.html and terms.html are generated at the repo root by build-legal-pages.js (#87),
+// so they are listed here rather than in a directory.
+const BUILT_ROOT_HTML = ['index.html', 'privacy.html', 'terms.html'];
 const BUILT_HTML_DIRS = [
   'about',
   'contact',
@@ -69,7 +68,8 @@ const BUILT_HTML_DIRS = [
 ];
 
 function builtHtmlFiles() {
-  const files = ['index.html'];
+  // tests/build/legal-pages.test.js asserts the legal pages exist; fixtures need not carry them.
+  const files = BUILT_ROOT_HTML.filter((f) => fs.existsSync(path.join(ROOT, f)));
   for (const dir of BUILT_HTML_DIRS) {
     files.push(...filesIn(dir, '.html'));
   }

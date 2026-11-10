@@ -893,45 +893,6 @@ a {
   opacity: 0.9;
 }
 
-/* Legal pages layout */
-.legal-shell {
-  max-width: 768px;
-  margin: 0 auto;
-  padding: 4rem 1.5rem;
-}
-
-@media (min-width: 1024px) {
-  .legal-shell {
-    padding: 5rem 0;
-  }
-}
-
-.legal-card {
-  background: var(--color-background);
-  border: 1px solid var(--color-border);
-  border-radius: 1.25rem;
-  padding: 2rem;
-  box-shadow: var(--shadow-lg);
-}
-
-.legal-card h1 {
-  margin: 0.5rem 0 1rem;
-}
-
-.legal-card h2 {
-  margin-top: 1.75rem;
-  margin-bottom: 0.5rem;
-}
-
-.legal-card p {
-  margin: 0.25rem 0 1rem;
-}
-
-.legal-meta {
-  color: var(--color-muted);
-}
-
-
 .article-author-card__inner {
   display: flex;
   align-items: flex-start;
