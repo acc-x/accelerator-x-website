@@ -17,7 +17,12 @@ function escapeHtml(str) {
     .replace(/'/g, '&#39;');
 }
 
-function buildCardHtml(t, indent) {
+// Emits the v2 `.ax-testimonial-card` component (#130). This script runs after
+// build-homepage.js and overwrites everything between the TESTIMONIALS_COMPONENT markers,
+// so it, not _templates/homepage-testimonials.html, decides what ships. It used to emit
+// the old v1 `.card-hoverable` / `.stars-5` markup, which is why the v2 partial never
+// reached production. The words still come from content/data/testimonials.json.
+function buildCardHtml(t, indent, index) {
   const quote = escapeHtml(t.quote || '');
   const name = escapeHtml(t.name || '');
   const title = escapeHtml(t.title || '');
@@ -25,24 +30,21 @@ function buildCardHtml(t, indent) {
 
   const attribution = [title, company].filter(Boolean).join(', ');
 
+  // Scroll-in stagger: the first card has none, then reveal-delay-1, -2, -3 (capped).
+  const delay = index > 0 ? ` reveal-delay-${Math.min(index, 3)}` : '';
+
   return (
-    `${indent}<div class="card-hoverable flex flex-col rounded-xl bg-background p-8">\n` +
-    `${indent}  <div class="mb-4 flex justify-center">\n` +
-    `${indent}    <div class="stars-5" aria-hidden="true">\n` +
-    `${indent}      <span aria-hidden="true">★</span>\n` +
-    `${indent}      <span aria-hidden="true">★</span>\n` +
-    `${indent}      <span aria-hidden="true">★</span>\n` +
-    `${indent}      <span aria-hidden="true">★</span>\n` +
-    `${indent}      <span aria-hidden="true">★</span>\n` +
-    `${indent}    </div>\n` +
-    `${indent}    <span class="sr-only">5 out of 5 stars</span>\n` +
+    `${indent}<div class="ax-testimonial-card reveal${delay}">\n` +
+    `${indent}  <div class="ax-testimonial-card__stars" aria-hidden="true">\n` +
+    `${indent}    <span>★</span><span>★</span><span>★</span><span>★</span><span>★</span>\n` +
     `${indent}  </div>\n` +
-    `${indent}  <p class="flex-1 italic leading-relaxed text-body">\n` +
+    `${indent}  <span class="sr-only">5 out of 5 stars</span>\n` +
+    `${indent}  <p class="ax-testimonial-card__quote">\n` +
     `${indent}    "${quote}"\n` +
     `${indent}  </p>\n` +
-    `${indent}  <div class="mt-6">\n` +
-    `${indent}    <p class="font-bold text-navy">${name}</p>\n` +
-    `${indent}    <p class="text-sm text-muted">${attribution}</p>\n` +
+    `${indent}  <div class="ax-testimonial-card__attribution">\n` +
+    `${indent}    <p class="ax-testimonial-card__name">${name}</p>\n` +
+    `${indent}    <p class="ax-testimonial-card__role">${attribution}</p>\n` +
     `${indent}  </div>\n` +
     `${indent}</div>`
   );
@@ -85,7 +87,7 @@ function main() {
     if (i === 1) parts.push(`${indent}<!-- Testimonial 2 -->`);
     if (i === 2) parts.push(`${indent}<!-- Testimonial 3 -->`);
 
-    parts.push(buildCardHtml(t, indent));
+    parts.push(buildCardHtml(t, indent, i));
     parts.push('');
   }
 
