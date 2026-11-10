@@ -10,6 +10,7 @@
 
 **Site:** https://accelerator-x.ai — live, real visitors
 **Stack:** Static HTML + compiled Tailwind (CLI → committed bundle, since 2026-07-04) + `npm run build` → Netlify (pre-built artefacts committed)
+**Brochure PDF:** the cohort page's offline PDF (`assets/downloads/accelerator-x-bootcamp-brochure.pdf`) is the page printed by headless Chrome. After any change to `what-we-do/leadership-cohort/`, run `npm run build && npm run build:pdf` (needs Chrome, online) and commit the PDF and its `.source-sha256`; `tests/build/brochure-pdf.test.js` fails until you do (#203).
 **Email:** Brevo list #9 | **Analytics:** PostHog | **Notifications:** Slack `#website-leads`
 **Node:** v26.0.0 locally via `/opt/homebrew/bin/node` — run `export PATH="/opt/homebrew/bin:$PATH"` if npm isn't found. **CI pins Node 24**, matching the Netlify functions runtime (`nodejs24.x`, verified from the deploy API on 2026-11-10, #134); if Netlify's functions runtime moves, move the three `node-version` pins in `.github/workflows/` with it.
 **DNS/hosting reference:** `docs/tech-architecture/dns-hosting.md` — registrar, nameservers, full zone, SSL, email, quiz, incident log.

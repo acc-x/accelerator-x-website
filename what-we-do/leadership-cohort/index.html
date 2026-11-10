@@ -75,7 +75,7 @@
         {
           "@type": "Question",
           "name": "How much time does this take?",
-          "acceptedAnswer": { "@type": "Answer", "text": "One 90-minute live session a week for eight weeks. Beyond that it's your call: how much you use the tools between sessions is up to you, and the more you put in, the more your Chief of Staff does for you. If your diary genuinely won't flex for a weekly session, apply for the next cohort when the timing is better." }
+          "acceptedAnswer": { "@type": "Answer", "text": "90 minutes a week live, the three-hour in-person session in week 5, and some practice in between. The practice is building your own system, so it pays back as you go. If your diary genuinely won't flex for a weekly session, apply for the next cohort when the timing is better." }
         },
         {
           "@type": "Question",
@@ -99,7 +99,7 @@
         },
         {
           "@type": "Question",
-          "name": "Is there a money-back guarantee?",
+          "name": "Is there a guarantee?",
           "acceptedAnswer": { "@type": "Answer", "text": "Yes: no value, no payment. You get two full sessions and the resources are yours to keep; if it's not for you, tell us before the third and you owe nothing. There's also a pre-cohort interview (a 1:1 with a founder) before we confirm your place, so we only proceed if it's a genuine fit on both sides." }
         },
         {
@@ -109,13 +109,33 @@
         },
         {
           "@type": "Question",
-          "name": "Do I have to come to London?",
-          "acceptedAnswer": { "@type": "Answer", "text": "No. The weekly sessions run live on video calls. We're adding an in-person element in London for people who can make it, including a small-group working session at the end. It's an extra, not a requirement." }
+          "name": "Do I have to come in person?",
+          "acceptedAnswer": { "@type": "Answer", "text": "It's the best way to do week 5, but it's not required. Participants have travelled from across the UK and abroad, and many are London-based. The venue and date are still to be confirmed. If you can't be there, you join live by video, and everyone gets the recording and all the session materials." }
         },
         {
           "@type": "Question",
           "name": "Do I need the latest agent tools I keep hearing about?",
           "acceptedAnswer": { "@type": "Answer", "text": "No. Many of those tools are a distraction if you don't understand the architecture underneath. Once you know how to use Claude properly, you can build a more capable personal agent, and a whole agentic system, that you control and can extend to any part of your work or life." }
+        },
+        {
+          "@type": "Question",
+          "name": "How big is the cohort?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Small by design. We expect between 10 and 15 senior leaders, and we vet every application so the room stays non-competing." }
+        },
+        {
+          "@type": "Question",
+          "name": "Is it only for Claude?",
+          "acceptedAnswer": { "@type": "Answer", "text": "We build in Claude because it's what we run our own business on. The building blocks carry across to any AI tool." }
+        },
+        {
+          "@type": "Question",
+          "name": "What if my company locks down email and diary?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Tell us before you join. We can set you up on your own files, and the building blocks are the same." }
+        },
+        {
+          "@type": "Question",
+          "name": "Do I get a certificate?",
+          "acceptedAnswer": { "@type": "Answer", "text": "No. You get a working system on your own work, which is more useful." }
         }
       ]
     }
@@ -123,7 +143,7 @@
 
     <script defer src="/assets/js/analytics.js"></script>
   </head>
-  <body class="bg-background text-navy">
+  <body class="bg-background text-navy ax-lc-page">
 
     <a href="#main-content" class="ax-skip-link">Skip to main content</a>
 
@@ -192,7 +212,7 @@
     <main id="main-content">
 
       <!-- === OFFERING HERO === -->
-      <!-- Cohort number dropped from public copy (2026-07-11, Andy): next paid intake is C3, not "04" (C0 was free); programme is diversifying into multiple cohort types, so a single running counter is inaccurate + brittle. Date shown as a target window until 2026-08-22 (#108): "Late July / Aug 2026" went false 2026-09-01, so it went undated ("dates on application") until a real C3 date was locked. The 21 September 2026 date never held (Andy, 2026-10-08): C3 is open and filling, planned start late October 2026, exact date on application. Superseded 2026-10-15 (Andy, #178): Toby's C3 brochure is canonical for dates, so early November 2026 (runs to Christmas), exact dates to confirm. Availability softened to "limited places" (no maintained count). -->
+      <!-- Cohort number dropped from public copy (2026-07-11, Andy): the next paid intake is not numbered because the programme is diversifying into several cohort types. Dates and facts follow the Cohort 3 brochure (#203) with the next intake early January 2027, date to be confirmed. Availability stays "limited places" with no maintained count. -->
       <section class="ax-offering-hero" aria-labelledby="offering-hero-heading">
         <div class="ax-offering-hero__inner">
 
@@ -212,7 +232,7 @@
               </ol>
             </nav>
 
-            <span class="chip chip--cyan ax-offering-hero__chip">Open cohort · 8 weeks · limited places · London + video calls</span>
+            <span class="chip chip--cyan ax-offering-hero__chip">Open cohort · 8 weeks · limited places · video calls + one in-person session</span>
 
             <h1 class="ax-offering-hero__heading" id="offering-hero-heading">
               Build your own AI <span class="ax-accent">Chief of Staff.</span>
@@ -243,7 +263,7 @@
               </div>
               <div class="ax-offering-hero__spec-row">
                 <dt>Format</dt>
-                <dd>Video calls, plus in-person in London</dd>
+                <dd>Video calls, plus a 3-hour in-person session in week 5</dd>
               </div>
               <div class="ax-offering-hero__spec-row">
                 <dt>From</dt>
@@ -262,7 +282,7 @@
             <a href="#cohort-apply" class="btn btn--accent btn--lg ax-offering-hero__cta" data-cohort-apply-open="hero_card">
               Apply to join <span aria-hidden="true">→</span>
             </a>
-            <p class="ax-offering-hero__card-guarantee"><strong>No value, no payment.</strong> Two full sessions, the resources are yours to keep. Cancel before the third for a full refund.</p>
+            <p class="ax-offering-hero__card-guarantee"><strong>No value, no payment.</strong> Two full sessions. Cancel before session 3, keep the resources and owe nothing.</p>
             <p class="ax-offering-hero__card-note">Short application form · we reply within 1 business day.</p>
           </aside>
 
@@ -276,6 +296,7 @@
           <h2 class="ax-lc-who__heading" id="who-heading">
             A room of senior leaders, vetted to be non-competing.
           </h2>
+          <p class="ax-lc-lede ax-lc-who__sub">We keep the room small, and expect between 10 and 15 people.</p>
 
           <div class="ax-lc-who__grid">
 
@@ -303,22 +324,26 @@
       </section>
 
       <!-- === THE PLAN === -->
+      <!-- Content follows the Cohort 3 brochure (#203): same eight-week shape, week 5 in person. -->
       <section class="ax-plan-layers" aria-labelledby="plan-heading">
         <div class="ax-plan-layers__inner">
 
           <div class="ax-plan-layers__header">
-            <span class="ax-kicker">The plan</span>
-            <h2 class="ax-plan-layers__heading" id="plan-heading">Build the Chief of Staff first. Then learn to build the rest.</h2>
+            <span class="ax-kicker">How it works</span>
+            <h2 class="ax-plan-layers__heading" id="plan-heading">Eight weeks. One system, built on your real work.</h2>
+            <p class="ax-lc-lede">
+              These are not stand-alone sessions. Your Chief of Staff starts simple in week 1 and gets more capable every week. Each session adds a layer, so you understand how the parts fit and always have something working. In week 5 we bring it together in person, then you extend it and build your next system.
+            </p>
           </div>
 
           <ol class="ax-lc-steps" aria-label="Cohort phases">
             <li class="ax-plan-layers__step">
               <span class="ax-plan-layers__num" aria-hidden="true">01</span>
               <div class="ax-plan-layers__body">
-                <span class="ax-plan-layers__step-label">Weeks 1–3 · FOUNDATION</span>
+                <span class="ax-plan-layers__step-label">Weeks 1–4 · BUILD IT UP</span>
                 <h3 class="ax-plan-layers__step-heading">A Chief of Staff that knows you.</h3>
                 <p class="ax-plan-layers__step-body">
-                  After a 1:1 interview with a founder, your inbox, calendar, to-do list and the things you carry in your head are connected to a Claude-based agent that knows how you work and starts taking things off your plate.
+                  Instructions, then connections and tasks, then agent skills, then automations. Each week adds a layer, on your own email, diary and tasks.
                 </p>
               </div>
             </li>
@@ -326,10 +351,10 @@
             <li class="ax-plan-layers__step">
               <span class="ax-plan-layers__num" aria-hidden="true">02</span>
               <div class="ax-plan-layers__body">
-                <span class="ax-plan-layers__step-label">Weeks 4–6 · POWER</span>
-                <h3 class="ax-plan-layers__step-heading">It chases, reminds and acts.</h3>
+                <span class="ax-plan-layers__step-label">Week 5 · BRING IT TOGETHER</span>
+                <h3 class="ax-plan-layers__step-heading">It runs the whole job.</h3>
                 <p class="ax-plan-layers__step-body">
-                  Skills, connectors and scheduled tasks so it works on its own: chasing you, reminding you and getting things done when you ask and when you don't, including while you sleep.
+                  Three hours, in person and immersive. Hand it an outcome and let the layers work as one, alongside the cohort.
                 </p>
               </div>
             </li>
@@ -337,53 +362,172 @@
             <li class="ax-plan-layers__step">
               <span class="ax-plan-layers__num" aria-hidden="true">03</span>
               <div class="ax-plan-layers__body">
-                <span class="ax-plan-layers__step-label">Weeks 7–8 · SYSTEM OF SYSTEMS</span>
+                <span class="ax-plan-layers__step-label">Weeks 6–8 · EXTEND AND EVOLVE</span>
                 <h3 class="ax-plan-layers__step-heading">Use the method on everything else.</h3>
                 <p class="ax-plan-layers__step-body">
-                  You learn how the system builds the system, then point it at other parts of your work or life. We close with a small-group working session, in London for those who can make it.
+                  Advanced capabilities, then your next system, then a showcase of what you built.
                 </p>
               </div>
             </li>
-
           </ol>
+
+          <h3 class="ax-lc-subhead">Week by week</h3>
+          <ol class="ax-lc-weeks">
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Before you start</span>
+              <h4 class="ax-lc-week__title">Get ready</h4>
+              <p class="ax-lc-week__body">Take the AI capability assessment, map the tools you use today, and set your goal 1:1 with Toby or Andy.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 1</span>
+              <h4 class="ax-lc-week__title">Your first Chief of Staff</h4>
+              <p class="ax-lc-week__body">How AI tools work, where they go wrong, and how to brief them well. Then your first folder and a simple instructions file, so Claude knows who you are and how to work for you. The habit everything else builds on.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 2</span>
+              <h4 class="ax-lc-week__title">Connections and tasks</h4>
+              <p class="ax-lc-week__body">Connect your email, diary and tasks, so it sees your priorities and briefs you every morning.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 3</span>
+              <h4 class="ax-lc-week__title">Agent skills</h4>
+              <p class="ax-lc-week__body">How-to guides for your recurring tasks, which Claude follows every time. Your first skill, plus a skill that helps you build the next one.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 4</span>
+              <h4 class="ax-lc-week__title">Automations</h4>
+              <p class="ax-lc-week__body">Set jobs to run on a schedule, so your morning briefing arrives on its own.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 5 · in person</span>
+              <h4 class="ax-lc-week__title">Orchestration</h4>
+              <p class="ax-lc-week__body">Three hours, in person and immersive. Hand it an outcome and let it run the whole job, alongside the cohort. Venue and date to be confirmed, and you can join by video if you can't be there.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 6</span>
+              <h4 class="ax-lc-week__title">Advanced capabilities</h4>
+              <p class="ax-lc-week__body">Claude Design, live artifacts and smarter automations, applied to your real work.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 7</span>
+              <h4 class="ax-lc-week__title">Your next system</h4>
+              <p class="ax-lc-week__body">Design your next system with the same toolkit, and see how your team could share it.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Week 8</span>
+              <h4 class="ax-lc-week__title">Showcase</h4>
+              <p class="ax-lc-week__body">Show what you built, retake the capability assessment to see your before and after, and lock your 90-day plan 1:1.</p>
+            </li>
+            <li class="ax-lc-week">
+              <span class="ax-lc-week__when">Day 90</span>
+              <h4 class="ax-lc-week__title">Review</h4>
+              <p class="ax-lc-week__body">Review of your 90-day plan.</p>
+            </li>
+          </ol>
+
+          <h3 class="ax-lc-subhead">How each session runs</h3>
+          <div class="ax-lc-trio">
+            <div class="ax-lc-peer-card">
+              <h4 class="ax-lc-peer-card__heading">90 minutes, live</h4>
+              <p class="ax-lc-peer-card__body">Same slot each week, agreed by the cohort.</p>
+            </div>
+            <div class="ax-lc-peer-card">
+              <h4 class="ax-lc-peer-card__heading">Recorded</h4>
+              <p class="ax-lc-peer-card__body">Every session, with a guide to keep.</p>
+            </div>
+            <div class="ax-lc-peer-card">
+              <h4 class="ax-lc-peer-card__heading">Supported</h4>
+              <p class="ax-lc-peer-card__body">A group chat for ad hoc questions and support between sessions.</p>
+            </div>
+          </div>
 
         </div>
       </section>
 
+      <!-- === WHAT YOU BUILD === -->
+      <section class="ax-lc-build" aria-labelledby="build-heading">
+        <div class="ax-lc-build__inner">
+          <span class="ax-kicker">What you build</span>
+          <h2 class="ax-lc-build__heading" id="build-heading">Your Chief of Staff is the first system.</h2>
+          <p class="ax-lc-lede">
+            It starts with a folder and a few files, something you already know how to use. Each week adds sophistication, like connected tools and scheduled tasks. You leave with a working system and the toolkit to build the next one, anywhere in your work or life.
+          </p>
+          <p class="ax-lc-lede">
+            The people who get ahead are not the ones chasing the latest tool or trend. They understand the principles of how these tools work, so they can build a system that is personal to them, their tools and their business.
+          </p>
+
+          <h3 class="ax-lc-subhead">A day with your Chief of Staff</h3>
+          <p class="ax-lc-day-note">An example.</p>
+          <dl class="ax-lc-day">
+            <div class="ax-lc-day__row">
+              <dt>07:30</dt>
+              <dd>Your brief lands: meetings, what needs you, what's overdue.</dd>
+            </div>
+            <div class="ax-lc-day__row">
+              <dt>Before meetings</dt>
+              <dd>Prep notes from your email and past calls.</dd>
+            </div>
+            <div class="ax-lc-day__row">
+              <dt>After calls</dt>
+              <dd>Actions into your tracker, follow-ups drafted for you to check.</dd>
+            </div>
+            <div class="ax-lc-day__row">
+              <dt>17:30</dt>
+              <dd>Review: what went well, what to fix tomorrow.</dd>
+            </div>
+          </dl>
+        </div>
+      </section>
+
       <!-- === DELIVERABLES === -->
-      <section class="ax-deliverables-grid ax-deliverables-grid--alt" aria-labelledby="deliverables-heading">
+      <section class="ax-deliverables-grid ax-deliverables-grid--alt ax-deliverables-grid--six" aria-labelledby="deliverables-heading">
         <div class="ax-deliverables-grid__inner">
 
           <div class="ax-deliverables-grid__header">
             <h2 class="ax-deliverables-grid__heading" id="deliverables-heading">
-              Four things you leave with.
+              Six things you leave with.
             </h2>
+            <p class="ax-lc-lede">
+              The real outcome is that you don't depend on a tool, a vendor or us. You'll know how your system is built and why it works, rather than deploying something you don't understand or can't be sure is safe. So when the tools change, you rebuild it. When another part of your business or life needs a system, you design it. And when your team needs one, you can show them how.
+            </p>
           </div>
 
           <div class="ax-deliverables-grid__items">
 
             <div class="ax-deliverable">
               <span class="ax-deliverable__num">01</span>
-              <h3 class="ax-deliverable__title">A working agentic Chief of Staff</h3>
-              <p class="ax-deliverable__body">Built by you, on Claude, around your own inbox, calendar and commitments. It knows you, chases you and does work for you.</p>
+              <h3 class="ax-deliverable__title">Your AI Chief of Staff</h3>
+              <p class="ax-deliverable__body">Running on your real email, diary, files and tasks.</p>
             </div>
 
             <div class="ax-deliverable">
               <span class="ax-deliverable__num">02</span>
-              <h3 class="ax-deliverable__title">The toolkit to build more</h3>
-              <p class="ax-deliverable__body">The method behind it, so you can build sophisticated AI systems for any other part of your professional or personal life.</p>
+              <h3 class="ax-deliverable__title">The building blocks, understood</h3>
+              <p class="ax-deliverable__body">What each piece is, why it matters, how to build and test it.</p>
             </div>
 
             <div class="ax-deliverable">
               <span class="ax-deliverable__num">03</span>
-              <h3 class="ax-deliverable__title">A personal AI operating model</h3>
-              <p class="ax-deliverable__body">Your systems working together as one, tied to what you are actually trying to achieve.</p>
+              <h3 class="ax-deliverable__title">Your own skills</h3>
+              <p class="ax-deliverable__body">Built and scored on your own work, yours to keep.</p>
             </div>
 
             <div class="ax-deliverable">
               <span class="ax-deliverable__num">04</span>
-              <h3 class="ax-deliverable__title">A peer network</h3>
-              <p class="ax-deliverable__body">Fellow senior leaders, vetted non-competing, who you can text.</p>
+              <h3 class="ax-deliverable__title">Your next system, mapped</h3>
+              <p class="ax-deliverable__body">The same pieces pointed at another part of your business.</p>
+            </div>
+
+            <div class="ax-deliverable">
+              <span class="ax-deliverable__num">05</span>
+              <h3 class="ax-deliverable__title">A before and after</h3>
+              <p class="ax-deliverable__body">On the Accelerator X AI capability assessment, with your report.</p>
+            </div>
+
+            <div class="ax-deliverable">
+              <span class="ax-deliverable__num">06</span>
+              <h3 class="ax-deliverable__title">A 90-day plan and a peer group</h3>
+              <p class="ax-deliverable__body">Plus three months in the Accelerator X Community: ongoing access to us for Q&amp;A, support from your peers, and members-only content and resources.</p>
             </div>
 
           </div>
@@ -395,7 +539,7 @@
       <section class="ax-fit-check ax-fit-check--alt" aria-labelledby="fit-check-heading">
         <div class="ax-fit-check__inner">
 
-          <span class="ax-kicker">Honest about fit</span>
+          <span class="ax-kicker">Is this for you?</span>
           <h2 class="ax-fit-check__heading" id="fit-check-heading">
             For leaders who'll lead the AI conversation. Not be led by it.
           </h2>
@@ -408,8 +552,8 @@
                 Right fit if you…
               </h3>
               <ul class="ax-fit-check__list">
-                <li class="ax-fit-check__item">Run a function or business unit and own outcomes.</li>
-                <li class="ax-fit-check__item">Want to lead the AI conversation, not be led by it.</li>
+                <li class="ax-fit-check__item">Are a founder, CEO, MD or Head of Operations who wants to run the business on a system you understand, not a pile of tools.</li>
+                <li class="ax-fit-check__item">Lead a function in an organisation moving too slowly on AI, and want to lead it yourself, among peers doing the same.</li>
                 <li class="ax-fit-check__item">Can commit to a 90-minute live session each week for 8 weeks.</li>
                 <li class="ax-fit-check__item">Are comfortable being challenged by peers.</li>
               </ul>
@@ -421,12 +565,20 @@
                 Probably not for you if you…
               </h3>
               <ul class="ax-fit-check__list">
-                <li class="ax-fit-check__item">Need a certificate more than capability.</li>
-                <li class="ax-fit-check__item">Can't make consistent time week-to-week.</li>
+                <li class="ax-fit-check__item">Mainly want a certificate (there isn't one).</li>
+                <li class="ax-fit-check__item">Can't make the weekly slot.</li>
               </ul>
             </div>
 
           </div>
+
+          <h3 class="ax-lc-subhead">What you'll need</h3>
+          <ul class="ax-lc-need">
+            <li>A paid Claude plan and the desktop app</li>
+            <li>90 minutes a week, in the same slot</li>
+            <li>Access to your own email and diary</li>
+            <li>No technical skills required</li>
+          </ul>
 
         </div>
       </section>
@@ -437,14 +589,92 @@
           <span class="ax-lc-proof__mark" aria-hidden="true">&ldquo;</span>
           <blockquote>
             <p class="ax-lc-proof__quote">
-              Within three weeks of working with the Accelerator X team, I began to feel genuinely
-              excited about my business again for the first time in years.
+              I paid for our marketing leader to join Accelerator X's AI skills programme after several founder friends raved about the impact. I expected some useful tips. I didn't expect this scale of change. Since she completed the programme, I've found myself becoming the bottleneck. Sending one person on a course has changed my expectations of what our whole business can achieve.
             </p>
             <footer>
-              <cite class="ax-lc-proof__who">Charlotte Steedman</cite>
-              <span class="ax-lc-proof__context">CEO, Conductor</span>
+              <cite class="ax-lc-proof__who">Rob Liddiard</cite>
+              <span class="ax-lc-proof__context">Founder, Yes Chef</span>
             </footer>
           </blockquote>
+        </div>
+      </section>
+
+      <section class="ax-lc-voices" aria-labelledby="voices-heading">
+        <div class="ax-lc-voices__inner">
+          <h2 class="ax-lc-voices__heading" id="voices-heading">What past participants say</h2>
+          <div class="ax-lc-voices__grid">
+            <figure class="ax-lc-voice">
+              <blockquote><p>Having seen the difference first-hand, I think founders who put off acquiring these skills risk seriously underestimating how quickly others are pulling ahead.</p></blockquote>
+              <figcaption><strong>Rob Liddiard</strong> · Founder, Yes Chef</figcaption>
+            </figure>
+            <figure class="ax-lc-voice">
+              <blockquote><p>I haven't felt this excited about my business in years.</p></blockquote>
+              <figcaption><strong>Charlotte Steedman</strong> · CEO, Conductor</figcaption>
+            </figure>
+            <figure class="ax-lc-voice">
+              <blockquote><p>Hands-on from day one. You don't just learn AI, you leave with processes already running and a clear plan for what's next.</p></blockquote>
+              <figcaption><strong>Sebastiaan Willen</strong> · MD, Vistafolia</figcaption>
+            </figure>
+          </div>
+          <p class="ax-lc-voices__stat">Cohort 2 rated the bootcamp 9.2 out of 10 for value.</p>
+        </div>
+      </section>
+
+      <!-- === HOW WE RUN ACCELERATOR X === -->
+      <section class="ax-lc-ops" aria-labelledby="ops-heading">
+        <div class="ax-lc-ops__inner">
+          <span class="ax-kicker">How we run Accelerator X</span>
+          <h2 class="ax-lc-ops__heading" id="ops-heading">From one system to your whole operating model.</h2>
+          <p class="ax-lc-lede">
+            We started with a Chief of Staff. Then we used the same building blocks across the whole business, with Claude as the brain. This is what that looks like today.
+          </p>
+
+          <h3 class="ax-lc-subhead">End to end: one sales call</h3>
+          <ol class="ax-lc-flow">
+            <li>Fathom records the call</li>
+            <li>The sales agent drafts the CRM update</li>
+            <li>You approve it</li>
+            <li>The CRM is updated</li>
+            <li>The Chief of Staff agent adds the follow-up to tomorrow's brief</li>
+          </ol>
+          <p class="ax-lc-ops__close">Built for our own business first. Now for our clients. This is what the bootcamp teaches you to start.</p>
+        </div>
+      </section>
+
+      <!-- === WHO RUNS IT === -->
+      <section class="ax-lc-founders" aria-labelledby="founders-heading">
+        <div class="ax-lc-founders__inner">
+          <span class="ax-kicker">Who runs it</span>
+          <h2 class="ax-lc-founders__heading" id="founders-heading">Two founders who run their own business on these systems.</h2>
+
+          <div class="ax-lc-founders__grid">
+            <article class="ax-lc-founder">
+              <picture>
+                <source type="image/webp" srcset="/assets/images/toby-green-shirt-400.webp 400w, /assets/images/toby-green-shirt-800.webp 800w" sizes="96px" />
+                <img src="/assets/images/toby-green-shirt-400.png" srcset="/assets/images/toby-green-shirt-400.png 400w, /assets/images/toby-green-shirt-800.png 800w" sizes="96px" alt="Toby Henry" width="96" height="96" loading="lazy" decoding="async" class="ax-lc-founder__photo" />
+              </picture>
+              <div>
+                <h3 class="ax-lc-founder__name">Toby Henry</h3>
+                <p class="ax-lc-founder__role">Co-founder, Accelerator X</p>
+                <p class="ax-lc-founder__bio">Two decades across tier-one management consultancies, startups and scale-ups, leading transformation programmes for some of the UK's largest organisations.</p>
+              </div>
+            </article>
+            <article class="ax-lc-founder">
+              <picture>
+                <source type="image/webp" srcset="/assets/images/andy-black-t-400.webp 400w, /assets/images/andy-black-t-800.webp 800w" sizes="96px" />
+                <img src="/assets/images/andy-black-t-400.jpg" srcset="/assets/images/andy-black-t-400.jpg 400w, /assets/images/andy-black-t-800.jpg 800w" sizes="96px" alt="Andy Carroll" width="96" height="96" loading="lazy" decoding="async" class="ax-lc-founder__photo" />
+              </picture>
+              <div>
+                <h3 class="ax-lc-founder__name">Andy Carroll</h3>
+                <p class="ax-lc-founder__role">Co-founder, Accelerator X</p>
+                <p class="ax-lc-founder__bio">Eighteen years leading product across startups, banks and fintechs. Andy gets deep into the customer and business problem, then designs solutions that work for both tech and people.</p>
+              </div>
+            </article>
+          </div>
+
+          <p class="ax-lc-lede">
+            We build AI systems for our own business and for clients. Everything in the bootcamp is something we use ourselves, and the accelerators you get (the skill builder, the skill evaluator, and the discovery and use case coach) are the ones we built for our own work. <a href="/about/">More about us</a>.
+          </p>
         </div>
       </section>
 
@@ -467,7 +697,7 @@
                   </svg>
                 </summary>
                 <div class="ax-faq-item__answer">
-                  <p>One 90-minute live session a week for eight weeks. Beyond that it's your call: how much you use the tools between sessions is up to you, and the more you put in, the more your Chief of Staff does for you. If your diary genuinely won't flex for a weekly session, apply for the next cohort when the timing is better.</p>
+                  <p>90 minutes a week live, the three-hour in-person session in week 5, and some practice in between. The practice is building your own system, so it pays back as you go. If your diary genuinely won't flex for a weekly session, apply for the next cohort when the timing is better.</p>
                 </div>
               </details>
             </li>
@@ -531,7 +761,7 @@
             <li class="ax-faq-item">
               <details>
                 <summary class="ax-faq-item__question">
-                  <span class="ax-faq-item__question-text">Is there a money-back guarantee?</span>
+                  <span class="ax-faq-item__question-text">Is there a guarantee?</span>
                   <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                   </svg>
@@ -559,13 +789,13 @@
             <li class="ax-faq-item">
               <details>
                 <summary class="ax-faq-item__question">
-                  <span class="ax-faq-item__question-text">Do I have to come to London?</span>
+                  <span class="ax-faq-item__question-text">Do I have to come in person?</span>
                   <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                   </svg>
                 </summary>
                 <div class="ax-faq-item__answer">
-                  <p>No. The weekly sessions run live on video calls. We're adding an in-person element in London for people who can make it, including a small-group working session at the end. It's an extra, not a requirement.</p>
+                  <p>It's the best way to do week 5, but it's not required. Participants have travelled from across the UK and abroad, and many are London-based. The venue and date are still to be confirmed. If you can't be there, you join live by video, and everyone gets the recording and all the session materials.</p>
                 </div>
               </details>
             </li>
@@ -584,8 +814,123 @@
               </details>
             </li>
 
+            <li class="ax-faq-item">
+              <details>
+                <summary class="ax-faq-item__question">
+                  <span class="ax-faq-item__question-text">How big is the cohort?</span>
+                  <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </summary>
+                <div class="ax-faq-item__answer">
+                  <p>Small by design. We expect between 10 and 15 senior leaders, and we vet every application so the room stays non-competing.</p>
+                </div>
+              </details>
+            </li>
+
+            <li class="ax-faq-item">
+              <details>
+                <summary class="ax-faq-item__question">
+                  <span class="ax-faq-item__question-text">Is it only for Claude?</span>
+                  <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </summary>
+                <div class="ax-faq-item__answer">
+                  <p>We build in Claude because it's what we run our own business on. The building blocks carry across to any AI tool.</p>
+                </div>
+              </details>
+            </li>
+
+            <li class="ax-faq-item">
+              <details>
+                <summary class="ax-faq-item__question">
+                  <span class="ax-faq-item__question-text">What if my company locks down email and diary?</span>
+                  <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </summary>
+                <div class="ax-faq-item__answer">
+                  <p>Tell us before you join. We can set you up on your own files, and the building blocks are the same.</p>
+                </div>
+              </details>
+            </li>
+
+            <li class="ax-faq-item">
+              <details>
+                <summary class="ax-faq-item__question">
+                  <span class="ax-faq-item__question-text">Do I get a certificate?</span>
+                  <svg class="ax-faq-item__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                </summary>
+                <div class="ax-faq-item__answer">
+                  <p>No. You get a working system on your own work, which is more useful.</p>
+                </div>
+              </details>
+            </li>
+
           </ul>
 
+        </div>
+      </section>
+
+      <!-- === JOIN THE NEXT COHORT === -->
+      <section class="ax-lc-join" aria-labelledby="join-heading">
+        <div class="ax-lc-join__inner">
+          <span class="ax-kicker">Join the next cohort</span>
+          <h2 class="ax-lc-join__heading" id="join-heading">Get ahead with AI, with a peer group, in eight weeks.</h2>
+
+          <div class="ax-lc-join__grid">
+            <dl class="ax-lc-join__details">
+              <div class="ax-lc-join__row">
+                <dt>When</dt>
+                <dd>Early January 2027. Exact dates to be confirmed.</dd>
+              </div>
+              <div class="ax-lc-join__row">
+                <dt>Weekly</dt>
+                <dd>90 minutes live, same slot each week, agreed by the cohort.</dd>
+              </div>
+              <div class="ax-lc-join__row">
+                <dt>In person</dt>
+                <dd>One three-hour, hands-on session in week 5. Venue and date to be confirmed.</dd>
+              </div>
+              <div class="ax-lc-join__row">
+                <dt>Investment</dt>
+                <dd>£3,000 per person +VAT, invoiced to you or your business.</dd>
+              </div>
+              <div class="ax-lc-join__row">
+                <dt>Guarantee</dt>
+                <dd><strong>No value, no payment.</strong> Two full sessions. Cancel before session 3, keep the resources and owe nothing.</dd>
+              </div>
+            </dl>
+
+            <div class="ax-lc-join__included">
+              <h3 class="ax-lc-subhead ax-lc-subhead--tight">What's included</h3>
+              <ul class="ax-lc-join__list">
+                <li>Seven live sessions plus the in-person session</li>
+                <li>AI capability assessment before and after, with your report</li>
+                <li>Skill builder, skill evaluator and use case coach to keep</li>
+                <li>Two 1:1s with Toby or Andy: your goal, then your 90-day plan</li>
+                <li>Recordings, session guides and one programme companion</li>
+                <li>Three months in the Accelerator X Community: expert Q&amp;A, peer support and members-only resources</li>
+              </ul>
+            </div>
+          </div>
+
+          <h3 class="ax-lc-subhead">How joining works</h3>
+          <ol class="ax-lc-joinsteps">
+            <li><strong>Apply.</strong> A short form. We reply within one business day.</li>
+            <li><strong>Talk.</strong> A 1:1 call to check it fits what you want.</li>
+            <li><strong>Confirm.</strong> A short agreement and the invoice.</li>
+            <li><strong>Get ready.</strong> Assessment and tool map before session 1.</li>
+          </ol>
+
+          <p class="ax-lc-print-only">Apply at accelerator-x.ai/what-we-do/leadership-cohort/ or email toby@accelerator-x.ai.</p>
+
+          <p class="ax-lc-join__pdf">
+            Prefer to read offline? <a href="/assets/downloads/accelerator-x-bootcamp-brochure.pdf" download>Download the brochure (PDF)</a>, or email <a href="mailto:toby@accelerator-x.ai">toby@accelerator-x.ai</a>.
+          </p>
         </div>
       </section>
 
