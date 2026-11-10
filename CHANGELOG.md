@@ -17,6 +17,8 @@ _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. S
 
 ### Changed
 
+- **CI runs on Node 24, matching the production functions runtime** (2026-11-10, [#134](https://github.com/acc-x/accelerator-x-website/issues/134) item 2): the three `setup-node` pins (`standards.yml` build and check jobs, `dependency-audit.yml`) moved from 20 to 24. The runtime was verified rather than assumed: the deploy API reports `nodejs24.x` for all three functions (`cohort-application`, `lead-capture`, `newsletter-subscribe`). Recorded in CLAUDE.md.
+
 - **CLAUDE.md names the three required checks by job** (2026-11-10, [#152](https://github.com/acc-x/accelerator-x-website/issues/152)): the weekly repo-pulse had flagged "3 required checks" as drift for seven weeks running because it compared workflow names (Standards, Doc Freshness) against the job names branch protection actually lists. The claim was true all along (`Build passes`, `Standards check passes`, `CHANGELOG updated with code changes`, verified against the branch-protection API and a live PR). The decision line now lists the exact job names, which workflow each lives in, and the `gh api` command to verify.
 
 ### Added

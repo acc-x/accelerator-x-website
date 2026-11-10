@@ -11,7 +11,7 @@
 **Site:** https://accelerator-x.ai — live, real visitors
 **Stack:** Static HTML + compiled Tailwind (CLI → committed bundle, since 2026-07-04) + `npm run build` → Netlify (pre-built artefacts committed)
 **Email:** Brevo list #9 | **Analytics:** PostHog | **Notifications:** Slack `#website-leads`
-**Node:** v26.0.0 via `/opt/homebrew/bin/node` — run `export PATH="/opt/homebrew/bin:$PATH"` if npm isn't found.
+**Node:** v26.0.0 locally via `/opt/homebrew/bin/node` — run `export PATH="/opt/homebrew/bin:$PATH"` if npm isn't found. **CI pins Node 24**, matching the Netlify functions runtime (`nodejs24.x`, verified from the deploy API on 2026-11-10, #134); if Netlify's functions runtime moves, move the three `node-version` pins in `.github/workflows/` with it.
 **DNS/hosting reference:** `docs/tech-architecture/dns-hosting.md` — registrar, nameservers, full zone, SSL, email, quiz, incident log.
 
 ---
