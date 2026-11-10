@@ -86,7 +86,10 @@
             <h2 id="feed-title" class="font-display text-3xl font-bold text-navy">Latest Frameworks & Dispatches</h2>
             <button id="show-all" class="text-sm font-bold uppercase tracking-widest text-primary hidden hover:underline">Show All</button>
           </div>
-          
+          <!-- Filtering only fades cards, so screen-reader users need the new count announced -->
+          <!-- (written by assets/js/hub-filter.js). -->
+          <p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
+
           <!-- Automatically populated list of content cards parsed from Markdown frontmatter -->
           <div id="article-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-300">
             {{articlesList}}

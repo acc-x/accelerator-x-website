@@ -10,8 +10,25 @@
     const cards      = document.querySelectorAll('.ax-article-tile');
     const showAllBtn = document.getElementById('show-all');
     const feedTitle  = document.getElementById('feed-title');
+    const statusEl   = document.getElementById('filter-status');
 
     if (!tiles.length || !feedTitle) return; // not on the hub page
+
+    // The tiles are anchors, but they act as filter toggles. With JS running, expose them
+    // as toggle buttons: role=button + aria-pressed, and Space as well as Enter (a native
+    // anchor only answers Enter). Without JS they stay plain links.
+    tiles.forEach(tile => {
+      tile.setAttribute('role', 'button');
+      tile.setAttribute('aria-pressed', 'false');
+      tile.addEventListener('keydown', (e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          tile.click();
+        }
+      });
+    });
+    // Receives focus when "Show All" hides itself, so keyboard focus is not dropped.
+    feedTitle.setAttribute('tabindex', '-1');
 
     // Fade a card out before removing it from layout, instead of snapping it away.
     // Showing it again removes the hidden class immediately (display must be reset
@@ -57,23 +74,38 @@
         tile.classList.toggle('ring-2',        isActive);
         tile.classList.toggle('ring-primary',  isActive);
         tile.classList.toggle('ring-offset-4', isActive);
+        tile.setAttribute('aria-pressed', String(isActive));
       });
 
       // Show/hide cards
+      let shown = 0;
       cards.forEach(card => {
         const visible = tagId === 'all' || card.getAttribute('data-tag') === tagId;
+        if (visible) shown++;
         setCardVisible(card, visible);
       });
 
       // Update feed heading and show-all button
       if (tagId === 'all') {
-        showAllBtn.classList.add('hidden');
+        // "Show All" is about to hide itself; if it holds focus, hand focus to the heading
+        // rather than dropping it to <body>.
+        const handFocus = showAllBtn && document.activeElement === showAllBtn;
+        if (showAllBtn) showAllBtn.classList.add('hidden');
+        if (handFocus) feedTitle.focus({ preventScroll: true });
         feedTitle.textContent = 'Latest Frameworks & Dispatches';
         tiles.forEach(tile => tile.classList.remove('opacity-60', 'ring-2', 'ring-primary', 'ring-offset-4'));
       } else {
-        showAllBtn.classList.remove('hidden');
+        if (showAllBtn) showAllBtn.classList.remove('hidden');
         const activeLabel = document.querySelector(`[href="#${tagId}"] .pathway-label`);
         feedTitle.textContent = activeLabel ? `${activeLabel.textContent} Frameworks` : 'Frameworks';
+      }
+
+      // Announce the new result set to assistive tech (the visual change is a fade).
+      if (statusEl) {
+        const noun = shown === 1 ? 'article' : 'articles';
+        statusEl.textContent = tagId === 'all'
+          ? `Showing all ${shown} ${noun}`
+          : `Showing ${shown} ${noun}: ${feedTitle.textContent}`;
       }
 
       // Smooth-scroll to the feed
