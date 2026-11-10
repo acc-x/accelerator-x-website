@@ -11,7 +11,7 @@
 **Site:** https://accelerator-x.ai — live, real visitors
 **Stack:** Static HTML + compiled Tailwind (CLI → committed bundle, since 2026-07-04) + `npm run build` → Netlify (pre-built artefacts committed)
 **Email:** Brevo list #9 | **Analytics:** PostHog | **Notifications:** Slack `#website-leads`
-**Node:** v26.0.0 via `/opt/homebrew/bin/node` — run `export PATH="/opt/homebrew/bin:$PATH"` if npm isn't found.
+**Node:** v26.0.0 locally via `/opt/homebrew/bin/node` — run `export PATH="/opt/homebrew/bin:$PATH"` if npm isn't found. **CI pins Node 24**, matching the Netlify functions runtime (`nodejs24.x`, verified from the deploy API on 2026-11-10, #134); if Netlify's functions runtime moves, move the three `node-version` pins in `.github/workflows/` with it.
 **DNS/hosting reference:** `docs/tech-architecture/dns-hosting.md` — registrar, nameservers, full zone, SSL, email, quiz, incident log.
 
 ---
@@ -85,7 +85,7 @@ v2 shipped as **one full cutover, not piecemeal** — `main` was fast-forwarded 
 - **Newsletter sending domain:** `mail.accelerator-x.ai` — authenticated; sender `newsletter@mail.accelerator-x.ai`
 - **Newsletter forms:** bypass Netlify Forms → `/.netlify/functions/newsletter-subscribe` → Brevo API direct
 - **Repo is public** — no secrets in codebase; all credentials in Netlify env vars
-- **GitHub branch protection** — classic protection on `main`; 3 required status checks: Build passes, Standards check passes, CHANGELOG updated
+- **GitHub branch protection** — classic protection on `main`; 3 required status checks, named by *job* (what the Checks tab and branch protection show), not by workflow file: `Build passes` and `Standards check passes` (both in the **Standards** workflow), and `CHANGELOG updated with code changes` (in the **Doc Freshness** workflow). A PR also shows non-required signals (`ROADMAP has no stale [x] items in NOW section`, `npm audit (high+)`). Verify with `gh api repos/acc-x/accelerator-x-website/branches/main/protection --jq .required_status_checks.contexts`.
 - **PR flow, not direct commits** (ratified by merging the 2026-08-21 operating-model PR; supersedes "Direct commits to `main` — no PRs until a second collaborator joins"): the second collaborator *did* join — agents. Changes land on short-lived branches (`fix/*`, `batch/*`, `issue-*`, `claude/*`…) → PR into `main` behind the 3 required checks. The old decision's trigger condition was met, not reversed. Exception unchanged: if production is actively broken, a hotfix may land on `main` directly.
 - **Brevo, not GoHighLevel** — email capture switched at launch
 - **Pre-built artefacts committed** — no build command on Netlify, serves repo root as-is
