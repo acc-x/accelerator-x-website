@@ -41,6 +41,25 @@ test('every build step resolves to a real script or file', () => {
   }
 });
 
+// Dropping a generator from the chain leaves every order assertion below green while its
+// committed output goes stale, so the chain must still reach every generator script.
+const LIBRARY_ONLY = new Set(['build-components.js']);
+
+test('every scripts/build-*.js generator is reached by the build', () => {
+  const reached = new Set();
+  for (const step of steps) {
+    const run = step.match(/^npm run (\S+)$/);
+    const command = run ? pkg.scripts[run[1]] || '' : step;
+    for (const m of command.matchAll(/scripts\/(build-[\w-]+\.js)/g)) reached.add(m[1]);
+  }
+  const generators = fs
+    .readdirSync(path.join(ROOT, 'scripts'))
+    .filter((f) => /^build-.*\.js$/.test(f) && !LIBRARY_ONLY.has(f));
+  for (const file of generators) {
+    assert.ok(reached.has(file), `${file} exists but is not part of npm run build`);
+  }
+});
+
 test('build:homepage runs before build-testimonials.js', () => {
   const home = indexOf('npm run build:homepage');
   const testimonials = indexOf('node scripts/build-testimonials.js');
