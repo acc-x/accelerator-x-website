@@ -13,6 +13,7 @@ const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'functions', 'le
 const OFFERINGS_PATH = path.join(__dirname, '..', '..', 'content', 'data', 'offerings.json');
 const APPLYFORM_PATH = path.join(__dirname, '..', '..', '_templates', 'components', 'ApplyForm.html');
 
+const CONTACTS_TABLE = 'tblfTdPnRU15wAdtR';
 const ENV_KEYS = ['SLACK_WEBHOOK_URL', 'AIRTABLE_TOKEN', 'AIRTABLE_BASE_ID', 'AIRTABLE_TABLE'];
 
 function withEnv(overrides, fn) {
@@ -58,14 +59,27 @@ function makeFetchStub(responses) {
   const calls = [];
   const fn = async (url, opts) => {
     calls.push({ url, opts, body: opts?.body ? JSON.parse(opts.body) : undefined });
-    const match = responses.find((r) => url.includes(r.match) && !(r.once && r.used));
+    // Contacts-table calls (#204): only stubs naming the Contacts table id claim them (and,
+    // when they set `method`, only that method), so a blanket 'api.airtable.com' stub never
+    // answers a Contact call by accident. Unclaimed GET/POST get a benign default (no
+    // existing Contact, create OK) to keep older Account-focused tests simple; an unclaimed
+    // PATCH throws, because no older test expects a Contact to be modified.
+    const isContacts = url.includes(CONTACTS_TABLE);
+    const method = opts?.method || 'GET';
+    const explicit = responses.find((r) => url.includes(r.match) && !(r.once && r.used)
+      && (!isContacts || (r.match === CONTACTS_TABLE && (!r.method || r.method === method))));
+    const match = explicit || (isContacts && method !== 'PATCH'
+      ? { status: 200, text: method === 'GET' ? '{"records":[]}' : '{"id":"recContact1"}' }
+      : undefined);
     if (match?.once) match.used = true;
     if (!match) throw new Error(`Unstubbed fetch call to ${url}`);
     if (match.throws) throw new Error(match.throws);
+    // The Account POST returns the new record id, which the Contact link needs.
+    const defaultText = url.includes('api.airtable.com') && !isContacts ? '{"id":"recAcct1"}' : '';
     return {
       ok: match.status === undefined || (match.status >= 200 && match.status < 300),
       status: match.status ?? 200,
-      text: async () => match.text ?? '',
+      text: async () => match.text ?? defaultText,
     };
   };
   fn.calls = calls;
@@ -437,7 +451,7 @@ test('a select choice Airtable does not know still writes the record — one ret
           text: `{"error":{"type":"INVALID_MULTIPLE_CHOICE_OPTIONS","message":"Insufficient permissions to create new select option \\"${rejectedLabel}\\""}}`,
           once: true,
         },
-        { match: 'api.airtable.com', status: 200 },
+        { match: 'api.airtable.com', status: 200, text: '{"id":"recAcct1"}' },
       ]);
       global.fetch = fetchStub;
 
@@ -445,7 +459,7 @@ test('a select choice Airtable does not know still writes the record — one ret
       assert.equal(res.statusCode, 200);
       assert.equal(JSON.parse(res.body).airtable, 'created', 'the retry must land the record');
 
-      const airtableCalls = fetchStub.calls.filter((c) => c.url.includes('api.airtable.com'));
+      const airtableCalls = fetchStub.calls.filter((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
       assert.equal(airtableCalls.length, 2, 'expected exactly one retry after the 422');
       const retryFields = airtableCalls[1].body.fields;
       assert.ok(!('Service Interest' in retryFields), 'the rejected select must be omitted on retry');
@@ -545,4 +559,202 @@ test('Airtable write failure fires a distinct GNG-1 alert and still returns succ
       assert.ok(alert.text.includes('GNG-1'));
     }
   );
+});
+
+// ---- #204: linked Contact -------------------------------------------------------------
+
+const CONTACT_ENV = {
+  SLACK_WEBHOOK_URL: 'https://hooks.slack.test/lead',
+  AIRTABLE_TOKEN: 'tok',
+  AIRTABLE_BASE_ID: 'appTest',
+  AIRTABLE_TABLE: 'Prospects',
+};
+
+// Runs the handler capturing console output, so tests can assert on the internal Contact
+// outcome (which is deliberately absent from the public response).
+async function runCapturing(mod, fields) {
+  const logs = { log: [], warn: [], error: [] };
+  const orig = { log: console.log, warn: console.warn, error: console.error };
+  for (const k of Object.keys(logs)) console[k] = (...a) => logs[k].push(a.join(' '));
+  try {
+    const res = await mod.handler(makeEvent(fields));
+    return { res, logs };
+  } finally {
+    Object.assign(console, orig);
+  }
+}
+
+const contactCalls = (stub, method) => stub.calls.filter((c) => c.url.includes(CONTACTS_TABLE) && c.opts.method === method);
+const slackTexts = (stub) => stub.calls.filter((c) => c.url.includes('hooks.slack.test')).map((c) => c.body.text || '');
+
+test('new submission creates a Contact (name, title, email, role type, notes) linked to the new Account', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+
+    const { res, logs } = await runCapturing(mod, VALID_FIELDS);
+    const resBody = JSON.parse(res.body);
+    assert.equal(resBody.airtable, 'created');
+    assert.ok(logs.log.some((l) => l.includes('Contact outcome: created')));
+
+    const create = contactCalls(fetchStub, 'POST')[0];
+    assert.ok(create, 'expected a POST to the Contacts table');
+    assert.ok(create.url.includes('/appTest/'), 'Contacts live in the same base as Accounts');
+    const f = create.body.fields;
+    assert.equal(f.fldgbdXyNz5bGsfyV, 'Jane Doe');
+    assert.equal(f.fld9RSxKZZSGxTgtx, 'CEO');
+    assert.equal(f.fldq8I7LzeY0I5qcn, 'jane@example.com');
+    assert.equal(f.fldpSheO6tJ94mj1n, 'Other');
+    assert.deepEqual(f.fld1tpjGWbZ4rUjsb, ['recAcctNew']);
+    assert.ok(f.fldNsN7N0AKuDSNdx.length > 0);
+    assert.equal(slackTexts(fetchStub).filter((t) => t.includes('⚠️')).length, 0, 'clean path raises no alert');
+  });
+});
+
+test('the public response never reveals the Contact outcome (no email-existence oracle)', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    for (const records of [[], [{ id: 'recOld', fields: {} }]]) {
+      global.fetch = makeFetchStub([
+        { match: 'hooks.slack.test', status: 200 },
+        { match: CONTACTS_TABLE, method: 'GET', status: 200, text: JSON.stringify({ records }) },
+        { match: CONTACTS_TABLE, method: 'PATCH', status: 200, text: '{}' },
+        { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+      ]);
+      const { res } = await runCapturing(mod, VALID_FIELDS);
+      assert.deepEqual(Object.keys(JSON.parse(res.body)).sort(), ['airtable', 'message', 'success']);
+    }
+  });
+});
+
+test('an existing Contact with NO Account links is linked to the new Account, not duplicated', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: CONTACTS_TABLE, method: 'GET', status: 200,
+        text: JSON.stringify({ records: [{ id: 'recOld', fields: {} }] }) },
+      { match: CONTACTS_TABLE, method: 'PATCH', status: 200, text: '{}' },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+
+    const { logs } = await runCapturing(mod, VALID_FIELDS);
+    assert.ok(logs.log.some((l) => l.includes('Contact outcome: matched')));
+    const lookup = contactCalls(fetchStub, 'GET')[0];
+    assert.ok(decodeURIComponent(lookup.url).includes('LOWER({fldq8I7LzeY0I5qcn})="jane@example.com"'));
+    assert.equal(contactCalls(fetchStub, 'POST').length, 0, 'no second Contact may be created');
+    const patch = contactCalls(fetchStub, 'PATCH')[0];
+    assert.ok(patch.url.endsWith('/recOld'), 'the PATCH must be served by the PATCH stub and target the existing Contact');
+    assert.deepEqual(patch.body.fields.fld1tpjGWbZ4rUjsb, ['recAcctNew']);
+  });
+});
+
+test('an existing Contact already linked to another Account is NOT touched: no patch, no create, distinct alert with the new Account id', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: CONTACTS_TABLE, method: 'GET', status: 200,
+        text: JSON.stringify({ records: [{ id: 'recClient', fields: { fld1tpjGWbZ4rUjsb: ['recRealClientAcct'] } }] }) },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+
+    const { res, logs } = await runCapturing(mod, VALID_FIELDS);
+    assert.equal(JSON.parse(res.body).airtable, 'created', 'the Account and success response are unaffected');
+    assert.equal(contactCalls(fetchStub, 'PATCH').length, 0, "a real client's Contact must never be re-linked by a form submission");
+    assert.equal(contactCalls(fetchStub, 'POST').length, 0);
+    assert.ok(logs.warn.some((l) => l.includes('already belongs to another Account')));
+    const alerts = slackTexts(fetchStub).filter((t) => t.includes('CONTACT NOT LINKED'));
+    assert.equal(alerts.length, 1);
+    assert.ok(alerts[0].includes('jane@example.com') && alerts[0].includes('recAcctNew'));
+  });
+});
+
+test('a quote in the email cannot break out of the lookup formula', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+    await runCapturing(mod, { ...VALID_FIELDS, email: 'a"b@example.com' });
+    const lookup = contactCalls(fetchStub, 'GET')[0];
+    assert.ok(decodeURIComponent(lookup.url).includes('="a\\"b@example.com"'));
+  });
+});
+
+test('Contact write failure: Account and Slack post stand; failure is logged and alerted with the Account id and link', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: CONTACTS_TABLE, method: 'GET', status: 403, text: 'NOT_AUTHORIZED' },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+    const { res, logs } = await runCapturing(mod, VALID_FIELDS);
+
+    const resBody = JSON.parse(res.body);
+    assert.equal(res.statusCode, 200);
+    assert.equal(resBody.success, true);
+    assert.equal(resBody.airtable, 'created', 'Account write must not be undone');
+    assert.ok(logs.error.some((e) => e.includes('Contact write error')), 'failure must reach the function logs');
+    const texts = slackTexts(fetchStub);
+    assert.equal(texts.length, 2, 'lead notification + a distinct Contact failure alert');
+    assert.ok(texts[1].includes('CONTACT WRITE FAILED'));
+    assert.ok(!texts[1].includes('CONSENT WRITE FAILED'), 'must not masquerade as a GNG-1 failure');
+    assert.ok(texts[1].includes('recAcctNew'), 'alert names the Account record');
+    assert.ok(texts[1].includes('https://airtable.com/appTest/tblLEGVkKjS4WaQ4L/recAcctNew'), 'alert links the Account');
+  });
+});
+
+test('a hanging Contacts call is aborted and becomes a failed outcome, not a function timeout', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const calls = [];
+    global.fetch = async (url, opts) => {
+      calls.push({ url, opts, body: opts?.body ? JSON.parse(opts.body) : undefined });
+      if (url.includes(CONTACTS_TABLE)) {
+        assert.ok(opts.signal, 'every Contacts call must carry an abort signal');
+        // Hang until the signal fires, as a stalled socket would.
+        return new Promise((_, reject) => opts.signal.addEventListener('abort', () => reject(new Error('aborted'))));
+      }
+      return { ok: true, status: 200, text: async () => '{"id":"recAcctNew"}' };
+    };
+    const { res, logs } = await runCapturing(mod, VALID_FIELDS);
+    assert.equal(JSON.parse(res.body).success, true);
+    assert.ok(logs.error.some((e) => e.includes('Contact write error')));
+    const alert = calls.filter((c) => c.url.includes('hooks.slack.test')).map((c) => c.body.text).find((t) => t.includes('CONTACT WRITE FAILED'));
+    assert.ok(alert, 'timeout raises the existing failure alert');
+  });
+}, { timeout: 10000 });
+
+test('a post-create re-check finding two Contacts for the email is logged and alerted (double-submit race)', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: CONTACTS_TABLE, method: 'GET', status: 200, once: true, text: '{"records":[]}' },
+      { match: CONTACTS_TABLE, method: 'GET', status: 200,
+        text: JSON.stringify({ records: [{ id: 'recA', fields: {} }, { id: 'recB', fields: {} }] }) },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctNew"}' },
+    ]);
+    global.fetch = fetchStub;
+    const { logs } = await runCapturing(mod, VALID_FIELDS);
+    assert.equal(contactCalls(fetchStub, 'GET').length, 2, 'lookup, then re-check after create');
+    assert.ok(logs.warn.some((l) => l.includes('More than one Contact')));
+    const alert = slackTexts(fetchStub).find((t) => t.includes('DUPLICATE CONTACT'));
+    assert.ok(alert && alert.includes('recAcctNew'));
+  });
+});
+
+test('no Contact write is attempted when the Account write failed', async () => {
+  await withEnv(CONTACT_ENV, async (mod) => {
+    const fetchStub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 422, text: 'INVALID_REQUEST' },
+    ]);
+    global.fetch = fetchStub;
+    await runCapturing(mod, VALID_FIELDS);
+    assert.equal(fetchStub.calls.filter((c) => c.url.includes(CONTACTS_TABLE)).length, 0);
+  });
 });

@@ -15,6 +15,96 @@ const AIRTABLE_API_URL = AIRTABLE_BASE_ID && AIRTABLE_TABLE
   ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`
   : null;
 
+// CRM Contacts table (same base as Accounts). Field ids, not names, so a renamed column
+// cannot silently break the write (#204). Role type is a single select; "Other" is the
+// closest existing choice for a web applicant.
+const CONTACTS_API_URL = AIRTABLE_BASE_ID
+  ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/tblfTdPnRU15wAdtR`
+  : null;
+const CONTACT_FIELDS = {
+  name: 'fldgbdXyNz5bGsfyV',
+  jobTitle: 'fld9RSxKZZSGxTgtx',
+  email: 'fldq8I7LzeY0I5qcn',
+  roleType: 'fldpSheO6tJ94mj1n',
+  account: 'fld1tpjGWbZ4rUjsb',
+  notes: 'fldNsN7N0AKuDSNdx'
+};
+
+// Short deadline for the whole Contact step: it runs after the Account and Slack post are
+// already written, so a hang here must become a "failed" outcome, never a function timeout
+// (the applicant would see an error and resubmit, duplicating the Account).
+const CONTACT_STEP_TIMEOUT_MS = 4000;
+const ALERT_TIMEOUT_MS = 3000;
+
+// Looks up Contacts by email (case-insensitive exact match). The email is untrusted input,
+// so it is escaped for the formula string literal.
+async function findContactsByEmail(email, auth, signal, max) {
+  const emailLiteral = email.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  const formula = `LOWER({${CONTACT_FIELDS.email}})="${emailLiteral}"`;
+  const url = `${CONTACTS_API_URL}?maxRecords=${max}&returnFieldsByFieldId=true&filterByFormula=${encodeURIComponent(formula)}`;
+  const res = await fetch(url, { method: 'GET', headers: auth, signal });
+  if (!res.ok) throw new Error(`Contact lookup error: ${res.status} ${await res.text()}`);
+  return JSON.parse((await res.text()) || '{}').records || [];
+}
+
+// Creates a Contact linked to the new Account, or links an existing Contact with the same
+// email. Returns an outcome string; throws on any failure. The caller treats failures as
+// non-fatal and alerts, because the Account and Slack post matter more.
+//
+// Outcomes: 'created' | 'matched' | 'created-possible-duplicate' |
+//           'conflict-existing-contact-has-other-accounts'
+// The form is unauthenticated, so an existing Contact is only ever linked when it has NO
+// other Account links: otherwise anyone could attach a made-up company to a real client's
+// Contact by typing their email. In the conflict case nothing is touched or created.
+async function upsertContact({ name, email, role, accountId, source }) {
+  if (!CONTACTS_API_URL) throw new Error('Contacts table URL unavailable (AIRTABLE_BASE_ID missing)');
+  if (!accountId) throw new Error('Account created but its record id was not returned, cannot link Contact');
+  const auth = { Authorization: `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' };
+  const signal = AbortSignal.timeout(CONTACT_STEP_TIMEOUT_MS);
+
+  const found = (await findContactsByEmail(email, auth, signal, 1))[0];
+
+  if (found) {
+    const linked = Array.isArray(found.fields?.[CONTACT_FIELDS.account]) ? found.fields[CONTACT_FIELDS.account] : [];
+    if (linked.length > 0) return 'conflict-existing-contact-has-other-accounts';
+    const patch = await fetch(`${CONTACTS_API_URL}/${found.id}`, {
+      method: 'PATCH',
+      headers: auth,
+      body: JSON.stringify({ fields: { [CONTACT_FIELDS.account]: [accountId] } }),
+      signal
+    });
+    if (!patch.ok) throw new Error(`Contact link error: ${patch.status} ${await patch.text()}`);
+    return 'matched';
+  }
+
+  const create = await fetch(CONTACTS_API_URL, {
+    method: 'POST',
+    headers: auth,
+    body: JSON.stringify({
+      fields: {
+        [CONTACT_FIELDS.name]: name,
+        [CONTACT_FIELDS.jobTitle]: role,
+        [CONTACT_FIELDS.email]: email,
+        [CONTACT_FIELDS.roleType]: 'Other',
+        [CONTACT_FIELDS.account]: [accountId],
+        [CONTACT_FIELDS.notes]: `Created automatically from a website application${source ? ` (${source})` : ''}.`
+      }
+    }),
+    signal
+  });
+  if (!create.ok) throw new Error(`Contact create error: ${create.status} ${await create.text()}`);
+
+  // Double-submit mitigation: no unique constraint is available, so two concurrent
+  // submissions can both create. Re-query once; more than one means a race happened.
+  // This check is best-effort and never turns a successful create into a failure.
+  try {
+    if ((await findContactsByEmail(email, auth, signal, 2)).length > 1) return 'created-possible-duplicate';
+  } catch (recheckError) {
+    console.warn('Contact duplicate re-check failed:', recheckError.message);
+  }
+  return 'created';
+}
+
 exports.handler = async (event, context) => {
   // No CORS headers by design: forms.js posts same-origin, so no preflight ever fires.
   // The previous 'Access-Control-Allow-Origin: *' advertised a cross-origin contract
@@ -310,6 +400,43 @@ exports.handler = async (event, context) => {
           }
         }
         airtableStatus = 'created';
+
+        // Contact is best-effort: its failure must not undo the Account or the Slack post.
+        // The outcome is deliberately NOT returned to the caller (it would reveal whether an
+        // email already exists in the CRM); it goes to the function log and, when someone
+        // needs to act, a distinct Slack alert.
+        let accountId;
+        try { accountId = JSON.parse((await airtableResponse.text()) || '{}').id; } catch (_) { accountId = undefined; }
+        const accountLink = accountId
+          ? `https://airtable.com/${AIRTABLE_BASE_ID}/tblLEGVkKjS4WaQ4L/${accountId}`
+          : 'unknown';
+        let contactAlert = '';
+        try {
+          const outcome = await upsertContact({ name, email, role, accountId, source });
+          console.log(`Contact outcome: ${outcome}`);
+          if (outcome === 'conflict-existing-contact-has-other-accounts') {
+            console.warn(`Contact not linked: ${email} already belongs to another Account. New Account ${accountId}`);
+            contactAlert = `⚠️ CONTACT NOT LINKED — ${escapeSlack(email)} already has a Contact linked to another Account, so nothing was changed. New Account: ${accountId} (${accountLink}). Check it is a genuine application, then link by hand.`;
+          } else if (outcome === 'created-possible-duplicate') {
+            console.warn(`More than one Contact now exists for ${email} (concurrent submissions?)`);
+            contactAlert = `⚠️ DUPLICATE CONTACT? — more than one Contact now exists for ${escapeSlack(email)} (probable double submit). New Account: ${accountId} (${accountLink}). Merge or delete one by hand.`;
+          }
+        } catch (contactError) {
+          console.error('Airtable Contact write error:', contactError.message);
+          contactAlert = `⚠️ CONTACT WRITE FAILED — Account created for ${escapeSlack(email) || 'unknown'} but no linked Contact. Account record: ${accountId || 'unknown'} (${accountLink}). Add and link one by hand. Error: ${escapeSlack(contactError.message)}`;
+        }
+        if (contactAlert) {
+          try {
+            await fetch(SLACK_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text: contactAlert }),
+              signal: AbortSignal.timeout(ALERT_TIMEOUT_MS)
+            });
+          } catch (alertError) {
+            console.error('Contact alert Slack post error:', alertError.message);
+          }
+        }
       } catch (airtableError) {
         airtableStatus = 'failed';
         console.error('Airtable insert error:', airtableError.message);
