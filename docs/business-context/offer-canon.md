@@ -1,6 +1,6 @@
 # Accelerator X — Offer Canon
 
-> **Status: CANONICAL SOURCE OF TRUTH for what we offer.** Version 0.10 — 2026-11-10.
+> **Status: CANONICAL SOURCE OF TRUTH for what we offer.** Version 0.11 — 2026-11-10.
 > This document supersedes `ax-offering-architecture.md` and `ax-canonical-offer-strategy.md`.
 > The website **derives** from this and from its machine-readable companion `content/data/offerings.json`.
 > **Do not edit offering names, prices, durations, or descriptions on the website directly** — change them here, then in `offerings.json`, and let the build propagate.
@@ -106,9 +106,9 @@ One lane, **three formats** (see §4.2): **1:1 / very small group · your exec t
 > Same DOTS engine, three depths: on your own / your team (closed) / with peers (open). Slugs/keys unchanged until Phase 5.
 
 **Format A — 1:1 Exec AI Fast Track Coaching** *(name decided 2026-06-14; very-small-group on request. Built page is STALE — was "Senior Leader Acceleration", 12wk/£12k/90-min; update in Phase 5.)*
-*Elite, high-touch, fully bespoke.* **6 weeks** · weekly **75-min** private remote sessions + continuous async support (Slack/WhatsApp/Loom) · dedicated founder coach · **from £10,000 per individual** *(locked 2026-06-14; premium, scarce inventory; small-group variant possible)*.
+*Elite, high-touch, fully bespoke.* **8 weeks** · weekly **75-min** private remote sessions + continuous async support (Slack/WhatsApp/Loom) · dedicated founder coach · **from £7,500 per individual** *(was £10,000 and 6 weeks, locked 2026-06-14; changed 2026-11-10; premium, scarce inventory; small-group variant possible)*.
 **The promise: we take things off your plate, not add something new to learn.** Begins with a rigorous async **audit** of your day-to-day to find the highest-ROI AI integration points (inbox triage, strategy synthesis, managing direct reports, strategic decision-making & comms). You build **proprietary workflows, custom instructions, and personal AI assistants** tuned to your leadership style and the company's tech stack — **at your pace, not a group's.** Confidential.
-🟡 FAQ-SEED: *"Why from £10k for 1:1 when a cohort place is £3,000?"* → opportunity cost (a cohort is a shared room of limited places), plus bespoke + your-pace + done-with-you.
+🟡 FAQ-SEED: *"Why from £7.5k for 1:1 when a cohort place is £3,000?"* → opportunity cost (a cohort is a shared room of limited places), plus bespoke + your-pace + done-with-you.
 
 **Format B — Leadership Team AI Activation** *(your exec team, closed, single company; name decided 2026-06-14, was "Leadership Activation")*
 *"A leadership team that moves together."* 8 weeks · bi-weekly half-days · on-site · up to 12 leaders from one organisation · **base £14,000 (up to 8 people) + £2,000 per person above 8, max 12 → range £14k–£22k; £1,750/person at 8** *(repriced 2026-06-24, Andy; was base £15k/≤6)*.
@@ -158,7 +158,7 @@ The core commitment, stated plainly: **we don't want to work with anyone who doe
 | Offering | Built page | Strategy/dossier | Canon working value | Status |
 |---|---|---|---|---|
 | Open cohort (per place) | £3,500 | £8,000 (old table) | **£3,000** (C3, 2026-09-04) | ✅ Andy confirmed |
-| 1:1 (6 weeks) | £12k (stale page) | £4k/mo or £10k (design) | **from £10,000 / individual** | ✅ Andy 2026-06-14 |
+| 1:1 (8 weeks) | £12k (stale page) | £4k/mo or £10k (design) | **from £7,500 / individual** | ✅ Andy 2026-11-10 (was £10,000 / 6 weeks) |
 | Leadership Team AI Activation | £18k (stale) | — | **base £14k (≤8) + £2k/head, max 12 → £14–22k; £1,750/person at 8** | ✅ Andy 2026-06-24 |
 | Company Enablement Phase 0 | £5,000 | £2k–£9k typical | **from £5,000** | ✅ Andy 2026-06-14 |
 | Phase 1+ cycle | £20,000 | £20–25k | **from £20,000/cycle** | ✅ Andy 2026-06-14 |
@@ -316,3 +316,4 @@ This document is the source of truth for the **offer structure and approved lang
 - **2026-10-09 (Andy) — v0.8: no fixed cohort size on the public page.** We do not guarantee 12 participants, so "12 places", "12 industries" and "Eleven senior leaders" are removed from the cohort page, `offerings.json` and this canon; the public wording is "limited places". The Leadership Team AI Activation "max 12" is a pricing cap on a different product and is unchanged. Issue #159.
 - **2026-10-15 (Andy), v0.9: C3 dates follow the brochure.** Toby's C3 marketing brochure (reviewed for dates, tone and core messaging) is canonical for now, so the open cohort starts **early November 2026 and runs to Christmas, exact dates to confirm** (was "late October 2026, date on application"). The Airtable programme record had also drifted (75-min sessions); the brochure's 90 minutes a week stands. Dates only in this pass: a wider page-to-brochure messaging alignment was explicitly not scoped (#178). Same day, cohort applications moved off the company `/contact/` form to an on-page cohort form writing to Coaching Enrollments (#172).
 - **2026-11-10 (Andy), v0.10: next intake moves to early January 2027.** Cohort 3 has already started, so the "early November 2026" intake above is history. The next cohort runs in early January 2027, date TBC. Impacts: the cohort page hero row and closing heading (#145), the Format C description above, and the `offerings.json` price note. The glib "Worst case, we say no, and you've spent a minute." line is also removed from the cohort page.
+- **2026-11-10 (Andy), v0.11: 1:1 Exec AI Fast Track Coaching is now 8 weeks at from £7,500.** Was 6 weeks from £10,000 (locked 2026-06-14). Impacts: `offerings.json` (duration, format, price, notes), the offering page (hero, chip, meta and structured data, FAQ, plan phases now Weeks 1 to 7 build and Week 8 embed, fit check, closing heading), the §3 description and pricing table above (#201). Weekly cadence of 75 minutes is unchanged, so the sessions rise from 6 to 8.
