@@ -30,7 +30,7 @@ function buildCardHtml(t, indent, index) {
 
   const attribution = [title, company].filter(Boolean).join(', ');
 
-  // Scroll-in stagger: the first card has none, then reveal-delay-1, -2, -3 (capped).
+  // The stylesheet only defines reveal-delay-1 to -3, so later cards share the last step.
   const delay = index > 0 ? ` reveal-delay-${Math.min(index, 3)}` : '';
 
   return (
