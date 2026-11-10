@@ -15,6 +15,67 @@ const AIRTABLE_API_URL = AIRTABLE_BASE_ID && AIRTABLE_TABLE
   ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`
   : null;
 
+// CRM Contacts table (same base as Accounts). Field ids, not names, so a renamed column
+// cannot silently break the write (#204). Role type is a single select; "Other" is the
+// closest existing choice for a web applicant.
+const CONTACTS_API_URL = AIRTABLE_BASE_ID
+  ? `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/tblfTdPnRU15wAdtR`
+  : null;
+const CONTACT_FIELDS = {
+  name: 'fldgbdXyNz5bGsfyV',
+  jobTitle: 'fld9RSxKZZSGxTgtx',
+  email: 'fldq8I7LzeY0I5qcn',
+  roleType: 'fldpSheO6tJ94mj1n',
+  account: 'fld1tpjGWbZ4rUjsb',
+  notes: 'fldNsN7N0AKuDSNdx'
+};
+
+// Creates a Contact linked to the new Account, or links the existing Contact that has the
+// same email (so a repeat submission never makes a second one). Throws on any failure; the
+// caller treats that as non-fatal and alerts, because the Account and Slack post matter more.
+async function upsertContact({ name, email, role, accountId, source }) {
+  if (!CONTACTS_API_URL) throw new Error('Contacts table URL unavailable (AIRTABLE_BASE_ID missing)');
+  if (!accountId) throw new Error('Account created but its record id was not returned, cannot link Contact');
+  const auth = { Authorization: `Bearer ${AIRTABLE_TOKEN}`, 'Content-Type': 'application/json' };
+
+  // Case-insensitive exact match on email; escape for the formula string literal.
+  const emailLiteral = email.toLowerCase().replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+  const formula = `LOWER({${CONTACT_FIELDS.email}})="${emailLiteral}"`;
+  const lookupUrl = `${CONTACTS_API_URL}?maxRecords=1&returnFieldsByFieldId=true&filterByFormula=${encodeURIComponent(formula)}`;
+  const lookup = await fetch(lookupUrl, { method: 'GET', headers: auth });
+  if (!lookup.ok) throw new Error(`Contact lookup error: ${lookup.status} ${await lookup.text()}`);
+  const found = JSON.parse((await lookup.text()) || '{}').records?.[0];
+
+  if (found) {
+    const linked = Array.isArray(found.fields?.[CONTACT_FIELDS.account]) ? found.fields[CONTACT_FIELDS.account] : [];
+    if (linked.includes(accountId)) return 'matched';
+    const patch = await fetch(`${CONTACTS_API_URL}/${found.id}`, {
+      method: 'PATCH',
+      headers: auth,
+      body: JSON.stringify({ fields: { [CONTACT_FIELDS.account]: [...linked, accountId] } })
+    });
+    if (!patch.ok) throw new Error(`Contact link error: ${patch.status} ${await patch.text()}`);
+    return 'matched';
+  }
+
+  const create = await fetch(CONTACTS_API_URL, {
+    method: 'POST',
+    headers: auth,
+    body: JSON.stringify({
+      fields: {
+        [CONTACT_FIELDS.name]: name,
+        [CONTACT_FIELDS.jobTitle]: role,
+        [CONTACT_FIELDS.email]: email,
+        [CONTACT_FIELDS.roleType]: 'Other',
+        [CONTACT_FIELDS.account]: [accountId],
+        [CONTACT_FIELDS.notes]: `Created automatically from a website application${source ? ` (${source})` : ''}.`
+      }
+    })
+  });
+  if (!create.ok) throw new Error(`Contact create error: ${create.status} ${await create.text()}`);
+  return 'created';
+}
+
 exports.handler = async (event, context) => {
   // No CORS headers by design: forms.js posts same-origin, so no preflight ever fires.
   // The previous 'Access-Control-Allow-Origin: *' advertised a cross-origin contract
@@ -243,6 +304,7 @@ exports.handler = async (event, context) => {
 
     // Attempt Airtable insert; do not fail the whole request if Airtable is down
     let airtableStatus = 'skipped';
+    let contactStatus = 'skipped';
     if (AIRTABLE_API_URL && AIRTABLE_TOKEN) {
       const airtablePayload = {
         fields: {
@@ -310,6 +372,28 @@ exports.handler = async (event, context) => {
           }
         }
         airtableStatus = 'created';
+
+        // Contact is best-effort: its failure must not undo the Account or the Slack post.
+        // Logged to function logs and raised in Slack (distinct message) so it is seen.
+        try {
+          let accountId;
+          try { accountId = JSON.parse((await airtableResponse.text()) || '{}').id; } catch (_) { accountId = undefined; }
+          contactStatus = await upsertContact({ name, email, role, accountId, source });
+        } catch (contactError) {
+          contactStatus = 'failed';
+          console.error('Airtable Contact write error:', contactError.message);
+          try {
+            await fetch(SLACK_WEBHOOK_URL, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({
+                text: `⚠️ CONTACT WRITE FAILED — Account created for ${escapeSlack(email) || 'unknown'} but no linked Contact. Add one by hand. Error: ${escapeSlack(contactError.message)}`
+              })
+            });
+          } catch (alertError) {
+            console.error('Contact failure alert Slack post error:', alertError.message);
+          }
+        }
       } catch (airtableError) {
         airtableStatus = 'failed';
         console.error('Airtable insert error:', airtableError.message);
@@ -336,7 +420,7 @@ exports.handler = async (event, context) => {
     return {
       statusCode: 200,
       headers,
-      body: JSON.stringify({ success: true, message: 'Notification sent to Slack', airtable: airtableStatus })
+      body: JSON.stringify({ success: true, message: 'Notification sent to Slack', airtable: airtableStatus, contact: contactStatus })
     };
 
   } catch (error) {

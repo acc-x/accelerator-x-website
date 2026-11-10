@@ -13,6 +13,9 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Fixed
+- **Apply form now creates a linked CRM Contact, not just an Account** ([#204](https://github.com/acc-x/accelerator-x-website/issues/204)): `lead-capture` writes a Contact (name, job title, email, role type "Other", notes) to the Contacts table linked to the new Account, or links the existing Contact with the same email so a repeat submission never duplicates. A Contact failure never undoes the Account or Slack post; it is logged and raised in Slack as a distinct `CONTACT WRITE FAILED` alert. Prompted by an applicant on 10 Nov 2026 who had an Account but no Contact.
+
 _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. Since the ~2026-08-10 org move to `acc-x`: `main` is the only long-lived branch; work lands via short-lived branches → PRs._
 
 ### Fixed

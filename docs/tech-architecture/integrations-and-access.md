@@ -155,7 +155,7 @@ into another's table.
 
 | Function | Form | Writes to | Slack | Env vars |
 |---|---|---|---|---|
-| `lead-capture` | General apply form (`ApplyForm`, `/contact/` + homepage) | CRM & Delivery › **Accounts** | `#website-leads` | `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE`, `SLACK_WEBHOOK_URL` |
+| `lead-capture` | General apply form (`ApplyForm`, `/contact/` + homepage) | CRM & Delivery › **Accounts**, plus a linked **Contacts** row matched by email (`tblfTdPnRU15wAdtR`, #204) | `#website-leads` | `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `AIRTABLE_TABLE`, `SLACK_WEBHOOK_URL` |
 | `cohort-application` | Cohort form (`CohortApplyForm`, `/what-we-do/leadership-cohort/`) | CRM & Delivery › **Coaching Enrollments** (`tblFNkbk58DhsRZed`), linked to the open cohort | `#cohort-applications` (falls back to `#website-leads`) | `AIRTABLE_TOKEN`, `AIRTABLE_BASE_ID`, `SLACK_COHORT_WEBHOOK_URL`, `COHORT_PROGRAMME_RECORD_ID` |
 | `newsletter-subscribe` | Newsletter signup | Brevo list #9 | `#website-leads` | `BREVO_API_KEY`, `SLACK_WEBHOOK_URL` |
 
