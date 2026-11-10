@@ -15,6 +15,10 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 _v2 cutover complete 2026-07-14 (B10, #75) — `main` serves v2 in production. Since the ~2026-08-10 org move to `acc-x`: `main` is the only long-lived branch; work lands via short-lived branches → PRs._
 
+### Changed
+
+- **CI runs on Node 24, matching the production functions runtime** (2026-11-10, [#134](https://github.com/acc-x/accelerator-x-website/issues/134) item 2): the three `setup-node` pins (`standards.yml` build and check jobs, `dependency-audit.yml`) moved from 20 to 24. The runtime was verified rather than assumed: the deploy API reports `nodejs24.x` for all three functions (`cohort-application`, `lead-capture`, `newsletter-subscribe`). Recorded in CLAUDE.md.
+
 ### Added
 
 - **Cohort form: repeat applications and returning participants** (2026-10-15, Andy, [#183](https://github.com/acc-x/accelerator-x-website/issues/183)): `cohort-application` now looks up the email in Coaching Enrollments before writing (case-insensitive). Same email for the open cohort (or, in waitlist mode, an existing unlinked row): no second row, the form says "Sit tight. We've already got an application for that email address, and we'll be in touch shortly." (Andy's wording; the no-JS path lands on a new `#cohort-apply-duplicate` notice), and Slack gets a "Repeat application" ping linking the existing record. Same email from an earlier programme: a new row as before, with "Returning participant: previously {cohort} ({status})" in Notes and the Slack header. The lookup fails open, so a read error never costs an applicant. Accepted trade-off: the duplicate message confirms an email has applied. `cohort_apply_submit` now carries `duplicate`. After an independent review: lookups time out at 2.5s and fail open (so a slow Airtable can't eat the 10s function budget), matching uses `LOWER(TRIM())`, returning participants are named against their most recent programme, and an `Abandoned` or `Dropped out` row for the open cohort counts as a fresh application, not a repeat. 15 new tests (38 for the function).
