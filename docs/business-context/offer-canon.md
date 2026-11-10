@@ -100,7 +100,7 @@ One lane, **three formats** (see §4.2): **1:1 / very small group · your exec t
 ### 4.2 · Door 2 — Leadership AI Coaching *(one lane, three formats)*
 
 > **✅ NAMES DECIDED (Andy, 2026-06-14) — "Ronseal" titles + an explanatory subtitle each:**
-> • **1:1 Exec AI Fast Track Coaching** — *A bespoke 6-week 1:1 sprint that takes AI work off your plate.*
+> • **1:1 Exec AI Fast Track Coaching** — *A bespoke 8-week 1:1 sprint that takes AI work off your plate.*
 > • **Leadership Team AI Activation** — *Eight weeks with your leadership team, in-house, to one shared way of working with AI.*
 > • **Open Cohort AI Bootcamp for Business Leaders** — *Eight weeks of AI in a room of non-competing peers — one shipped artefact.*
 > Same DOTS engine, three depths: on your own / your team (closed) / with peers (open). Slugs/keys unchanged until Phase 5.
@@ -257,7 +257,7 @@ The combination *is* the point.
 
 - **What's the real difference between the three coaching formats — and why choose the closed team over sending people to the cohort?** — Same engine, three depths. All run on DOTS; what changes is the room. Format A: one founder in your corner, 1:1. Format B: your own leadership team, closed, on-site, working on your confidential context together. Format C: you alongside vetted non-competing peers. The open cohort is the lightest way in per person; the closed team buys privacy, a session built entirely around your business, and a team-level artefact your leaders own together. Different jobs, not better-or-worse.
 - **Is the open cohort a group from different companies, or somewhere I send my own team?** — A peer room: limited vetted places, senior leaders from different non-competing companies. If you want your own team in a closed room, that's the exec-team format (B). On more than one person from your company, just ask — we vet for a good mix.
-- **Is this realistic for a busy CEO, and what if I miss sessions?** — Glad you raised it rather than bouncing. Cohort is one 90-minute live session a week for 8 weeks, plus as much use between sessions as you choose; the 1:1 is 75 minutes a week over 6 weeks — real commitment, deliberately, because capability doesn't stick from one afternoon. The work is built around your actual job, not bolted on top. On missed sessions, ask how we handle it for your format.
+- **Is this realistic for a busy CEO, and what if I miss sessions?** — Glad you raised it rather than bouncing. Cohort is one 90-minute live session a week for 8 weeks, plus as much use between sessions as you choose; the 1:1 is 75 minutes a week over 8 weeks — real commitment, deliberately, because capability doesn't stick from one afternoon. The work is built around your actual job, not bolted on top. On missed sessions, ask how we handle it for your format.
 - **What does the closed exec-team programme (Leadership Team AI Activation) cost for, say, 8 leaders?** — It's a base plus per-head: **£14,000 for up to 8 people, then £2,000 per person above that, to a max of 12** — so a team of 8 is £14,000 (about £1,750 per person, all +VAT). Tell us your group size and we'll confirm the exact figure.
 
 ### Talks & Events
