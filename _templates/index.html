@@ -86,7 +86,8 @@
             <h2 id="feed-title" class="font-display text-3xl font-bold text-navy">Latest Frameworks & Dispatches</h2>
             <button id="show-all" class="text-sm font-bold uppercase tracking-widest text-primary hidden hover:underline">Show All</button>
           </div>
-          <!-- Announces the result count when assets/js/hub-filter.js changes the filter -->
+          <!-- Filtering only fades cards, so screen-reader users need the new count announced -->
+          <!-- (written by assets/js/hub-filter.js). -->
           <p id="filter-status" class="sr-only" role="status" aria-live="polite"></p>
 
           <!-- Automatically populated list of content cards parsed from Markdown frontmatter -->
