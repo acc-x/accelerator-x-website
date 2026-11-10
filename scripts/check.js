@@ -17,7 +17,11 @@
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT = path.resolve(__dirname, '..');
+// CHECK_ROOT lets tests/build/check.test.js point the checks at a fixture tree (#134).
+// Unset in normal use, where the root is the repo itself.
+const ROOT = process.env.CHECK_ROOT
+  ? path.resolve(process.env.CHECK_ROOT)
+  : path.resolve(__dirname, '..');
 
 // ── Utilities ─────────────────────────────────────────────────────────────────
 
@@ -252,7 +256,11 @@ function checkWeNeverRulesAreClassified() {
 
     // A rule is classified if its line or the immediately following line(s)
     // contain a <!-- check: ... --> or <!-- not-automatable: ... --> annotation
-    const window = lines.slice(i, i + 3).join(' ');
+    // ...but never the NEXT bullet's annotation: the window stops at the next bullet,
+    // otherwise an unclassified rule slips through beside a classified one (#134).
+    let end = i + 1;
+    while (end < i + 3 && end < lines.length && !lines[end].trimStart().startsWith('- ')) end++;
+    const window = lines.slice(i, end).join(' ');
     const hasCheck          = /<!--\s*check:/i.test(window);
     const hasNotAutomatable = /<!--\s*not-automatable:/i.test(window);
 
