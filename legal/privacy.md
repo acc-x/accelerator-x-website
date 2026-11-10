@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: September 8, 2026
+Last updated: 10 November 2026
 
 This Privacy Policy explains how Accelerator X Ltd (“Accelerator X”, “we”, “us”, or “our”) collects, uses, stores, and protects personal data when you visit our website, submit an enquiry, subscribe to our communications, or otherwise interact with us.
 
@@ -26,6 +26,7 @@ Depending on how you interact with us, we may collect:
 - technical and usage data such as IP address, browser type, device information, referring pages, page interactions, and other website usage signals
 - marketing and communications data such as whether you subscribed to our newsletter or requested further information
 - assessment data such as your answers to quiz or survey questions, your overall AI readiness assessment score, pillar scores, and the AI maturity band assigned to your results
+- application data such as the answers you give on a programme application form, including your role, your company, how you describe your use of AI tools, and how confident you feel using them
 
 We do not intentionally collect special category personal data through the website. Please do not submit sensitive personal data unless it is strictly necessary and you are comfortable doing so.
 
@@ -47,6 +48,7 @@ We use personal data to:
 - understand content performance, user journeys, and areas of friction on the website
 - send newsletters, insights, or relevant follow-up communications where you have requested them or where we have another lawful basis to do so
 - protect our rights, manage risk, prevent misuse, and comply with legal or regulatory obligations
+- review programme applications, decide whether we can offer you a place, and contact you about it
 - generate and deliver a personalised PDF assessment report to your email address, based on the responses you submit in our online AI readiness assessment and any other surveys or questionnaires that we conduct
 
 ## 5. Our lawful bases for processing
@@ -54,7 +56,7 @@ We use personal data to:
 Under UK data protection law, we rely on one or more of the following lawful bases:
 
 - **Legitimate interests** — for running and improving the business, responding to relevant enquiries, analysing site usage, and developing our services, provided those interests are not overridden by your rights
-- **Consent** — where you subscribe to marketing communications or where consent is otherwise required. Where you complete an assessment tool, survey or questionnaire and submit your details to receive a report, we rely on your consent as the lawful basis for processing your assessment data, delivering the report by email, and passing your details to our CRM for follow-up.
+- **Consent** — where you subscribe to marketing communications or where consent is otherwise required. Where you complete an assessment tool, survey or questionnaire and submit your details to receive a report, we rely on your consent as the lawful basis for processing your assessment data, delivering the report by email, and passing your details to our CRM for follow-up. Where you apply for a place on a programme, we rely on the consent you give when you submit the application form to process your application and to store it in our CRM.
 - **Contract** — where processing is necessary to take steps at your request before entering into a contract, or to perform a contract with you
 - **Legal obligation** — where we must process data to comply with applicable law or regulation
 
@@ -81,6 +83,7 @@ To operate this website and deliver our services, we use a small number of speci
 - Website hosting — our main website is hosted on Netlify; some of our online assessments are hosted on Vercel. Both process standard request data (such as IP addresses) as part of hosting
 - Email communications — we use Brevo to send transactional emails (such as AI assessment reports) and newsletters, where you have subscribed to receive them
 - Internal CRM — your contact details and assessment results are stored in Airtable, our internal CRM, so we can follow up with relevant information. This is covered by the consent you give when submitting your details to us
+- Internal notifications — when you submit a form, a notification with the details you entered (such as your name, company, role and any message) is sent to a private channel in our Slack workspace so that we can reply promptly
 - Analytics — we use analytics tooling to understand how the website is used. This data is aggregated and not used to identify individuals
 
 We may also disclose personal data where required by law, to enforce our rights, or to protect the safety of Accelerator X, our clients, or others.
@@ -99,6 +102,8 @@ We retain personal data only for as long as reasonably necessary for the purpose
 - resolve disputes and enforce agreements
 
 Survey or assessment report data (your answers, scores, and contact details submitted through an assessment tool) is retained for 12 months from the date of submission, after which it is automatically deleted.
+
+Programme application data (your details and your application answers) is kept while we manage your application and any place you take on a programme, and afterwards for as long as is reasonably necessary for the purposes in this policy.
 
 Retention periods may vary depending on the nature of the data and the reason we hold it.
 

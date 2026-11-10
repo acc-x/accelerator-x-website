@@ -1,6 +1,6 @@
 # Terms of Use
 
-Last updated: March 6, 2026
+Last updated: 6 March 2026
 
 These Terms of Use govern your access to and use of the Accelerator X website and any content, materials, and publicly available resources made available through it.
 
