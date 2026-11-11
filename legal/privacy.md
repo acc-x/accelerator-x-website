@@ -1,6 +1,6 @@
 # Privacy Policy
 
-Last updated: 10 November 2026
+Last updated: 11 November 2026
 
 This Privacy Policy explains how Accelerator X Ltd (“Accelerator X”, “we”, “us”, or “our”) collects, uses, stores, and protects personal data when you visit our website, submit an enquiry, subscribe to our communications, or otherwise interact with us.
 
