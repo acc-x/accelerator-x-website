@@ -65,3 +65,11 @@ test('the footer and both apply forms still link to the legal URLs the build pro
   }
   assert.ok(fs.existsSync(path.join(ROOT, 'privacy.html')) && fs.existsSync(path.join(ROOT, 'terms.html')));
 });
+
+test('a blank "Last updated" line fails the build instead of swallowing the next paragraph', () => {
+  const { parseLegalMarkdown } = require('../../scripts/build-legal-pages.js');
+  assert.throws(() => parseLegalMarkdown('# Title\n\nLast updated:\n\nFirst real paragraph.\n', 'x.md'), /Last updated/);
+  const ok = parseLegalMarkdown('# Title\n\nLast updated: 11 November 2026\n\nFirst real paragraph.\n', 'x.md');
+  assert.equal(ok.updated, '11 November 2026');
+  assert.ok(ok.body.startsWith('First real paragraph.'));
+});

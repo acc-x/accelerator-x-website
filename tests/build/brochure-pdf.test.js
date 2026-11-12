@@ -12,6 +12,7 @@ const crypto = require('node:crypto');
 const ROOT = path.join(__dirname, '../..');
 const PAGE = path.join(ROOT, 'what-we-do/leadership-cohort/index.html');
 const PDF = path.join(ROOT, 'assets/downloads/accelerator-x-bootcamp-brochure.pdf');
+const PRINT_CSS = path.join(ROOT, 'assets/css/components/LeadershipCohort.css');
 const HASH = `${PDF}.source-sha256`;
 const FIX = 'Run `npm run build && npm run build:pdf` (needs Chrome) and commit the PDF and its .source-sha256.';
 
@@ -21,9 +22,9 @@ test('the brochure PDF exists and is a PDF', () => {
 });
 
 test('the brochure PDF was printed from the current cohort page', () => {
-  const current = crypto.createHash('sha256').update(fs.readFileSync(PAGE)).digest('hex');
+  const current = crypto.createHash('sha256').update(fs.readFileSync(PAGE)).update(fs.readFileSync(PRINT_CSS)).digest('hex');
   const printed = fs.readFileSync(HASH, 'utf8').trim();
-  assert.equal(printed, current, `the cohort page changed since the PDF was printed. ${FIX}`);
+  assert.equal(printed, current, `the cohort page or its print rules changed since the PDF was printed. ${FIX}`);
 });
 
 test('the cohort page links to the brochure PDF', () => {

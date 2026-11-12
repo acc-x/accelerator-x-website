@@ -3840,6 +3840,27 @@ a:not(.btn):hover { color: var(--action-accent); }
 }
 
 /* =============================================================================
+   2. PLAN STEPS — 3-col grid override (mirrors ax-ce-steps). Used by the
+   leadership-activation and senior-leader-acceleration phase lists.
+   ============================================================================= */
+
+.ax-lc-steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .ax-lc-steps { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* 3-col grid: remove the vertical rule that only works for stacked layout */
+.ax-lc-steps::before { display: none; }
+
+/* =============================================================================
    3. PLACES-LEFT HIGHLIGHT — cyan spec value in sidebar card
    Higher specificity than .ax-offering-hero__spec-row dd to override color.
    ============================================================================= */
@@ -4981,10 +5002,12 @@ a:not(.btn):hover { color: var(--action-accent); }
 
 .ax-lc-print-only { display: none; }
 
-@page { size: A4; margin: 12mm; }
+/* A named page, so the A4 size and margins reach only the cohort page and not every printout. */
+@page ax-lc { size: A4; margin: 12mm; }
 
 @media print {
   .ax-lc-page {
+    page: ax-lc;
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
   }
@@ -4994,11 +5017,13 @@ a:not(.btn):hover { color: var(--action-accent); }
   .ax-lc-page .ax-footer,
   .ax-lc-page .ax-lc-cta,
   .ax-lc-page .ax-lc-join__pdf,
+  .ax-lc-page .ax-lc-join__apply,
   .ax-lc-page .ax-offering-hero__cta,
   .ax-lc-page .ax-faq-item__icon,
   .ax-lc-page dialog { display: none !important; }
 
   .ax-lc-page .ax-lc-print-only { display: block; margin: var(--space-6) 0 0; color: var(--fg-1); font-weight: var(--fw-semibold); }
+  .ax-lc-join .ax-lc-print-only { color: var(--fg-on-dark); }
 
   .ax-lc-page .reveal {
     opacity: 1 !important;
@@ -5020,7 +5045,6 @@ a:not(.btn):hover { color: var(--action-accent); }
 
   .ax-lc-peer-card,
   .ax-lc-week,
-  .ax-lc-day__row,
   .ax-deliverable,
   .ax-lc-voice,
   .ax-lc-founder,
