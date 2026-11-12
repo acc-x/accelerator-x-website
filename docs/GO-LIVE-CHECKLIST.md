@@ -497,4 +497,9 @@ On-page cohort application on `/what-we-do/leadership-cohort/` → `cohort-appli
 | "Cohort applications" Airtable view | No | `[ ]` manual (API cannot create views) |
 | Toby's brochure "Apply now" repointed from `/contact/` to `/what-we-do/leadership-cohort/?utm_source=brochure#cohort-apply` | No | `[ ]` |
 | Rate limiting on public functions | No (decided 2026-10-15) | `[~]` deferred to #123; trigger: first junk submission past the honeypot |
+| `COHORT_PROGRAMME_RECORD_ID` repointed from Cohort 3 (started) to the January programme, or emptied for waitlist mode | Yes (applicants link to a running cohort until done) | `[ ]` Andy, Netlify |
+| Brochure artifact edited or retired (still has Cohort 3 dates, "12 places", a pricing line); the cohort page and PDF are the source | No | `[ ]` Andy (#203) |
+| Week 5 in-person venue and date, exact January dates, and the programme name (the open delta from #178), confirmed and put on the cohort page, the PDF and the brochure | No | `[ ]` Andy and Toby |
+| Cohort application retention period decided and added to the privacy policy (currently "as long as reasonably necessary"); Slack channel access stated if team-only | No | `[ ]` Andy (#214) |
+| Cohort page and PDF visually checked on a phone | No | `[ ]` Andy |
 

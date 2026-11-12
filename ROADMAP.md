@@ -3,7 +3,7 @@
 _This is a living document. It connects our high-level business strategy with daily execution.
 It operates on a "Now, Next, Later" horizon to maintain momentum without administrative drag._
 
-_Last updated: 2026-10-15 (cohort application form added to Post-Launch Polish, #172). Previous: 2026-08-21 (reconciliation pass from the [2026-08-21 architecture review](docs/tech-architecture/architecture-review-2026-08-21.md): the v2 Cutover shipped 2026-07-14; stale NOW items below marked done or reframed to post-launch reality. The repo now lives at `acc-x/accelerator-x-website`.)_
+_Last updated: 2026-11-12 (cohort page rebuilt from the brochure with a printed PDF, legal pages on v2, #203 #87; the old cohort-form line follows). Previous: 2026-10-15 (cohort application form added to Post-Launch Polish, #172). Earlier: 2026-08-21 (reconciliation pass from the [2026-08-21 architecture review](docs/tech-architecture/architecture-review-2026-08-21.md): the v2 Cutover shipped 2026-07-14; stale NOW items below marked done or reframed to post-launch reality. The repo now lives at `acc-x/accelerator-x-website`.)_
 
 ---
 
@@ -176,7 +176,7 @@ enough that manual protocol overhead becomes measurable.
 <!-- Session 20260329-180314 logged -->
 
 <!-- SESSION_PROTOCOL:START -->
-- Session ID: 20261015-120103
-- Updated: 2026-10-15T12:01:06.821Z
+- Session ID: 20261112-120340
+- Updated: 2026-11-12T12:03:43.748Z
 - Mode: write
 <!-- SESSION_PROTOCOL:END -->
