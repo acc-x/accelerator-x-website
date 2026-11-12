@@ -78,7 +78,9 @@ marked.use({
 function parseLegalMarkdown(markdown, source) {
   let body = markdown.replace(/\r\n/g, '\n');
   body = body.replace(/^#\s+.+\n+/, '');
-  const dateMatch = body.match(/^_?Last updated:\s*(.+?)_?\s*\n+/i);
+  // The date must sit on the same line: a looser match would take the next paragraph as the
+  // date when the line is blank and delete that paragraph from the policy.
+  const dateMatch = body.match(/^_?Last updated:[ \t]*(\S[^\n]*?)_?[ \t]*\n+/i);
   if (!dateMatch) {
     throw new Error(`${source}: expected a "Last updated: <date>" line right after the title`);
   }
@@ -125,4 +127,6 @@ function main() {
   console.log(`\nLegal pages: ${built} built, ${skipped} unchanged.`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { parseLegalMarkdown };

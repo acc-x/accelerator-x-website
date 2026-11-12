@@ -25,6 +25,7 @@ const { spawn } = require('node:child_process');
 const ROOT = path.join(__dirname, '..');
 const PAGE_URL_PATH = '/what-we-do/leadership-cohort/';
 const PAGE_FILE = path.join(ROOT, 'what-we-do', 'leadership-cohort', 'index.html');
+const PRINT_CSS = path.join(ROOT, 'assets', 'css', 'components', 'LeadershipCohort.css');
 const OUT_DIR = path.join(ROOT, 'assets', 'downloads');
 const OUT_PDF = path.join(OUT_DIR, 'accelerator-x-bootcamp-brochure.pdf');
 const OUT_HASH = `${OUT_PDF}.source-sha256`;
@@ -55,15 +56,22 @@ function findChrome() {
   return candidates.find((c) => fs.existsSync(c));
 }
 
+// The PDF depends on the page and on its print rules, so the freshness hash covers both.
 function sourceHash() {
-  return crypto.createHash('sha256').update(fs.readFileSync(PAGE_FILE)).digest('hex');
+  return crypto
+    .createHash('sha256')
+    .update(fs.readFileSync(PAGE_FILE))
+    .update(fs.readFileSync(PRINT_CSS))
+    .digest('hex');
 }
 
 function serve() {
   const server = http.createServer((req, res) => {
     const urlPath = decodeURIComponent(req.url.split('?')[0]);
     let file = path.normalize(path.join(ROOT, urlPath));
-    if (!file.startsWith(ROOT)) {
+    // A string prefix test would also admit sibling folders like "<root>-other".
+    const rel = path.relative(ROOT, file);
+    if (rel.startsWith('..') || path.isAbsolute(rel)) {
       res.writeHead(403).end();
       return;
     }
