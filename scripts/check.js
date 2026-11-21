@@ -433,6 +433,47 @@ function checkNoHardcodedSiteUrls() {
 //       or the killed legacy constructs.
 //   (c) Slug/template coherence — every live offering has a built template.
 
+// ── Check 11: Amber is never a text colour ────────────────────────────────────
+// Rule: .claude/rules/standards.md "Use brand amber as a text colour".
+// Incident (#229): --ax-amber (#FEA700) is 1.96:1 on white, but five components set it
+//   as small text colour, and DESIGN.md §3.6 already said "decorative on light, never
+//   text". The rule was written down and nothing enforced it. Text uses --ax-amber-text.
+// How it works: flags a `color: var(--ax-amber)` declaration (border-color and
+//   background-color are fine, so the property must start at a word break) in the CSS
+//   and the Tailwind `text-amber` utility in templates and built HTML.
+// Limit: amber text on a dark surface is legitimate (7.3:1 on navy); if a component
+//   needs it, give it its own token rather than loosening this check.
+
+function checkNoAmberText() {
+  console.log('\n[11] Amber is never a text colour (use --ax-amber-text)');
+
+  const AMBER_TEXT_DECL = /(^|[\s;{])color\s*:\s*var\(--ax-amber\)/;
+  const TAILWIND_TEXT_AMBER = /\btext-amber(?![\w-])/;
+
+  const cssFiles  = [...filesIn('assets/css/components', '.css'), 'assets/css/tokens.css'];
+  const htmlFiles = [
+    ...filesIn('_templates', '.html'),
+    ...BUILT_ROOT_HTML,
+    ...BUILT_HTML_DIRS.flatMap((dir) => filesIn(dir, '.html')),
+  ];
+
+  let clean = true;
+  const scan = (files, pattern, what) => {
+    for (const rel of new Set(files)) {
+      if (!fs.existsSync(path.join(ROOT, rel))) continue;
+      readFile(rel).split('\n').forEach((line, i) => {
+        if (!pattern.test(line)) return;
+        fail(`${rel}:${i + 1} — ${what}`);
+        clean = false;
+      });
+    }
+  };
+  scan(cssFiles, AMBER_TEXT_DECL, 'amber used as a text colour (1.96:1 on white). Use var(--ax-amber-text).');
+  scan(htmlFiles, TAILWIND_TEXT_AMBER, 'text-amber utility (1.96:1 on white). Use text-amber-text.');
+
+  if (clean) pass('No amber text colours: text uses --ax-amber-text');
+}
+
 function checkNoOfferingDrift() {
   console.log('\n[10] Offerings derive from offerings.json (no hardcoded prices / dead offers)');
 
@@ -525,6 +566,7 @@ function main() {
   checkBuiltHtml();
   checkNoHardcodedSiteUrls();
   checkNoOfferingDrift();
+  checkNoAmberText();
 
   console.log('\n━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 

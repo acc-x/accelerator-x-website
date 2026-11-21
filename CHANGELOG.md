@@ -13,7 +13,11 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Added
+- **Amber-as-text is now documented and enforced** ([#232](https://github.com/acc-x/accelerator-x-website/issues/232), follows [#229](https://github.com/acc-x/accelerator-x-website/issues/229)): `--ax-amber-text` (`#8A5E00`) is in DESIGN.md §3.1/§3.6/§3.7, `tokens.json`, the handoff `tokens.css` and the on-site design-system page. New `scripts/check.js` Check #11 fails the build on `color: var(--ax-amber)` and the `text-amber` utility (3 fixture tests, plus a "We never" line in `standards.md`), because DESIGN.md already said amber is never text on light and five components broke it anyway.
+
 ### Fixed
+- **DESIGN.md §3.6 contrast table recomputed**: several rows were wrong. Cyan on white was listed passing (✅ 4.8) and is 3.89:1, so the link colour fails AA for small text; pink on navy was listed 4.5 and is 3.8. The table is now computed from the token hex values, with the method noted. The cyan/pink/blue/green text fix stays open as [#230](https://github.com/acc-x/accelerator-x-website/issues/230).
 - **Amber text now passes contrast** ([#229](https://github.com/acc-x/accelerator-x-website/issues/229)): brand amber `#FEA700` is 1.96:1 on white, far under the 4.5:1 AA minimum for small text, yet it was the text colour of the homepage "Tools, skills, systems" kicker and "02" icon, the "For a room" offer-card eyebrow, the What we do "Also" kicker, the insights "Tech & AI" tile and the video format label. Added `--ax-amber-text` (`#8A5E00`, 5.18:1 to 5.70:1 on white and the amber tint, measured in the browser) and used it for every amber text colour; `--ax-amber` stays for fills, borders and icons. `.chip--amber` and `.pill-warning` now use the token instead of a hardcoded `#7a5400`. Cyan, pink and green text fail too and need a colour ruling first: [#230](https://github.com/acc-x/accelerator-x-website/issues/230).
 
 ### Changed

@@ -98,7 +98,8 @@ The brand's identity colours. Confirmed against the asset pack and the productio
 | `--ax-navy-deep` | `#131D30` | Very dark — section dividers, footer bars |
 | `--ax-pink` | `#E93F8E` | Signature accent — the X, primary CTAs, emphasis |
 | `--ax-cyan` | `#088ABF` | Secondary accent — web "go" colour, data callouts |
-| `--ax-amber` | `#FEA700` | Tertiary — highlights, outputs, warnings |
+| `--ax-amber` | `#FEA700` | Tertiary — highlights, outputs, warnings. Fills, borders and icons only, never text on a light surface (§3.6) |
+| `--ax-amber-text` | `#8A5E00` | Amber **as text** on white, paper or the amber tint (5.7:1, 5.4:1, 5.2:1). Never on navy |
 | `--ax-purple` | `#882DE7` | Quaternary — alternative pathways, secondary concepts |
 | `--ax-green` | `#1FBD53` | Success states, positive indicators |
 | `--ax-blue` | `#3477F5` | Functional blue — links, secondary CTAs |
@@ -170,26 +171,34 @@ Components should reference semantic aliases, not brand tokens directly. This ke
 
 ### 3.6 Accessibility — verified pairings
 
-Pairings tested at WCAG AA. ✅ passes for normal-size body (4.5:1). 🅻 passes only for large text or non-text content (3:1).
+Pairings tested at WCAG AA. ✅ passes for normal-size body (4.5:1). 🅻 passes only for large text or non-text content (3:1). ❌ fails both.
+
+Recomputed on 2026-11-21 from the token hex values in `tokens.css` (WCAG relative-luminance formula). The earlier table had several wrong rows, most importantly cyan on white, which was listed ✅ 4.8 and is 3.89. Never sample by eye; recompute from the hex values.
 
 | Foreground | On `--ax-white` | On `--ax-paper` | On `--ax-navy` | On `--ax-navy-deep` |
 |---|---|---|---|---|
-| `--ax-navy` | ✅ 15.9 | ✅ 14.8 | — | — |
-| `--ax-slate-dark` | ✅ 10.6 | ✅ 9.9 | — | — |
-| `--ax-slate-medium` | ✅ 7.5 | ✅ 7.0 | — | — |
-| `--ax-slate-light` | ✅ 4.6 | 🅻 4.3 | — | — |
-| `--ax-pink` | 🅻 3.5 | 🅻 3.3 | ✅ 4.5 | ✅ 5.1 |
-| `--ax-cyan` | ✅ 4.8 | ✅ 4.5 | 🅻 3.3 | ✅ 3.8 |
-| `--ax-amber` | 🅻 2.1 ❌ | 🅻 2.0 ❌ | 🅻 4.2 | ✅ 4.8 |
-| `--ax-purple` | ✅ 8.3 | ✅ 7.7 | — | — |
-| `--ax-white` | — | — | ✅ 15.9 | ✅ 18.4 |
+| `--ax-navy` | ✅ 14.2 | ✅ 13.4 | — | — |
+| `--ax-slate-dark` | ✅ 10.4 | ✅ 9.8 | — | — |
+| `--ax-slate-medium` | ✅ 7.6 | ✅ 7.1 | — | — |
+| `--ax-slate-light` | ✅ 4.76 | 🅻 4.48 | — | — |
+| `--ax-pink` | 🅻 3.8 | 🅻 3.6 | 🅻 3.8 | 🅻 4.47 |
+| `--ax-cyan` | 🅻 3.9 | 🅻 3.7 | 🅻 3.7 | 🅻 4.3 |
+| `--ax-blue` | 🅻 4.1 | 🅻 3.9 | 🅻 3.5 | 🅻 4.1 |
+| `--ax-amber` | ❌ 2.0 | ❌ 1.8 | ✅ 7.3 | ✅ 8.6 |
+| `--ax-amber-text` | ✅ 5.7 | ✅ 5.4 | ❌ 2.5 | ❌ 2.9 |
+| `--ax-purple` | ✅ 5.9 | ✅ 5.5 | ❌ 2.4 | ❌ 2.9 |
+| `--ax-green` | ❌ 2.5 | ❌ 2.3 | ✅ 5.7 | ✅ 6.8 |
+| `--ax-white` | — | — | ✅ 14.2 | ✅ 16.9 |
+
+`--ax-amber-text` on the 14% amber tint (`--surface-amber-subtle` over white) is 5.2:1.
 
 **Rules:**
 
+- **Amber is never text on a light surface.** `--ax-amber` is 2.0:1 on white. For amber text on white, paper or the amber tint use `--ax-amber-text` (`#8A5E00`). Bright `--ax-amber` is fine as a fill, border or icon, and as text on navy (7.3:1). Enforced by `scripts/check.js` Check #11 (#229): `color: var(--ax-amber)` and the `text-amber` utility fail the build.
 - **Pink for emphasis, not body text.** On white/paper, pink is for short headlines, CTAs, and chips — never paragraph-length copy. Use navy for body, pink for the moment that needs to land.
-- **Amber is decorative on light surfaces.** Treat it as illustration colour, not text colour. For text, only on navy.
-- **Captions on paper:** `--ax-slate-light` is borderline. Prefer `--ax-slate-medium` for captions on `--ax-paper`.
-- **Links:** Use `--ax-cyan` on light surfaces, `--ax-pink` on dark.
+- **Cyan, pink, blue and green fail AA as small text on light surfaces** (see the table). Cyan is today's link colour and the site's `.ax-kicker`/eyebrow colour, so small cyan text on white does not meet AA. Decision and fix are tracked in #230; until it lands, do not add new small cyan, pink or green text on white.
+- **Captions on paper:** `--ax-slate-light` is just under AA (4.48). Use `--ax-slate-medium` for captions on `--ax-paper`.
+- **Links:** `--ax-cyan` on light surfaces, `--ax-pink` on dark. Both are 🅻 in the table; the text-safe shades are the open decision in #230.
 - **Focus ring:** A 3px cyan ring at `rgba(8, 138, 191, 0.4)` — verified against all surfaces.
 
 ### 3.7 Resolved colour decisions
@@ -199,6 +208,7 @@ Pairings tested at WCAG AA. ✅ passes for normal-size body (4.5:1). 🅻 passes
 | Two purples (`#882DE7` vs `#7C3AED`) | `#882DE7` canonical. Replace `#7C3AED` everywhere. |
 | Two ambers (`#FEA700` vs `#D97706`) | `#FEA700` canonical. Replace `#D97706` everywhere. |
 | Rogue `#FFFF00` in Albany deck | Remove. Use `--ax-amber`. |
+| Amber used as small text on light surfaces (1.96:1) | `--ax-amber-text` (`#8A5E00`) for text; `--ax-amber` for fills, borders, icons and text on navy. Added 2026-11-21 (#229), enforced by Check #11. |
 | Off-brand `#2E75B6`, `#2C3E50`, `#1E2A3A` in Word docs | Replace with `--ax-cyan`, `--ax-slate-dark`, `--ax-navy-deep` on next revision. |
 
 ---
