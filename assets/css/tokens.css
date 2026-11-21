@@ -27,6 +27,7 @@
   --ax-amber-text:     #8A5E00;  /* Amber as TEXT on white, paper or the amber tint: 4.9:1 or better on all three (WCAG AA) */
   --ax-purple:         #882DE7;  /* Quaternary */
   --ax-green:          #1FBD53;  /* Success */
+  --ax-green-text:     #15803D;  /* Green for check marks and text on white or off-white: 5.0:1 on white (--ax-green is 2.5:1) */
   --ax-blue:           #3477F5;  /* Functional blue */
 
   /* Surfaces — cool family --------------------------------------------------- */
