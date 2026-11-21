@@ -13,6 +13,9 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Added
+- **Three blog drafts from the bootcamp cohort material, for founder review, not for publishing as is** (2026-11-21): `020-give-ai-a-desk-not-a-question` (Andy), `021-anything-you-explain-to-ai-twice-is-a-job-to-save` (Andy) and `022-check-the-file-not-the-reply` (Toby), dated 24 November, 1 and 8 December 2026. Written for founders and MDs who have tried AI and stalled, each ending in one thing to do this week and a link to the open cohort page. No participant names, survey figures or course text; each uses one illustrative example. Alongside: a ten-angle shortlist (`docs/marketing/bootcamp-blog-shortlist-2026-11-21.md`) and 120 to 180 word newsletter versions (`docs/marketing/bootcamp-blog-newsletter-drafts-2026-11-21.md`), not wired into anything. Prompted by the 2026-11-20 customer-experience audit finding that the blog went quiet on 6 September and drifted technical. Merging publishes the three articles, so the PR stays draft until the founders have reviewed voice and claims and confirmed the dates.
+
 ### Fixed
 - **Amber text now passes contrast** ([#229](https://github.com/acc-x/accelerator-x-website/issues/229)): brand amber `#FEA700` is 1.96:1 on white, far under the 4.5:1 AA minimum for small text, yet it was the text colour of the homepage "Tools, skills, systems" kicker and "02" icon, the "For a room" offer-card eyebrow, the What we do "Also" kicker, the insights "Tech & AI" tile and the video format label. Added `--ax-amber-text` (`#8A5E00`, 5.18:1 to 5.70:1 on white and the amber tint, measured in the browser) and used it for every amber text colour; `--ax-amber` stays for fills, borders and icons. `.chip--amber` and `.pill-warning` now use the token instead of a hardcoded `#7a5400`. Cyan, pink and green text fail too and need a colour ruling first: [#230](https://github.com/acc-x/accelerator-x-website/issues/230).
 
