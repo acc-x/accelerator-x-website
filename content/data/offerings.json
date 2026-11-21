@@ -132,9 +132,9 @@
       "audience": "Conferences, leadership offsites, senior partnerships.",
       "one_liner": "Move a room. In an afternoon.",
       "formats": [
-        { "name": "AI Keynote", "duration": "45–90 min", "audience_size": "up to 2,000" },
-        { "name": "Leadership Offsite", "duration": "half / full day", "audience_size": "10–40 leaders" },
-        { "name": "AI Hackathon", "duration": "4–8 hrs", "audience_size": "40–200" }
+        { "name": "AI Keynote", "duration": "45–90 min" },
+        { "name": "Leadership Offsite", "duration": "half / full day" },
+        { "name": "AI Hackathon", "duration": "4–8 hrs" }
       ],
       "pricing": "POA",
       "price_note": "Price on application — too situation-dependent for a number (e.g. £25k for two AI hackathon offsites + travel/accommodation). Inquiry-led, no events calendar. Confirmed 2026-06-14.",
