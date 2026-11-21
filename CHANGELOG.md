@@ -13,6 +13,9 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Added
+- **Three blog drafts from the bootcamp cohort material, for founder review, not for publishing as is** (2026-11-21): `020-give-ai-a-desk-not-a-question` (Andy), `021-anything-you-explain-to-ai-twice-is-a-job-to-save` (Andy) and `022-check-the-file-not-the-reply` (Toby), dated 24 November, 1 and 8 December 2026. Written for founders and MDs who have tried AI and stalled, each ending in one thing to do this week and a link to the open cohort page. No participant names, survey figures or course text; each uses one illustrative example. Alongside: a ten-angle shortlist (`docs/marketing/bootcamp-blog-shortlist-2026-11-21.md`) and 120 to 180 word newsletter versions (`docs/marketing/bootcamp-blog-newsletter-drafts-2026-11-21.md`), not wired into anything. Prompted by the 2026-11-20 customer-experience audit finding that the blog went quiet on 6 September and drifted technical. Merging publishes the three articles, so the PR stays draft until the founders have reviewed voice and claims and confirmed the dates.
+
 ### Fixed
 - **Apply form now creates a linked CRM Contact, not just an Account** ([#204](https://github.com/acc-x/accelerator-x-website/issues/204)): `lead-capture` writes a Contact (name, job title, email, role type "Other", notes) to the Contacts table linked to the new Account, or links the existing Contact with the same email, but only when that Contact has no other Account links (the form is unauthenticated, so a client's Contact is never re-linked by a submission; that case alerts instead). A Contact failure or timeout (4s) never undoes the Account or Slack post; it is logged and raised in Slack as a distinct alert naming the Account record. The public response deliberately does not report the Contact outcome. Prompted by an applicant on 10 Nov 2026 who had an Account but no Contact.
 

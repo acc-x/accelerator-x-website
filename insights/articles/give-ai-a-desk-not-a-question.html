@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="en-GB">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Give AI a Desk, Not a Question: The Setup That Stops You Re-explaining Yourself | Accelerator X Insights</title>
+    <meta name="description" content="If every AI chat starts with you explaining who you are and what you need, the tool is working against you. Here is the thirty-minute setup that fixes it, and how to do it this week." />
+
+    <link
+      rel="canonical"
+      href="https://accelerator-x.ai/insights/articles/give-ai-a-desk-not-a-question.html"
+    />
+    <meta name="robots" content="index, follow" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="/assets/icons/AX-icon.png" sizes="any" />
+    <link rel="shortcut icon" type="image/png" href="/assets/icons/AX-icon.png" />
+
+    <!-- Fonts & Styles -->
+    <!-- Figtree loads via <link> so the fetch runs parallel to the CSS bundle (a bundle @import
+         would serialise it behind the full bundle download). The old Aptos preloads are gone:
+         no selector uses the Aptos face, so they were dead highest-priority bytes (2026-08-21). -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@500;600;700;900&display=swap" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link rel="stylesheet" href="/assets/css/bundle.generated.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" onload="this.onload=null;this.rel='stylesheet'" />
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap" /></noscript>
+
+    <!-- Open Graph SEO -->
+    <meta property="og:title" content="Give AI a Desk, Not a Question: The Setup That Stops You Re-explaining Yourself" />
+    <meta property="og:description" content="If every AI chat starts with you explaining who you are and what you need, the tool is working against you. Here is the thirty-minute setup that fixes it, and how to do it this week." />
+    <meta property="og:type" content="article" />
+    <meta property="og:site_name" content="Accelerator X" />
+    <meta property="og:url" content="https://accelerator-x.ai/insights/articles/give-ai-a-desk-not-a-question.html" />
+    <meta property="og:image" content="https://accelerator-x.ai/assets/images/og-image-1200.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="article:author" content="https://www.linkedin.com/in/heyandycarroll/" />
+    <meta property="article:published_time" content="2026-11-24" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://accelerator-x.ai/assets/images/og-image-1200.png" />
+
+    <!-- Article structured data — used by LinkedIn, Google, and other scrapers -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Article",
+      "headline": "Give AI a Desk, Not a Question: The Setup That Stops You Re-explaining Yourself",
+      "description": "If every AI chat starts with you explaining who you are and what you need, the tool is working against you. Here is the thirty-minute setup that fixes it, and how to do it this week.",
+      "image": "https://accelerator-x.ai/assets/images/og-image-1200.png",
+      "datePublished": "2026-11-24",
+      "url": "https://accelerator-x.ai/insights/articles/give-ai-a-desk-not-a-question.html",
+      "author": {
+        "@type": "Person",
+        "name": "Andy Carroll",
+        "url": "https://www.linkedin.com/in/heyandycarroll/"
+      },
+      "publisher": {
+        "@type": "Organization",
+        "name": "Accelerator X",
+        "url": "https://accelerator-x.ai",
+        "logo": {
+          "@type": "ImageObject",
+          "url": "https://accelerator-x.ai/assets/icons/AX-icon.png"
+        }
+      },
+      "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://accelerator-x.ai/insights/articles/give-ai-a-desk-not-a-question.html"
+      }
+    }
+    </script>
+
+    <!-- FAQPage structured data — built from this article's own question-led H2s
+         and their answer prose (scripts/hub-utils.js), so it cannot drift from
+         the visible content. Empty for articles without question H2s. -->
+    <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Why does AI output still need so much rework?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Ask a room of founders and managing directors what frustrates them about AI and two answers come up again and again. The output needs reworking before it is any use, and the tool does not understand their business. We heard exactly that from the leaders on our current bootcamp cohort, in their first week."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What does \"giving AI a desk\" actually mean?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Think about how you would set up a capable new chief of staff on their first day. You would not brief them from scratch every time you asked for something. You would tell them once who you are and how you like to work. You would give them a desk with the relevant files on it. Then each request would be short, because everything else is already in place."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why a folder, of all things?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "A folder is the most ordinary filing system there is, and that is the point: you already know how to use one, and it outlasts any particular chat. In Claude's desktop app you can point a project at a folder on your computer and the assistant reads and saves files there, so what it makes stays somewhere you can find it. Other tools handle files differently, so check what yours supports."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What goes in the rules file?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Less than you think. Here is an illustrative example for a managing director who prepares a board meeting every month. It is made up, but it is the right size:"
+      }
+    }
+  ]
+}
+    </script>
+
+    <script defer src="/assets/js/analytics.js"></script>
+  </head>
+
+  <body class="bg-surface text-navy min-h-screen flex flex-col">
+    <a href="#main-content" class="ax-skip-link">Skip to main content</a>
+
+<header class="ax-nav" role="banner">
+  <div class="ax-nav__bar">
+
+    <a href="/" class="ax-nav__logo" aria-label="Accelerator X home">
+      <img
+        src="/assets/brand/logos/AcceleratorX.svg"
+        alt="Accelerator X"
+        class="ax-nav__logo-img"
+        width="224"
+        height="38"
+        loading="eager"
+        decoding="async"
+      />
+    </a>
+
+    <nav class="ax-nav__links" aria-label="Main navigation">
+      <a href="/what-we-do/" class="ax-nav__link">What we do</a>
+      <a href="/how-we-work/" class="ax-nav__link">How we work</a>
+      <a href="/about/" class="ax-nav__link">About</a>
+      <a href="/insights/" class="ax-nav__link">Insights</a>
+      <a href="https://quiz.accelerator-x.ai" class="ax-nav__link" target="_blank" rel="noopener noreferrer">
+        Quiz
+        <svg class="ax-nav__ext-icon" width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+          <path d="M3.5 2h6.5v6.5M9.5 2.5L2 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+    </nav>
+
+    <div class="ax-nav__actions">
+      <a href="/contact/" class="btn btn--accent btn--sm ax-nav__cta">Apply to work with us</a>
+
+      <button
+        type="button"
+        class="ax-nav__hamburger"
+        data-mobile-nav-toggle
+        aria-expanded="false"
+        aria-controls="ax-mobile-nav"
+        aria-label="Open navigation menu"
+      >
+        <span class="ax-nav__bar-line" aria-hidden="true"></span>
+        <span class="ax-nav__bar-line" aria-hidden="true"></span>
+        <span class="ax-nav__bar-line" aria-hidden="true"></span>
+      </button>
+    </div>
+
+  </div>
+
+  <div id="ax-mobile-nav" class="ax-nav__drawer hidden" aria-label="Mobile navigation">
+    <nav class="ax-nav__drawer-links">
+      <a href="/what-we-do/" class="ax-nav__drawer-link">What we do</a>
+      <a href="/how-we-work/" class="ax-nav__drawer-link">How we work</a>
+      <a href="/about/" class="ax-nav__drawer-link">About</a>
+      <a href="/insights/" class="ax-nav__drawer-link">Insights</a>
+      <a href="https://quiz.accelerator-x.ai" class="ax-nav__drawer-link" target="_blank" rel="noopener noreferrer">AI readiness quiz ↗</a>
+    </nav>
+    <div class="ax-nav__drawer-cta">
+      <a href="/contact/" class="btn btn--accent" style="width:100%;justify-content:center">Apply to work with us</a>
+    </div>
+  </div>
+</header>
+
+
+    <main id="main-content" class="flex-grow">
+      <article class="mx-auto max-w-[70ch] px-4 py-12 lg:py-20">
+        <a href="/insights/" class="mb-8 inline-flex items-center gap-1 text-sm font-medium text-muted transition-colors hover:text-primary">
+          <span class="material-symbols-outlined text-sm">arrow_back</span> Back to Hub
+        </a>
+        <!-- Article Header -->
+        <header class="mb-12">
+          <span
+            class="text-sm font-bold uppercase tracking-wider text-primary mb-4 block"
+            >Capability</span
+          >
+          <h1
+            class="font-display text-4xl font-bold leading-tight lg:text-5xl mb-6"
+          >
+            Give AI a Desk, Not a Question: The Setup That Stops You Re-explaining Yourself
+          </h1>
+
+          <p class="article-date-meta">24 November 2026</p>
+
+          
+    <div class="article-author-card border-b border-surface pb-8">
+      <div class="article-author-card__inner">
+        <picture class="article-author-card__picture">
+          <source type="image/webp" srcset="/assets/images/andy-black-t-400.webp 400w, /assets/images/andy-black-t-800.webp 800w" sizes="56px" />
+          <img src="/assets/images/andy-black-t-400.jpg" srcset="/assets/images/andy-black-t-400.jpg 400w, /assets/images/andy-black-t-800.jpg 800w" sizes="56px" alt="Andy Carroll" width="56" height="56" loading="lazy" decoding="async" class="article-author-card__image" />
+        </picture>
+        <div class="article-author-card__body">
+          <div class="article-author-card__header">
+            <div>
+              <p class="article-author-card__name">Andy Carroll</p>
+              <p class="article-author-card__role">Co-founder</p>
+            </div>
+          </div>
+          <p class="article-author-card__bio">Andy is a product and AI specialist with 17+ years across startups, banking, and consultancies.</p>
+        </div>
+      </div>
+    </div>
+  
+        </header>
+
+        <!-- The BLUF Box (Bottom Line Up Front) -->
+        <!-- article-init.js reveals this if data-bluf is non-empty after build substitution -->
+        <div class="bluf-container mb-12 hidden" data-bluf="Most leaders who stall with AI are using it as a question box: every chat starts from zero, so the output is generic and needs rework. The fix is to give it a desk: say who you are once, give each recurring job its own folder with a short rules file, and let the prompt carry only what is new today.">
+          <div
+            class="bg-surface-2 border-l-4 border-primary p-6 lg:p-8 rounded-r-xl"
+          >
+            <div class="flex items-center gap-2 mb-3">
+              <span class="material-symbols-outlined text-primary">bolt</span>
+              <h2 class="font-display font-bold text-navy text-lg m-0">
+                Executive Summary
+              </h2>
+            </div>
+            <p class="text-navy font-medium leading-relaxed m-0">Most leaders who stall with AI are using it as a question box: every chat starts from zero, so the output is generic and needs rework. The fix is to give it a desk: say who you are once, give each recurring job its own folder with a short rules file, and let the prompt carry only what is new today.</p>
+          </div>
+        </div>
+
+        <!-- Weekly dispatch — in content flow (top third), well above the footer band -->
+        <!-- NewsletterSignup — single source of truth for the weekly-dispatch signup.
+     Used in-page on content pages (top third) AND as the band at the top of the footer
+     (all pages). Same markup both places; the footer wraps it so the dark-context CSS applies.
+     No id attributes by design: it can appear twice on one page. JS binds .js-newsletter-form
+     and finds the status nodes relative to each form (see assets/js/forms.js). Copy lives here only. -->
+<section class="ax-newsletter" aria-label="Subscribe to the weekly dispatch">
+  <div class="ax-newsletter__inner">
+    <div class="ax-newsletter__copy">
+      <span class="ax-kicker">Weekly dispatch</span>
+      <h2 class="ax-newsletter__heading">Stay sharp on AI.</h2>
+      <p class="ax-newsletter__sub">The weekly dispatch for founders, directors and CTOs building real AI capability: the hard-won lessons, not the hype. One email a week.</p>
+    </div>
+    <div class="ax-newsletter__form-wrap">
+      <form class="ax-newsletter__form js-newsletter-form" data-newsletter-source="site" novalidate>
+        <label class="ax-newsletter__field">
+          <span class="sr-only">Work email</span>
+          <input
+            type="email"
+            name="email"
+            class="input ax-newsletter__input"
+            placeholder="you@company.com"
+            required
+            autocomplete="email"
+          />
+        </label>
+        <button type="submit" class="btn btn--accent btn--lg ax-newsletter__submit">Get the dispatch</button>
+      </form>
+      <p class="ax-newsletter__note">One useful note each week. Unsubscribe anytime.</p>
+      <div class="ax-newsletter__status ax-newsletter__status--success" hidden role="status" aria-live="polite">
+        <p>You're in. Welcome email on its way.</p>
+      </div>
+      <div class="ax-newsletter__status ax-newsletter__status--error" hidden role="alert">
+        <p>Something went wrong, please try again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+        <!-- Article Content -->
+        <div class="prose prose-lg prose-navy max-w-none"><h2>Why does AI output still need so much rework?</h2>
+<p>Ask a room of founders and managing directors what frustrates them about AI and two answers come up again and again. The output needs reworking before it is any use, and the tool does not understand their business. We heard exactly that from the leaders on our current bootcamp cohort, in their first week.</p>
+<p>Both complaints have the same cause. Most people use AI as a question box. You open a chat, explain who you are, explain the situation, ask for the thing, get something generic back, explain again what you meant, and close the window. Tomorrow you start from zero. What the tool lacks is context about you and your business, and you pay for that gap in time, every single chat.</p>
+<h2>What does &quot;giving AI a desk&quot; actually mean?</h2>
+<p>Think about how you would set up a capable new chief of staff on their first day. You would not brief them from scratch every time you asked for something. You would tell them once who you are and how you like to work. You would give them a desk with the relevant files on it. Then each request would be short, because everything else is already in place.</p>
+<p>AI works the same way, and the context stacks in three layers:</p>
+<ol>
+<li><strong>Who you are, set once.</strong> Your role, your business, who you communicate with, how you like things written, what you never want. Every mainstream assistant has a place for this: Claude calls it Instructions for Claude, ChatGPT calls it custom instructions. It sits behind every chat you have.</li>
+<li><strong>What this piece of work is for, set per job.</strong> A folder on your computer for one recurring job, with a short rules file inside it that says what the folder is for, where things go and how to behave.</li>
+<li><strong>What you want right now, in the prompt.</strong> Only what is new today. Because the first two layers are doing the heavy lifting, the prompt gets shorter and the result gets better.</li>
+</ol>
+<p>Most leaders have only ever used the third layer. That is why it feels like hard work.</p>
+<h2>Why a folder, of all things?</h2>
+<p>A folder is the most ordinary filing system there is, and that is the point: you already know how to use one, and it outlasts any particular chat. In Claude&#39;s desktop app you can point a project at a folder on your computer and the assistant reads and saves files there, so what it makes stays somewhere you can find it. Other tools handle files differently, so check what yours supports.</p>
+<p>A simple layout that works for most jobs:</p>
+<ul>
+<li><strong>inputs/</strong> for what you bring in: notes, emails, reports, transcripts.</li>
+<li><strong>outputs/</strong> for what it makes that is worth keeping, with the date at the front of the file name.</li>
+<li><strong>reference/</strong> for background it should know but never change.</li>
+<li><strong>A rules file</strong> at the top. Claude looks for a file called <code>CLAUDE.md</code>. Make its first line an instruction to read the whole file before doing anything, then check in a fresh chat that it actually does, rather than assuming it.</li>
+</ul>
+<h2>What goes in the rules file?</h2>
+<p>Less than you think. Here is an illustrative example for a managing director who prepares a board meeting every month. It is made up, but it is the right size:</p>
+<blockquote>
+<p><strong>Board prep.</strong> Read this whole file before you do anything in this folder.
+This folder is for preparing our monthly board meeting. Papers for the next meeting go in inputs/. Last quarter&#39;s minutes and our three-year plan are in reference/.
+You prepare; I review and circulate. Nothing leaves this folder without me.
+If a figure is not in the papers, leave a visible gap rather than estimating it.
+Lead with the decisions the board needs to make, not a summary of the papers.
+Keep anything you write to a single page unless I ask for more.</p>
+</blockquote>
+<p>Notice what is not in there: anything about the person. Who you are belongs in the first layer, once. The rules file only describes the job. Keep the two apart and each one stays short enough to read and easy to change.</p>
+<h2>How much time does this save?</h2>
+<p>We would rather you measured it than took our word for it. The test is simple: after a week, count how many times you had to explain the same background twice. With the setup in place, the answer for most recurring jobs should be close to zero, and the first draft should be close enough that you edit it rather than rewrite it.</p>
+<p>That is the shift that matters: you stop doing the part of the job that is pure repetition, so the same leader, with the same team, gets through considerably more of the work that actually needs them.</p>
+<h2>What gets in the way?</h2>
+<p>The honest answer, from watching people do this live: rarely the AI, quite often the laptop. In the first week of our current cohort, several people could not connect the assistant to their folder at all, and most of them were on company-managed Windows laptops. Managed machines can block an assistant from reaching local folders, and cloud-synced folders sometimes show files as &quot;online only&quot;, which the assistant cannot open. We have learned to sort this out before anyone sits down to build, not in the middle of it. If you are on a company laptop, a five-minute conversation with whoever runs your IT will save you an hour of frustration.</p>
+<h2>What can you do this week?</h2>
+<p>Set aside thirty minutes and do four things.</p>
+<ol>
+<li><strong>Write your standing instructions.</strong> The fastest way is to ask the assistant to interview you for them. Paste this into a new chat:</li>
+</ol>
+<div class="bg-surface-2 border-l-4 border-primary rounded-r-xl p-6 lg:p-8" style="margin:2rem 0;">
+<p class="ax-kicker ax-kicker--accent" style="margin:0 0 0.75rem;">Copy this prompt</p>
+<p class="font-mono text-navy leading-relaxed" style="margin:0;">Interview me, one question at a time, to write my standing instructions: who I am, what I do, who I write for, how I like you to work, and anything you must always or never do. Play back what you understood after each answer. Then draft them in the first person, under 350 words, with nothing confidential, and show me the draft to correct.</p>
+</div>
+
+<ol start="2">
+<li><strong>Make one folder</strong> for one job you do every week or every month. Add inputs, outputs and reference inside it.</li>
+<li><strong>Write the rules file,</strong> six or seven lines, like the example above. Ask the assistant to draft it from a two-sentence description, then cut it down.</li>
+<li><strong>Run one real task</strong> in that folder and notice what you no longer had to explain.</li>
+</ol>
+<p>That is the first layer of what we call an AI Chief of Staff: a system you build from your own files and your own way of working, rather than a tool you have to keep re-teaching. It is week one of our eight-week <a href="/what-we-do/leadership-cohort/">Open Cohort AI Bootcamp for Business Leaders</a>, where each week adds a layer on top of this one, built on your real work.</p>
+</div>
+
+        
+    <div class="article-share-panel" aria-label="Share this article">
+      <p class="article-share-panel__label">Share</p>
+      <div class="article-share-panel__icons">
+        <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Faccelerator-x.ai%2Finsights%2Farticles%2Fgive-ai-a-desk-not-a-question.html" target="_blank" rel="noopener noreferrer" class="article-share-panel__link" aria-label="Share on LinkedIn"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg></a>
+        <a href="https://x.com/intent/post?url=https%3A%2F%2Faccelerator-x.ai%2Finsights%2Farticles%2Fgive-ai-a-desk-not-a-question.html&text=Give%20AI%20a%20Desk%2C%20Not%20a%20Question%3A%20The%20Setup%20That%20Stops%20You%20Re-explaining%20Yourself" target="_blank" rel="noopener noreferrer" class="article-share-panel__link" aria-label="Share on X"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg></a>
+      </div>
+    </div>
+  
+
+        <!-- Lead magnet: the free AI readiness scorecard. lead_magnet_cta is the
+             per-article pitch line; kicker and button are fixed. -->
+        <div class="bg-background border border-surface rounded-lg p-8 my-12 text-center">
+          <span class="ax-kicker ax-kicker--accent">Free AI readiness scorecard</span>
+          <p class="text-lg font-medium text-navy mb-6">Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch.</p>
+          <a href="https://quiz.accelerator-x.ai" class="btn btn--accent btn--lg">Take the scorecard</a>
+        </div>
+
+        <!--
+        <div class="source-preference-card source-preference-card--compact my-12">
+          <div>
+            <p class="source-preference-eyebrow">Rate the signal?</p>
+            <h3 class="source-preference-title">Add Accelerator X as a preferred source on Google.</h3>
+            <p class="source-preference-copy">If this piece was useful, you can tell Google you want to see more from Accelerator X. The link opens source preferences in a new tab.</p>
+          </div>
+          <a href="https://www.google.com/preferences/source?q=accelerator-x.ai" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm whitespace-nowrap">Add on Google</a>
+        </div>
+        -->
+      </article>
+
+      <!-- Infinite Momentum Footer -->
+      <div
+        class="momentum-footer bg-background border-t border-surface py-16 hidden"
+        data-next="/insights/articles/why-ai-pilots-die-in-the-gap.html"
+      >
+        <div class="mx-auto max-w-[70ch] px-4 text-center">
+          <h4 class="text-sm font-bold uppercase tracking-wider text-muted mb-4">The Next Step</h4>
+          <a href="/insights/articles/why-ai-pilots-die-in-the-gap.html" class="block">
+            <h3 class="font-display text-2xl lg:text-3xl font-bold text-navy transition-colors">Why AI Pilots Die in the Gap Between the Demo and Tuesday Morning</h3>
+            <span class="inline-flex items-center gap-1 mt-6 text-primary font-medium transition-all">
+              Read Framework <span class="material-symbols-outlined text-lg">arrow_forward</span>
+            </span>
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <footer class="ax-footer" role="contentinfo">
+
+  <!-- Weekly dispatch — band at the top of the footer, above the link columns.
+       Single source of truth: _templates/components/NewsletterSignup.html. -->
+  <div class="ax-footer__dispatch">
+    <!-- NewsletterSignup — single source of truth for the weekly-dispatch signup.
+     Used in-page on content pages (top third) AND as the band at the top of the footer
+     (all pages). Same markup both places; the footer wraps it so the dark-context CSS applies.
+     No id attributes by design: it can appear twice on one page. JS binds .js-newsletter-form
+     and finds the status nodes relative to each form (see assets/js/forms.js). Copy lives here only. -->
+<section class="ax-newsletter" aria-label="Subscribe to the weekly dispatch">
+  <div class="ax-newsletter__inner">
+    <div class="ax-newsletter__copy">
+      <span class="ax-kicker">Weekly dispatch</span>
+      <h2 class="ax-newsletter__heading">Stay sharp on AI.</h2>
+      <p class="ax-newsletter__sub">The weekly dispatch for founders, directors and CTOs building real AI capability: the hard-won lessons, not the hype. One email a week.</p>
+    </div>
+    <div class="ax-newsletter__form-wrap">
+      <form class="ax-newsletter__form js-newsletter-form" data-newsletter-source="site" novalidate>
+        <label class="ax-newsletter__field">
+          <span class="sr-only">Work email</span>
+          <input
+            type="email"
+            name="email"
+            class="input ax-newsletter__input"
+            placeholder="you@company.com"
+            required
+            autocomplete="email"
+          />
+        </label>
+        <button type="submit" class="btn btn--accent btn--lg ax-newsletter__submit">Get the dispatch</button>
+      </form>
+      <p class="ax-newsletter__note">One useful note each week. Unsubscribe anytime.</p>
+      <div class="ax-newsletter__status ax-newsletter__status--success" hidden role="status" aria-live="polite">
+        <p>You're in. Welcome email on its way.</p>
+      </div>
+      <div class="ax-newsletter__status ax-newsletter__status--error" hidden role="alert">
+        <p>Something went wrong, please try again.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+  </div>
+
+  <div class="ax-footer__inner">
+
+    <!-- Brand column -->
+    <div class="ax-footer__brand">
+      <a href="/" class="ax-footer__logo-link" aria-label="Accelerator X home">
+        <img
+          src="/assets/brand/logos/AcceleratorX-white.svg"
+          alt="Accelerator X"
+          class="ax-footer__logo"
+          width="180"
+          height="30"
+          loading="lazy"
+          decoding="async"
+        />
+      </a>
+      <p class="ax-footer__tagline">Practical frameworks for leaders building real AI capability.</p>
+      <p class="ax-footer__reg">Accelerator X Ltd · Company No. 16974247</p>
+    </div>
+
+    <!-- Navigation column -->
+    <nav class="ax-footer__nav" aria-label="Footer navigation">
+      <div class="ax-footer__nav-group">
+        <p class="ax-footer__nav-heading">Explore</p>
+        <ul class="ax-footer__nav-list">
+          <li><a href="/what-we-do/" class="ax-footer__link">What we do</a></li>
+          <li><a href="/how-we-work/" class="ax-footer__link">How we work</a></li>
+          <li><a href="/insights/" class="ax-footer__link">Insights</a></li>
+          <li><a href="/faq/" class="ax-footer__link">FAQ</a></li>
+          <li><a href="https://quiz.accelerator-x.ai" class="ax-footer__link" target="_blank" rel="noopener noreferrer">AI readiness quiz ↗</a></li>
+          <li><a href="/contact/" class="ax-footer__link">Apply to work with us</a></li>
+        </ul>
+      </div>
+      <div class="ax-footer__nav-group">
+        <p class="ax-footer__nav-heading">Connect</p>
+        <ul class="ax-footer__nav-list">
+          <li>
+            <a href="https://www.linkedin.com/company/accelerator-x-uk/" class="ax-footer__link ax-footer__link--social" target="_blank" rel="noopener noreferrer" aria-label="Accelerator X on LinkedIn">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+  </div>
+
+  <div class="ax-footer__bottom">
+    <div class="ax-footer__legal">
+      <a href="/privacy.html" class="ax-footer__legal-link">Privacy</a>
+      <a href="/terms.html" class="ax-footer__legal-link">Terms</a>
+    </div>
+    <p class="ax-footer__copyright">© 2026 Accelerator X. All rights reserved.</p>
+  </div>
+</footer>
+
+
+    <script defer src="/assets/js/nav.js"></script>
+    <script defer src="/assets/js/article-init.js"></script>
+    <script src="/assets/js/forms.js" defer></script>
+  </body>
+</html>
