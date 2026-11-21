@@ -38,6 +38,9 @@ to fail (Check 6).
 - Hardcode site-wide URLs or emails defined in `scripts/site-config.js` (LinkedIn
   profiles, company LinkedIn, quiz URL, founder emails) — use `{{site:KEY}}` tokens
   <!-- check: scripts/check.js#9 -->
+- Use brand amber (`--ax-amber`) as a text colour: it is 1.96:1 on white. Text uses
+  `--ax-amber-text`; amber stays for fills, borders and icons (#229)
+  <!-- check: scripts/check.js#11 -->
 
 ## No inline scripts
 

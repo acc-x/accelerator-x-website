@@ -1,7 +1,7 @@
 'use strict';
 
 // Fixture tests for scripts/check.js (#134). check.js is the content-honesty and token
-// drift guard (Checks #1-#10) and a silent failure in it would let a clanger through, so
+// drift guard (Checks #1-#11) and a silent failure in it would let a clanger through, so
 // every check gets at least one fixture that must fail, plus a clean tree that must pass.
 //
 // Each test builds a minimal passing tree in a temp dir, mutates one thing, and runs the
@@ -210,5 +210,24 @@ test('check 10c passes when the live offering has its template', () => {
       offerings: [{ key: 'foo', status: 'live', slug: '/what-we-do/foo/' }],
     }),
     '_templates/offerings/foo.html': '<h1>Foo</h1>\n',
+  });
+});
+
+// Check 11: amber is never a text colour (#229)
+test('check 11 fails on color: var(--ax-amber) in a component stylesheet', () => {
+  assertFails(
+    { 'assets/css/components/Card.css': '.card__eyebrow {\n  color: var(--ax-amber);\n}\n' },
+    /Card\.css:2 .*amber used as a text colour/
+  );
+});
+test('check 11 fails on the text-amber utility in a template', () => {
+  assertFails({ '_templates/page.html': '<span class="text-sm text-amber mb-1">Tech</span>\n' }, /text-amber utility/);
+});
+test('check 11 allows amber fills and borders, the text token and text-amber-text', () => {
+  assertPasses({
+    'assets/css/components/Card.css':
+      '.a { border-top: 3px solid var(--ax-amber); }\n.b { border-color: var(--ax-amber); }\n' +
+      '.c { background-color: var(--ax-amber); }\n.d { color: var(--ax-amber-text); }\n',
+    '_templates/page.html': '<span class="text-amber-text">Tech</span>\n',
   });
 });
