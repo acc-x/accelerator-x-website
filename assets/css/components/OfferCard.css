@@ -118,4 +118,4 @@
 
 .ax-offer-card--cyan  .ax-offer-card__eyebrow { color: var(--ax-cyan); }
 .ax-offer-card--pink  .ax-offer-card__eyebrow { color: var(--ax-pink); }
-.ax-offer-card--amber .ax-offer-card__eyebrow { color: var(--ax-amber); }
+.ax-offer-card--amber .ax-offer-card__eyebrow { color: var(--ax-amber-text); }

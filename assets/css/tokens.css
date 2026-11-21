@@ -23,7 +23,8 @@
   --ax-navy-deep:      #131D30;  /* Section dividers, footer bars */
   --ax-pink:           #E93F8E;  /* Signature — the X, CTAs, emphasis */
   --ax-cyan:           #088ABF;  /* Web "go", data callouts, links */
-  --ax-amber:          #FEA700;  /* Outputs, highlights, warnings */
+  --ax-amber:          #FEA700;  /* Outputs, highlights, warnings: fills, borders and icons only (1.96:1 on white) */
+  --ax-amber-text:     #8A5E00;  /* Amber as TEXT on white, paper or the amber tint: 4.9:1 or better on all three (WCAG AA) */
   --ax-purple:         #882DE7;  /* Quaternary */
   --ax-green:          #1FBD53;  /* Success */
   --ax-blue:           #3477F5;  /* Functional blue */
@@ -550,7 +551,7 @@ a:not(.btn):hover { color: var(--action-accent); }
 
 .pill-success { background: rgba(31, 189, 83, 0.12); color: #15803d; }
 .pill-error   { background: rgba(239, 68, 68, 0.12); color: #b91c1c; }
-.pill-warning { background: rgba(254, 167, 0, 0.18); color: #7a5400; }
+.pill-warning { background: rgba(254, 167, 0, 0.18); color: var(--ax-amber-text); }
 
 /* --- Pink X motif --------------------------------------------------------- */
 .ax-x {

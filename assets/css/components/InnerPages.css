@@ -698,7 +698,7 @@
   font-weight: var(--fw-bold);
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
-  color: var(--ax-amber);
+  color: var(--ax-amber-text);
 }
 
 .ax-talks-panel__heading {
