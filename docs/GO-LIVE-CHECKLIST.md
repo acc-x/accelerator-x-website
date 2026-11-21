@@ -94,7 +94,7 @@ Component: `_templates/components/ProofRow.html`
 - `[x]` Hero risk-note "Phase 0 from £5,000 · 2 weeks" — now token-driven from Canon (£5k locked); founder sign-off pending §11
 - `[ ]` Hero chip: "Now taking on new clients · Q3 2026" — confirm this is accurate at launch date
 - `[x]` Process timeline "Phase 1 from £20,000" — now token-driven from Canon (£20k locked); founder sign-off pending §11
-- `[ ]` ApplyForm SLA: "Average response time: 2 business days" — accurate?
+- `[x]` ApplyForm SLA: now "We reply within 1 business day." (#222), matching the confirmed 1-business-day reply time
 - `[ ]` CTABand: "Real reply within a week" — accurate SLA?
 - `[ ]` Confirm no `priceRange` in JSON-LD remains the right decision (noted in CLAUDE.md)
 

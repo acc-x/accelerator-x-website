@@ -146,7 +146,7 @@ exports.handler = async (event, context) => {
       return { statusCode: 200, headers, body: JSON.stringify({ skipped: 'different form' }) };
     }
 
-    const safeTrim = (val = '', maxLen = Infinity) => String(val).trim().slice(0, maxLen);
+    const safeTrim = (val = '', maxLen = Infinity) => String(val ?? '').trim().slice(0, maxLen);
 
     // Normalize website: prepend https:// if missing
     const normalizeWebsite = (val = '') => {

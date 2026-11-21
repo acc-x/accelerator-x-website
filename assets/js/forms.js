@@ -127,6 +127,10 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.error) throw new Error(data.error);
+          // The function answers 200 {skipped} when it drops a submission (blank required field,
+          // malformed email). Only 'spam' (the honeypot) is deliberately silent; anything else
+          // must not show "Thanks", or the visitor believes a message was sent that was not.
+          if (data.skipped && data.skipped !== 'spam') throw new Error(`Submission skipped: ${data.skipped}`);
           // Conversion event: where the form lives, nothing the visitor typed.
           track('apply_form_submit', { location: leadSource });
           showLeadSuccess();

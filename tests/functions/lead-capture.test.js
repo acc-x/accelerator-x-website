@@ -179,6 +179,21 @@ test('an invalid optional website still writes the record: Website left out, N/A
   });
 });
 
+test('null optional fields are treated as absent, not written as the text "null"', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200 },
+    ]);
+    global.fetch = stub;
+    await mod.handler(makeEvent({ ...MINIMAL_FIELDS, role: null, website: null, timeline: null, problem: null }));
+    const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+    assert.ok(!('Primary Contact Role' in account.body.fields), 'a null role must not become the string "null"');
+    assert.ok(!('Website' in account.body.fields));
+    assert.ok(!JSON.stringify(account.body.fields).includes('null'), 'no "null" string anywhere in the Account payload');
+  });
+});
+
 test('a 2,000-character message reaches Slack and Notes in full; a 2,500-character one is cut to 2,000', async () => {
   await withEnv(MINIMAL_ENV, async (mod) => {
     for (const [sent, kept] of [[2000, 2000], [2500, 2000]]) {
