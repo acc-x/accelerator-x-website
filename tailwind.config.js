@@ -16,6 +16,7 @@ module.exports = {
         pink: 'var(--ax-pink)',
         cyan: 'var(--ax-cyan)',
         amber: 'var(--ax-amber)',
+        'amber-text': 'var(--ax-amber-text)',
         purple: 'var(--ax-purple)',
         green: 'var(--ax-green)',
         blue: 'var(--ax-blue)',

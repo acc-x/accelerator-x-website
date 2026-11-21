@@ -6,7 +6,7 @@
 /* Colour-tinted variants — brand accent chips */
 .chip--cyan   { background: rgba(8, 138, 191, 0.10); color: var(--ax-cyan); }
 .chip--pink   { background: rgba(233, 63, 142, 0.10); color: var(--ax-pink); }
-.chip--amber  { background: rgba(254, 167, 0, 0.12); color: #7a5400; }
+.chip--amber  { background: rgba(254, 167, 0, 0.12); color: var(--ax-amber-text); }
 .chip--purple { background: rgba(136, 45, 231, 0.10); color: var(--ax-purple); }
 
 /* On-dark variant — for chips placed on dark/navy backgrounds */

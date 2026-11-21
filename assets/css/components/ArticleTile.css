@@ -127,7 +127,7 @@
 
 .ax-article-tile[data-format="video"]    .ax-article-tile__format {
   background: var(--surface-amber-subtle);
-  color: var(--ax-amber);
+  color: var(--ax-amber-text);
 }
 
 .ax-article-tile__category {

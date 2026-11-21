@@ -265,7 +265,7 @@
 
 .ax-why-us__card--amber .ax-why-us__card-icon {
   background: var(--surface-amber-subtle);
-  color: var(--ax-amber);
+  color: var(--ax-amber-text);
 }
 
 .ax-why-us__card--pink .ax-why-us__card-icon {
@@ -281,7 +281,7 @@
 }
 
 .ax-why-us__card--cyan .ax-why-us__card-kicker { color: var(--ax-cyan); }
-.ax-why-us__card--amber .ax-why-us__card-kicker { color: var(--ax-amber); }
+.ax-why-us__card--amber .ax-why-us__card-kicker { color: var(--ax-amber-text); }
 .ax-why-us__card--pink  .ax-why-us__card-kicker { color: var(--ax-pink); }
 
 .ax-why-us__card-heading {

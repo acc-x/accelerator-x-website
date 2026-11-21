@@ -13,6 +13,9 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Fixed
+- **Amber text now passes contrast** ([#229](https://github.com/acc-x/accelerator-x-website/issues/229)): brand amber `#FEA700` is 1.96:1 on white, far under the 4.5:1 AA minimum for small text, yet it was the text colour of the homepage "Tools, skills, systems" kicker and "02" icon, the "For a room" offer-card eyebrow, the What we do "Also" kicker, the insights "Tech & AI" tile and the video format label. Added `--ax-amber-text` (`#8A5E00`, 5.18:1 to 5.70:1 on white and the amber tint, measured in the browser) and used it for every amber text colour; `--ax-amber` stays for fills, borders and icons. `.chip--amber` and `.pill-warning` now use the token instead of a hardcoded `#7a5400`. Cyan, pink and green text fail too and need a colour ruling first: [#230](https://github.com/acc-x/accelerator-x-website/issues/230).
+
 ### Changed
 - **Primary CTA is now "Talk to us", not "Apply to work with us"** ([#221](https://github.com/acc-x/accelerator-x-website/issues/221), part of [#220](https://github.com/acc-x/accelerator-x-website/issues/220)): the 2026-11-20 customer experience audit found one real application in three months and an application as the only door. Changed in the nav (desktop and mobile), footer, closing band, homepage hero, the three company and coaching offering pages and their closing "Apply" chips (now "Get in touch"), `llms.txt`, the tracking plan (with a note that `cta_click` labels differ across the change date) and the go-live checklist. The cohort page keeps "Apply", since it is a real application. The contact page kicker follows in #223.
 
