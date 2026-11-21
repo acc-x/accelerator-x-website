@@ -18,7 +18,7 @@ Two ways in:
   How a company moves with us: everyone starts at Phase 0.
 - **For yourself or your leadership team:** Leadership AI Coaching, in three formats:
   - [1:1 Exec AI Fast Track Coaching](https://accelerator-x.ai/what-we-do/senior-leader-acceleration/):
-    a bespoke 6-week 1:1 AI sprint with a founder.
+    a bespoke 8-week 1:1 AI sprint with a founder.
   - [Leadership Team AI Activation](https://accelerator-x.ai/what-we-do/leadership-activation/):
     a leadership team that moves together.
   - [Open Cohort AI Bootcamp for Business Leaders](https://accelerator-x.ai/what-we-do/leadership-cohort/):
@@ -40,7 +40,7 @@ the client, not dependency on us.
 
 ## Key pages
 
-- [Home](https://accelerator-x.ai/): what we do, and how to apply to work with us.
+- [Home](https://accelerator-x.ai/): what we do, and how to get in touch.
 - [What we do](https://accelerator-x.ai/what-we-do/): the two doors in, side by side.
 - [How we work](https://accelerator-x.ai/how-we-work/): the phase-based engagement model.
 - [About](https://accelerator-x.ai/about/): the founders, and why Accelerator X exists.
@@ -48,7 +48,7 @@ the client, not dependency on us.
   and implementation, written by the founders.
 - [FAQ](https://accelerator-x.ai/faq/): common questions, straight answers.
 - [Contact](https://accelerator-x.ai/contact/): how to reach us.
-- [AI Readiness Assessment](https://quiz.accelerator-x.ai): a short self-assessment
+- [AI Readiness Assessment](https://quiz.accelerator-x.ai): a self-assessment of about 10 minutes
   with an on-screen result and an emailed PDF report (requires an email address).
 
 ## Founders

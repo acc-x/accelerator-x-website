@@ -7,7 +7,7 @@ tags: ["Tooling", "Frameworks", "Operations", "Scaling"]
 excerpt: "Most AI pilots aren't killed by the model. A pilot-to-production AI framework: the five stages that decide if a pilot survives, and why each gets skipped."
 slug: "the-5-stage-build-sequence"
 bluf: "Most AI pilots that stall were never killed by the model. They died because one of five stages, proof, ownership, integration, adoption, or governance, was skipped, and the gap only surfaces months later, disguised as a different problem."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/building-the-ai-native-team.html"
 next_article_title: "Building the AI-Native Team: Stop Hiring and Start Upskilling"
 ---

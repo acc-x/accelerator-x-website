@@ -7,7 +7,7 @@ tags: ["Tooling"]
 excerpt: "Most teams respond to a rising AI bill by shopping for a cheaper model. Five boring changes come first: they need no new vendor and no new risk, and most of the saving is already sitting in your own configuration."
 slug: "five-things-to-do-before-you-switch-ai-models"
 bluf: "Most teams reach for a cheaper AI model while most of the saving is still sitting in their own configuration. Five changes, none of which needs a new vendor or a new risk conversation, come first. And the two questions that actually decide where work should run, stakes and sensitivity, are not about price at all."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/where-the-model-came-from-and-where-your-data-goes.html"
 next_article_title: "Where the model came from and where your data goes are two different questions"
 ---

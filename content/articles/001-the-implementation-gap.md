@@ -7,7 +7,7 @@ tags: ["Capability", "Operations", "Scaling", "Change Management"]
 excerpt: "Why AI pilots stall in large organisations is rarely about the technology. It's ownership, budget, and a board that never agreed what happens if it works."
 slug: "the-implementation-gap"
 bluf: "Most AI pilots do not fail. They stall, because nobody owned them once the sponsor's attention moved on, and because success was never tied to a budget line, a P&L outcome, or a board decision about what happens next."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-hard-truth-about-ai-in-the-workplace.html"
 next_article_title: "The hard truth about AI in the workplace that nobody selling AI wants to say"
 ---

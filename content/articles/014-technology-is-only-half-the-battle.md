@@ -7,7 +7,7 @@ tags: ["Capability", "Frameworks", "Change Management"]
 excerpt: "Buying the tool without changing the work is one failure. Running the workshop without rebuilding the systems is the other. Both are the same mistake."
 slug: "technology-is-only-half-the-battle"
 bluf: "Most AI disappointment isn't a technology failure or a people failure. It's a sequencing failure: the tool and the change in how people work were never built as one piece of work with one owner."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/ai-prices-are-collapsing-and-your-bill-is-still-going-up.html"
 next_article_title: "AI prices are collapsing and your bill is still going up"
 ---

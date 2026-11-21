@@ -7,7 +7,7 @@ tags: ["Capability", "Teams", "Reskilling", "Culture"]
 excerpt: "Upskilling vs hiring for AI: the fix isn't recruiting a specialist team. It's teaching the people who already understand your business to use AI well."
 slug: "building-the-ai-native-team"
 bluf: "Hiring a standalone AI team rarely builds lasting capability, because AI expertise without years of embedded knowledge about how your business actually works ends up solving the wrong problems well. The more durable path is investing in the people who already understand your business and making them AI-fluent, not importing fluency from outside."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/leadership-alignment-on-ai.html"
 next_article_title: "Leadership Alignment: Why Your Exec Team is Blocking AI ROI"
 ---

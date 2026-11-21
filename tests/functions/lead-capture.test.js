@@ -11,7 +11,6 @@ const fs = require('node:fs');
 
 const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'functions', 'lead-capture.js');
 const OFFERINGS_PATH = path.join(__dirname, '..', '..', 'content', 'data', 'offerings.json');
-const APPLYFORM_PATH = path.join(__dirname, '..', '..', '_templates', 'components', 'ApplyForm.html');
 
 const CONTACTS_TABLE = 'tblfTdPnRU15wAdtR';
 const ENV_KEYS = ['SLACK_WEBHOOK_URL', 'AIRTABLE_TOKEN', 'AIRTABLE_BASE_ID', 'AIRTABLE_TABLE'];
@@ -104,13 +103,132 @@ test('non-lead-capture form names are skipped', async () => {
   });
 });
 
-test('missing required fields are skipped', async () => {
+test('a missing name, email or company is skipped (the three required fields)', async () => {
   await withEnv({}, async (mod) => {
-    global.fetch = makeFetchStub([]);
-    const { name, ...rest } = VALID_FIELDS;
-    const res = await mod.handler(makeEvent(rest));
-    assert.equal(res.statusCode, 200);
-    assert.deepEqual(JSON.parse(res.body), { skipped: 'missing required fields' });
+    for (const missing of ['name', 'email', 'company']) {
+      global.fetch = makeFetchStub([]);
+      const { [missing]: _omitted, ...rest } = VALID_FIELDS;
+      const res = await mod.handler(makeEvent(rest));
+      assert.equal(res.statusCode, 200, missing);
+      assert.deepEqual(JSON.parse(res.body), { skipped: 'missing required fields' }, missing);
+    }
+  });
+});
+
+// #222: the form asks only for name, work email, company and an optional message. Role,
+// website, timeline and interest are optional so a short submission is never dropped.
+const MINIMAL_FIELDS = {
+  'form-name': 'lead-capture-form',
+  name: 'Jane Doe',
+  email: 'jane@example.com',
+  company: 'Acme Ltd',
+  consent_given: true,
+  consent_timestamp: '2026-07-04T00:00:00.000Z',
+};
+const MINIMAL_ENV = {
+  SLACK_WEBHOOK_URL: 'https://hooks.slack.test/lead',
+  AIRTABLE_TOKEN: 'tok',
+  AIRTABLE_BASE_ID: 'appTest',
+  AIRTABLE_TABLE: 'Prospects',
+};
+
+test('a submission with only name, email, company and consent is written: no Website or Role keys, Contact has no job title', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200, text: '{"id":"recAcctMin"}' },
+    ]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent(MINIMAL_FIELDS));
+    const body = JSON.parse(res.body);
+    assert.equal(body.success, true);
+    assert.equal(body.airtable, 'created');
+
+    const slackCall = stub.calls.find((c) => c.url.includes('hooks.slack.test'));
+    const fieldsText = slackCall.body.blocks[1].fields.map((f) => f.text).join('\n');
+    assert.ok(fieldsText.includes('*Website:*\nN/A'));
+    assert.ok(fieldsText.includes('*Role:*\nN/A'));
+
+    const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+    assert.ok(!('Website' in account.body.fields), 'no Website key when none was given');
+    assert.ok(!('Primary Contact Role' in account.body.fields), 'no Primary Contact Role key when none was given');
+    assert.equal(account.body.fields.Timeline, 'Not specified');
+    assert.equal(account.body.fields['Consent Given'], true);
+
+    const create = stub.calls.find((c) => c.url.includes(CONTACTS_TABLE) && c.opts.method === 'POST');
+    assert.ok(create, 'a Contact is still created');
+    assert.ok(!('fld9RSxKZZSGxTgtx' in create.body.fields), 'no job title field when no role was given');
+    assert.equal(create.body.fields.fldgbdXyNz5bGsfyV, 'Jane Doe');
+  });
+});
+
+test('an invalid optional website still writes the record: Website left out, N/A in Slack, raw value kept in Notes', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200 },
+    ]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent({ ...MINIMAL_FIELDS, website: 'not a url' }));
+    assert.equal(JSON.parse(res.body).airtable, 'created');
+    const slackCall = stub.calls.find((c) => c.url.includes('hooks.slack.test'));
+    assert.ok(slackCall.body.blocks[1].fields.map((f) => f.text).join('\n').includes('*Website:*\nN/A'));
+    const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+    assert.ok(!('Website' in account.body.fields));
+    assert.ok(account.body.fields.Notes.includes('Website (rejected, not a valid URL): not a url'));
+  });
+});
+
+test('null optional fields are treated as absent, not written as the text "null"', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200 },
+    ]);
+    global.fetch = stub;
+    await mod.handler(makeEvent({ ...MINIMAL_FIELDS, role: null, website: null, timeline: null, problem: null }));
+    const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+    assert.ok(!('Primary Contact Role' in account.body.fields), 'a null role must not become the string "null"');
+    assert.ok(!('Website' in account.body.fields));
+    assert.ok(!JSON.stringify(account.body.fields).includes('null'), 'no "null" string anywhere in the Account payload');
+  });
+});
+
+test('a 2,000-character message reaches Slack and Notes in full; a 2,500-character one is cut to 2,000', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    for (const [sent, kept] of [[2000, 2000], [2500, 2000]]) {
+      const stub = makeFetchStub([
+        { match: 'hooks.slack.test', status: 200 },
+        { match: 'api.airtable.com', status: 200 },
+      ]);
+      global.fetch = stub;
+      await mod.handler(makeEvent({ ...MINIMAL_FIELDS, problem: 'x'.repeat(sent) }));
+      const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+      assert.ok(account.body.fields.Notes.includes('x'.repeat(kept)));
+      assert.ok(!account.body.fields.Notes.includes('x'.repeat(kept + 1)));
+      const slackCall = stub.calls.find((c) => c.url.includes('hooks.slack.test'));
+      const problemBlock = slackCall.body.blocks.find((b) => b.text && b.text.text.includes('Trying to solve'));
+      assert.ok(problemBlock.text.text.includes('x'.repeat(kept)), 'Slack shows the whole message when it fits');
+    }
+  });
+});
+
+test('a 2,000-character message of escapable characters is cut for Slack (limit 3,000) but kept whole in Notes, and the lead is still written', async () => {
+  await withEnv(MINIMAL_ENV, async (mod) => {
+    const stub = makeFetchStub([
+      { match: 'hooks.slack.test', status: 200 },
+      { match: 'api.airtable.com', status: 200 },
+    ]);
+    global.fetch = stub;
+    const res = await mod.handler(makeEvent({ ...MINIMAL_FIELDS, problem: '&'.repeat(2000) }));
+    assert.equal(JSON.parse(res.body).airtable, 'created');
+    const slackCalls = stub.calls.filter((c) => c.url.includes('hooks.slack.test'));
+    assert.equal(slackCalls.length, 1);
+    const problemBlock = slackCalls[0].body.blocks.find((b) => b.text && b.text.text.includes('Trying to solve'));
+    assert.ok(problemBlock.text.text.length <= 3000, `Slack section text must stay within 3,000 (was ${problemBlock.text.text.length})`);
+    assert.ok(problemBlock.text.text.endsWith('full text is in Airtable Notes)'));
+    const account = stub.calls.find((c) => c.url.includes('api.airtable.com') && !c.url.includes(CONTACTS_TABLE));
+    assert.ok(account.body.fields.Notes.includes('&'.repeat(2000)));
   });
 });
 
@@ -337,15 +455,12 @@ test('unrecognised interest slug falls back to showing the raw value, not a blan
 // Check #10 does NOT scan (it only covers _templates/). This test is the guard instead —
 // it parses the interest slugs the ApplyForm actually offers and asserts each renders its
 // offerings.json name through the function, so form ⇄ function ⇄ offer-canon can't silently desync.
-test('every ApplyForm interest slug maps to its offerings.json name via the function (no silent label drift)', async () => {
+test('every interest slug the function still maps resolves to its offerings.json name (no silent label drift)', async () => {
   const offerings = JSON.parse(fs.readFileSync(OFFERINGS_PATH, 'utf8')).offerings;
-  const applyForm = fs.readFileSync(APPLYFORM_PATH, 'utf8');
-  const formSlugs = [...applyForm.matchAll(/name="interest"\s+value="([^"]+)"/g)].map((m) => m[1]);
-  assert.ok(formSlugs.length >= 2, 'expected to find interest radio values in ApplyForm.html');
-  // Slugs the form no longer offers but the function still maps, because older cached pages
-  // may post them: the cohort moved to its own form (#177). Kept under the same guard.
-  const LEGACY_SLUGS = ['leadership-cohort'];
-  const slugs = [...new Set([...formSlugs, ...LEGACY_SLUGS])];
+  // The contact form no longer offers interest chips (#222) and the cohort has its own form
+  // (#177), but older cached pages may still post these slugs, and the function still maps
+  // them to readable labels. The guard now covers this fixed list instead of the form markup.
+  const slugs = ['company-enablement', 'leadership-activation', 'senior-leader-acceleration', 'leadership-cohort', 'just-exploring'];
 
   for (const slug of slugs) {
     if (slug === 'just-exploring') continue; // not an offering — has its own literal label

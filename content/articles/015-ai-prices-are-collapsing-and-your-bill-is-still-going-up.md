@@ -7,7 +7,7 @@ tags: ["Strategy"]
 excerpt: "Unit prices for AI are falling roughly tenfold a year and total spend is rising anyway, because agents work continuously rather than when asked. Stop forecasting in tokens and start forecasting in work."
 slug: "ai-prices-are-collapsing-and-your-bill-is-still-going-up"
 bluf: "AI unit prices are collapsing and bills are rising anyway, because agents work continuously and consumption grows faster than prices fall. Never forecast in tokens; forecast in work: tasks, agent-hours, documents processed. Cost per task is a falling curve you ride, not a price you dread."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/five-things-to-do-before-you-switch-ai-models.html"
 next_article_title: "Five things to do before you switch AI models"
 ---

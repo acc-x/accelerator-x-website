@@ -789,7 +789,7 @@ a:not(.btn):hover { color: var(--action-accent); }
 }
 
 /* ── source: components/ApplyForm.css ── */
-/* ApplyForm — 3-section application form
+/* ApplyForm — short contact form
    Namespace: ax-apply-form
    Wave D — Phase 2 */
 
@@ -799,46 +799,31 @@ a:not(.btn):hover { color: var(--action-accent); }
   margin-inline: auto;
 }
 
-/* ── Sections ────────────────────────────────────────── */
-
-.ax-apply-form__section {
-  padding-top: var(--space-8);
-  border-top: 1px solid var(--border-1);
-}
-
-.ax-apply-form__section:first-of-type {
-  border-top: none;
-  padding-top: 0;
-}
-
-.ax-apply-form__section-heading {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3);
-  font-family: var(--font-display);
-  font-size: var(--text-lg);
-  font-weight: var(--fw-semibold);
-  color: var(--fg-1);
-  margin: 0 0 var(--space-5);
-}
-
-.ax-apply-form__section-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 1.75rem;
-  height: 1.75rem;
-  font-size: var(--text-sm);
-  font-weight: var(--fw-bold);
-  color: var(--fg-on-dark);
-  background: var(--ax-navy);
-  border-radius: var(--radius-full);
-}
 
 .ax-apply-form__fields {
   display: grid;
   gap: var(--space-5);
+}
+
+/* ── Email line above the form ───────────────────────── */
+
+.ax-apply-form__email-line {
+  max-width: 640px;
+  margin: 0 auto var(--space-6);
+  font-size: var(--text-sm);
+  color: var(--fg-2);
+}
+
+.ax-apply-form__email-line a {
+  color: var(--action-primary-hover);
+  font-weight: var(--fw-semibold);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.ax-apply-form .field-optional {
+  font-weight: var(--fw-regular, 400);
+  color: var(--fg-3);
 }
 
 /* ── Cohort signpost (#177) ───────────────────────────── */
@@ -873,13 +858,6 @@ a:not(.btn):hover { color: var(--action-accent); }
   float: left;
   width: 100%;
   margin-bottom: var(--space-3);
-}
-
-.ax-apply-form__chip-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: var(--space-2);
-  clear: left;
 }
 
 /* Visually hidden radio inputs — accessible to keyboard + screen reader */
@@ -994,23 +972,16 @@ a:not(.btn):hover { color: var(--action-accent); }
    These overrides apply only when the form sits on the dark section wrapper.
    ============================================================================= */
 
-.ax-apply-section .ax-apply-form__section-heading { color: var(--fg-on-dark); }
-
-.ax-apply-section .ax-apply-form__section-num { background: rgba(255, 255, 255, 0.12); }
-
 .ax-apply-section .field-label { color: var(--fg-on-dark); }
-
-.ax-apply-section .chip-radio:checked + .chip {
-  background: rgba(255, 255, 255, 0.18);
-  color: var(--fg-on-dark);
-  border-color: rgba(255, 255, 255, 0.3);
-}
 
 .ax-apply-section .ax-apply-form__consent-text { color: var(--fg-muted-on-dark); }
 .ax-apply-section .ax-apply-form__consent-link:hover { color: var(--fg-on-dark); }
 .ax-apply-section .ax-apply-form__sla { color: var(--fg-muted-on-dark); }
 .ax-apply-section .ax-apply-form__signpost { background: rgba(255, 255, 255, 0.08); color: var(--fg-muted-on-dark); }
 .ax-apply-section .ax-apply-form__signpost-link { color: var(--fg-on-dark); }
+.ax-apply-section .ax-apply-form__email-line { color: var(--fg-muted-on-dark); }
+.ax-apply-section .ax-apply-form__email-line a { color: var(--fg-on-dark); }
+.ax-apply-section .field-optional { color: var(--fg-muted-on-dark); }
 
 .ax-apply-section .ax-apply-form__submit { background: var(--action-accent); }
 .ax-apply-section .ax-apply-form__submit:hover { background: var(--action-accent-hover); }
@@ -1343,7 +1314,7 @@ a:not(.btn):hover { color: var(--action-accent); }
 /* =============================================================================
    CTABand — full-width closing CTA section
    Markup: _templates/components/CTABand.html
-   Single ask: "Apply to work with us" → /contact
+   Single ask: "Talk to us" → /contact
    One CTA only — never add a second action to this component.
    ============================================================================= */
 

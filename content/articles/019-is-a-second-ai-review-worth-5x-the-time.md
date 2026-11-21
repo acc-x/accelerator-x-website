@@ -7,7 +7,7 @@ tags: ["Frameworks", "Operations"]
 excerpt: "Most effort goes into building. Almost none goes into checking whether the plan behind it is actually right. We tore apart the plan for this very article before writing a word of it, and here's the seven-step habit that came out of what it caught."
 slug: "before-you-build-anything-get-the-plan-torn-apart"
 bluf: "Reviewing a plan before you build anything is one of the highest-leverage habits available: a bad plan is cheap to fix, a bad build is expensive to fix. Here's the seven-step habit, the exact prompt that runs it, and how to do it with nothing but a fresh AI chat."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/how-do-you-know-a-cheaper-ai-model-is-still-good-enough.html"
 next_article_title: "How do you know a cheaper AI model is still good enough?"
 ---

@@ -94,7 +94,7 @@ Component: `_templates/components/ProofRow.html`
 - `[x]` Hero risk-note "Phase 0 from £5,000 · 2 weeks" — now token-driven from Canon (£5k locked); founder sign-off pending §11
 - `[ ]` Hero chip: "Now taking on new clients · Q3 2026" — confirm this is accurate at launch date
 - `[x]` Process timeline "Phase 1 from £20,000" — now token-driven from Canon (£20k locked); founder sign-off pending §11
-- `[ ]` ApplyForm SLA: "Average response time: 2 business days" — accurate?
+- `[x]` ApplyForm SLA: now "We reply within 1 business day." (#222), matching the confirmed 1-business-day reply time
 - `[ ]` CTABand: "Real reply within a week" — accurate SLA?
 - `[ ]` Confirm no `priceRange` in JSON-LD remains the right decision (noted in CLAUDE.md)
 
@@ -190,7 +190,7 @@ Placeholder and unverified copy introduced in Phase 3 page assembly (2026-05-17)
 - `[x]` "What we do" → `/what-we-do/` built ✅
 - `[x]` "How we work" → `/how-we-work/` built ✅
 - `[x]` "Insights" → `/insights/` — hub page built ✅
-- `[ ]` "Quiz" → `quiz.accelerator-x.ai` live? — HTTP answers with a 302 but HTTPS couldn't be verified from the build sandbox (2026-06-13); confirm in a browser before launch
+- `[ ]` "AI assessment" → `quiz.accelerator-x.ai` live? — HTTP answers with a 302 but HTTPS couldn't be verified from the build sandbox (2026-06-13); confirm in a browser before launch
 - `[x]` Logo → `/` — confirmed 2026-06-13
 - `[x]` Nav CTA "Apply to work with us" → `/contact/` — confirmed 2026-06-13 in desktop bar + mobile drawer (`Nav.html`)
 - `[x]` `/contact/` in nav — resolved by IA ruling 2026-06-13: Contact via CTA only; **About** added to nav instead (#33)
@@ -207,8 +207,8 @@ Placeholder and unverified copy introduced in Phase 3 page assembly (2026-05-17)
 
 ### 2c — CTAs throughout
 
-- `[ ]` Hero "Apply to work with us" → `#apply` resolves on same page
-- `[ ]` CTABand "Apply to work with us" → `/#apply` resolves from any inner page
+- `[ ]` Hero "Talk to us" → `#apply` resolves on same page
+- `[ ]` CTABand "Talk to us" → `/contact/` resolves from any inner page
 - `[ ]` ProofRow case studies link commented out — restore when `/case-studies/` is live
 - `[ ]` Andy's writing link → `/insights/` correct destination
 

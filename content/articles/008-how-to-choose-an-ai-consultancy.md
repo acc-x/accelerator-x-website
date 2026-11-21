@@ -7,7 +7,7 @@ tags: ["Strategy", "Leadership", "C-Suite"]
 excerpt: "How to choose an AI consultancy: the honest questions to ask before you sign, drawn from the five we ask before agreeing to take on any client at all."
 slug: "how-to-choose-an-ai-consultancy"
 bluf: "The best predictor of whether an AI consultancy engagement works isn't their methodology, it's whether the client is actually ready to act, willing to make hard decisions, and has put the real decision-maker in the room. Those are worth answering honestly before anyone signs anything."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-tragedy-of-the-unmoored-working-life.html"
 next_article_title: "The Tragedy of the Unmoored Working Life"
 ---

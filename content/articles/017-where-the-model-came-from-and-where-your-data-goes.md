@@ -7,7 +7,7 @@ tags: ["Strategy"]
 excerpt: "Boards and LPs keep asking one anxious question about AI: whose model is it, and where does our data go? Those are two different questions, and conflating them is producing bad decisions on both."
 slug: "where-the-model-came-from-and-where-your-data-goes"
 bluf: "Where a model's weights came from and where your data goes when it runs are two different questions. Open weights inside your own boundary send nothing anywhere, whatever their origin, and a Western frontier API is still a residency decision, because your data leaves. Separate the two and most of the anxiety becomes a placement decision you can defend."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/how-do-you-know-a-cheaper-ai-model-is-still-good-enough.html"
 next_article_title: "How do you know a cheaper AI model is still good enough?"
 ---
