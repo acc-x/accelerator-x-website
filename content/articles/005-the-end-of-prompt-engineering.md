@@ -7,7 +7,7 @@ tags: ["Tooling", "Future", "Agents", "Workflows"]
 excerpt: "Is prompt engineering dead? Not quite, but clever wording matters far less now. The future of prompt engineering is context, connectors and real access."
 slug: "the-end-of-prompt-engineering"
 bluf: "Prompt engineering isn't dying because prompting stopped mattering. It's dying because the models got good enough that clever wording stopped being the bottleneck, and the real skill is now giving AI systems the right context and tools to do the job."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-5-stage-build-sequence.html"
 next_article_title: "The 5-Stage Build Sequence: From Pilot to Production"
 ---

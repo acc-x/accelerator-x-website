@@ -7,7 +7,7 @@ tags: ["Strategy", "Leadership", "C-Suite"]
 excerpt: "Why exec teams block AI adoption is rarely a no. It's nodding along, then quietly protecting the calendar, the team and the ego that change would cost."
 slug: "leadership-alignment-on-ai"
 bluf: "Exec teams rarely block AI adoption by saying no. They block it by agreeing in the room, then quietly declining to clear the calendar, the workload, or the past decision it would cost them to admit needs to change."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-implementation-gap.html"
 next_article_title: "The Implementation Gap: Why AI Pilots Stall"
 ---

@@ -7,7 +7,7 @@ tags: ["Capability", "Cases", "Change Management"]
 excerpt: "Does AI transformation actually work? I'm running my own 25-person business through one, live, while it keeps trading, and here's what's actually true so far."
 slug: "does-ai-transformation-actually-work"
 bluf: "AI transformation works when a client commitment turns into a task without anyone copying it by hand, and you can point to that happening inside a real, trading business rather than a slide. I am running that test on my own company right now, and I do not yet know how it ends."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-real-cost-of-poor-operational-alignment.html"
 next_article_title: "The Real Cost Of Poor Operational Alignment: The Business With No Golden Thread"
 ---

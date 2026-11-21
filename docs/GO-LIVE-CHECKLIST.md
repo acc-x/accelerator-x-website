@@ -190,7 +190,7 @@ Placeholder and unverified copy introduced in Phase 3 page assembly (2026-05-17)
 - `[x]` "What we do" → `/what-we-do/` built ✅
 - `[x]` "How we work" → `/how-we-work/` built ✅
 - `[x]` "Insights" → `/insights/` — hub page built ✅
-- `[ ]` "Quiz" → `quiz.accelerator-x.ai` live? — HTTP answers with a 302 but HTTPS couldn't be verified from the build sandbox (2026-06-13); confirm in a browser before launch
+- `[ ]` "AI assessment" → `quiz.accelerator-x.ai` live? — HTTP answers with a 302 but HTTPS couldn't be verified from the build sandbox (2026-06-13); confirm in a browser before launch
 - `[x]` Logo → `/` — confirmed 2026-06-13
 - `[x]` Nav CTA "Apply to work with us" → `/contact/` — confirmed 2026-06-13 in desktop bar + mobile drawer (`Nav.html`)
 - `[x]` `/contact/` in nav — resolved by IA ruling 2026-06-13: Contact via CTA only; **About** added to nav instead (#33)

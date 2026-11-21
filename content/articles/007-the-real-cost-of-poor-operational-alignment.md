@@ -7,7 +7,7 @@ tags: ["Strategy", "Operations", "Leadership"]
 excerpt: "Most leadership teams budget for missed deadlines but never cost the real toll: the compounding cost of poor operational alignment nobody puts on the P&L."
 slug: "the-real-cost-of-poor-operational-alignment"
 bluf: "The cost of poor operational alignment is almost never one bad quarter. It is two unpaid bills, one visible and budgeted for, one invisible and compounding, and most leadership teams have only ever costed the first."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/why-ai-pilots-die-in-the-gap.html"
 next_article_title: "Why AI Pilots Die in the Gap Between the Demo and Tuesday Morning"
 ---

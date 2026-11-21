@@ -7,7 +7,7 @@ tags: ["Strategy", "Leadership", "Operations"]
 excerpt: "Boards keep asking leaders for an AI strategy. The real question is where the link between daily work and outcomes broke, and why forty years of fixes never lasted."
 slug: "why-ai-strategy-is-the-wrong-question"
 bluf: "Most businesses cannot trace a line from what someone does today to the outcome the business is chasing, and that is an architecture failure, not a discipline one. AI matters here because it is the first worker that never gets bored of maintaining that line."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/does-ai-transformation-actually-work.html"
 next_article_title: "Does AI Transformation Actually Work? What I'm Learning Running My Own Business Through One"
 ---

@@ -7,7 +7,7 @@ tags: ["Strategy", "Future", "Leadership"]
 excerpt: "A small team can now genuinely outbuild a much bigger one, and it is not a marginal efficiency gain. Here is the structural reason why, and why so many leaders will miss the window entirely."
 slug: "the-most-exciting-opportunity-in-business-history"
 bluf: "The old rule that growth requires proportionally more people is breaking, but only for the businesses that build real AI capability deliberately. Most leaders will miss the window not because AI isn't powerful, but because of how badly it has been sold to them."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/how-to-choose-an-ai-consultancy.html"
 next_article_title: "How To Choose An AI Consultancy: The Five Questions We Ask Before Taking On A Client"
 ---

@@ -7,7 +7,7 @@ tags: ["Capability", "Culture", "Change Management"]
 excerpt: "Most people spend their best working years unable to say why the work matters. That's a systems failure, not a mindset one, and it breaks people the same way it breaks businesses."
 slug: "the-tragedy-of-the-unmoored-working-life"
 bluf: "A business that has lost the thread from daily task to real outcome, and a person who has lost the thread from daily effort to genuine meaning, are failing in exactly the same way. Reconnect it properly at the business level and you reconnect it for the people doing the work too."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/technology-is-only-half-the-battle.html"
 next_article_title: "Technology Is Only Half The Battle"
 ---

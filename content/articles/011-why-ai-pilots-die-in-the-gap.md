@@ -7,7 +7,7 @@ tags: ["Capability", "Change Management", "Operations"]
 excerpt: "A demo works because every friction has been staged out of it. Most AI pilots die because nobody designs for the invisible work that fills a real Tuesday morning."
 slug: "why-ai-pilots-die-in-the-gap"
 bluf: "Most AI pilots do not fail because the model is bad. They fail because nobody designed the pilot to remove the work around the work, the invisible status-chasing and re-keying that fills a real day, so the new capability becomes one more thing to maintain instead of one less."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-most-exciting-opportunity-in-business-history.html"
 next_article_title: "The Most Exciting Opportunity in Business History, and Why So Many Will Miss It"
 ---

@@ -7,7 +7,7 @@ tags: ["Tooling"]
 excerpt: "Swap in a cheaper AI model and nothing breaks. It just gets quietly worse, and nothing alerts you. Here is the test that tells you, before production does, whether cheap is good enough."
 slug: "how-do-you-know-a-cheaper-ai-model-is-still-good-enough"
 bluf: "A cheaper model that is not good enough does not fail. It produces the same confident output, slightly worse, and nothing alerts you because nothing broke. The only way to know in advance is a test: twenty cases with known right answers, run against the candidate, and a decision made on the score."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/the-end-of-prompt-engineering.html"
 next_article_title: "The End of Prompt Engineering"
 ---

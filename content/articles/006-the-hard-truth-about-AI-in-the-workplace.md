@@ -7,7 +7,7 @@ tags: ["Capability", "Adoption", "Skills", "Change Management"]
 excerpt: "Almost everyone is using AI. Almost nobody feels confident using it. The gap isn’t a tooling problem — it’s a capability problem."
 slug: "the-hard-truth-about-ai-in-the-workplace"
 bluf: "AI adoption is stalling because most people are using it like a smarter search engine. The fix isn’t more tools or automation — it’s building the skills, confidence, and habits that make the tools worth having."
-lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free readiness scorecard takes five minutes and gives you a personalised result, not a sales pitch."
+lead_magnet_cta: "Want a straight answer on where your organisation actually stands with AI? Our free AI Readiness Assessment takes about 10 minutes and gives you a personalised report."
 next_article_url: "/insights/articles/why-ai-strategy-is-the-wrong-question.html"
 next_article_title: "Why 'What's Your AI Strategy?' Is the Wrong Question"
 ---

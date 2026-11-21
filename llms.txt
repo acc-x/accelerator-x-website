@@ -48,7 +48,7 @@ the client, not dependency on us.
   and implementation, written by the founders.
 - [FAQ](https://accelerator-x.ai/faq/): common questions, straight answers.
 - [Contact](https://accelerator-x.ai/contact/): how to reach us.
-- [AI Readiness Assessment](https://quiz.accelerator-x.ai): a short self-assessment
+- [AI Readiness Assessment](https://quiz.accelerator-x.ai): a self-assessment of about 10 minutes
   with an on-screen result and an emailed PDF report (requires an email address).
 
 ## Founders
