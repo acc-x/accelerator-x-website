@@ -207,8 +207,8 @@ Placeholder and unverified copy introduced in Phase 3 page assembly (2026-05-17)
 
 ### 2c — CTAs throughout
 
-- `[ ]` Hero "Apply to work with us" → `#apply` resolves on same page
-- `[ ]` CTABand "Apply to work with us" → `/#apply` resolves from any inner page
+- `[ ]` Hero "Talk to us" → `#apply` resolves on same page
+- `[ ]` CTABand "Talk to us" → `/contact/` resolves from any inner page
 - `[ ]` ProofRow case studies link commented out — restore when `/case-studies/` is live
 - `[ ]` Andy's writing link → `/insights/` correct destination
 

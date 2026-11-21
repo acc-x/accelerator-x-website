@@ -51,8 +51,10 @@ Only these events fire. Autocapture is off, so there are **no** automatic elemen
 The one funnel to report against. Same-page where possible (see §4).
 
 ```
-$pageview  →  cta_click ("Apply to work with us")  →  apply_form_start  →  apply_form_submit
+$pageview  →  cta_click ("Talk to us")  →  apply_form_start  →  apply_form_submit
 ```
+
+The primary CTA label changed from "Apply to work with us" to "Talk to us" in #221, so `cta_click` events before and after that ship date carry different `label` values. Filter on both when charting across the change.
 
 - `apply_form_start` → `apply_form_submit` is the form-completion rate.
 - `cta_click` → `apply_form_start` is CTA-to-form intent.

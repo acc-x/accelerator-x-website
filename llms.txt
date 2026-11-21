@@ -40,7 +40,7 @@ the client, not dependency on us.
 
 ## Key pages
 
-- [Home](https://accelerator-x.ai/): what we do, and how to apply to work with us.
+- [Home](https://accelerator-x.ai/): what we do, and how to get in touch.
 - [What we do](https://accelerator-x.ai/what-we-do/): the two doors in, side by side.
 - [How we work](https://accelerator-x.ai/how-we-work/): the phase-based engagement model.
 - [About](https://accelerator-x.ai/about/): the founders, and why Accelerator X exists.

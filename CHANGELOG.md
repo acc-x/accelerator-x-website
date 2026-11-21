@@ -13,6 +13,9 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 
 ## [Unreleased]
 
+### Changed
+- **Primary CTA is now "Talk to us", not "Apply to work with us"** ([#221](https://github.com/acc-x/accelerator-x-website/issues/221), part of [#220](https://github.com/acc-x/accelerator-x-website/issues/220)): the 2026-11-20 customer experience audit found one real application in three months and an application as the only door. Changed in the nav (desktop and mobile), footer, closing band, homepage hero, the three company and coaching offering pages and their closing "Apply" chips (now "Get in touch"), `llms.txt`, the tracking plan (with a note that `cta_click` labels differ across the change date) and the go-live checklist. The cohort page keeps "Apply", since it is a real application. The contact page kicker follows in #223.
+
 ### Fixed
 - **Apply form now creates a linked CRM Contact, not just an Account** ([#204](https://github.com/acc-x/accelerator-x-website/issues/204)): `lead-capture` writes a Contact (name, job title, email, role type "Other", notes) to the Contacts table linked to the new Account, or links the existing Contact with the same email, but only when that Contact has no other Account links (the form is unauthenticated, so a client's Contact is never re-linked by a submission; that case alerts instead). A Contact failure or timeout (4s) never undoes the Account or Slack post; it is logged and raised in Slack as a distinct alert naming the Account record. The public response deliberately does not report the Contact outcome. Prompted by an applicant on 10 Nov 2026 who had an Account but no Contact.
 
