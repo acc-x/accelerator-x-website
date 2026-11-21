@@ -40,9 +40,9 @@ Only these events fire. Autocapture is off, so there are **no** automatic elemen
 | `$web_vitals` | Automatically, per page (Core Web Vitals) | standard web-vitals metrics | default |
 | `cta_click` | Click on any `a.btn`, `button.btn`, or `[data-cta]` element | `label` (the `data-cta` value, else visible text stripped of arrows, ≤80 chars), `location` (`window.location.pathname`) | `analytics.js:107` |
 | `apply_form_start` | First engagement (focus) with a lead form (`[data-lead-form]` / `#lead-form`) — fires once | `location` (the form's `data-source`, default `"apply_form"`) | `forms.js:63` |
-| `apply_form_submit` | **Successful** lead-form submission (after the `/.netlify/functions/lead-capture` POST resolves without error) | `location` (as above), `timeline` (select value), `interest` (select value) | `forms.js:142` |
+| `apply_form_submit` | **Successful** lead-form submission (after the `/.netlify/functions/lead-capture` POST resolves without error) | `location` (as above). Until #222 it also carried `timeline` and `interest` (select values from chips the form no longer has); any saved insight broken down by those properties shows blanks from the ship date. | `forms.js:138` |
 
-**PII discipline:** `cta_click` sends no PII. `apply_form_submit` sends only `timeline` + `interest`, which are **select-dropdown** values (safe). The code carries an explicit rule: if either ever becomes a free-text field, stop sending it. Never add free-text form values as event properties.
+**PII discipline:** `cta_click` sends no PII. `apply_form_submit` sends only `location`, the form's own source label, and no form values. Never add form values, least of all free text, as event properties.
 
 ---
 

@@ -63,13 +63,6 @@
       track('apply_form_start', { location: leadSource });
     }, { once: false });
 
-    const normaliseWebsite = () => {
-      const f = leadForm.querySelector('input[name="website"]');
-      if (f && f.value.trim() && !f.value.trim().match(/^https?:\/\//)) {
-        f.value = `https://${f.value.trim()}`;
-      }
-    };
-
     const showLeadSuccess = () => {
       leadForm.classList.add('hidden');
       if (!leadSuccess) return;
@@ -93,12 +86,8 @@
       if (isSubmitting.get(leadForm)) return;
 
       // Form carries `novalidate` (suppresses the browser's implicit validate-on-submit)
-      // so custom JS controls exactly when validation runs — but nothing ever called it,
-      // so every `required` attribute in the markup was decorative. Must run after
-      // normaliseWebsite() so a bare domain ("acme.com") gets its https:// prefix before
-      // the type="url" constraint checks it, not before.
-      normaliseWebsite();
-
+      // so custom JS controls exactly when validation runs: without this call every
+      // `required` attribute in the markup would be decorative.
       if (!leadForm.checkValidity()) {
         leadForm.reportValidity();
         return;
@@ -109,7 +98,7 @@
 
       const btn          = leadForm.querySelector('button[type="submit"]');
       const originalLabel = btn ? btn.textContent : '';
-      setSubmitState(btn, { disabled: true, label: 'Submitting...' });
+      setSubmitState(btn, { disabled: true, label: 'Sending…' });
 
       const formData = new FormData(leadForm);
       const payload = {
@@ -117,9 +106,11 @@
         name: formData.get('name'),
         email: formData.get('email'),
         company: formData.get('company'),
-        website: formData.get('website'),
-        role: formData.get('role'),
-        timeline: formData.get('timeline'),
+        // website, role, timeline and interest are no longer on the form (#222); they post
+        // as empty strings so the payload shape stays stable for lead-capture.js.
+        website: formData.get('website') || '',
+        role: formData.get('role') || '',
+        timeline: formData.get('timeline') || '',
         problem: formData.get('problem') || '',
         interest: formData.get('interest') || leadForm.dataset.interest || '',
         source: formData.get('source') || leadForm.dataset.source || '',
@@ -136,14 +127,8 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.error) throw new Error(data.error);
-          // Conversion event — non-PII context only (timeline/interest/source).
-          // NB: timeline + interest are select-dropdown values, so safe to send. If either
-          // ever becomes a free-text field, drop it here — never send free-text (PII risk).
-          track('apply_form_submit', {
-            timeline: payload.timeline || '',
-            interest: payload.interest || '',
-            location: leadSource
-          });
+          // Conversion event: where the form lives, nothing the visitor typed.
+          track('apply_form_submit', { location: leadSource });
           showLeadSuccess();
         })
         .catch((err) => {
@@ -151,7 +136,7 @@
           // info@ is the consolidated public contact route (B5, 2026-07-13) — hello@ exists
           // but is unmonitored as a published channel. The {{site:INFO_EMAIL}} token can't
           // reach here: token resolution runs on templates only, not assets/js.
-          showError(leadError, 'There was an error submitting your application. Please try again or email us at info@accelerator-x.ai');
+          showError(leadError, 'Something went wrong sending your message. Please try again, or email us at info@accelerator-x.ai');
           setSubmitState(btn, { disabled: false, label: originalLabel });
         })
         .finally(() => {

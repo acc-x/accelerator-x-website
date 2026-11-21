@@ -1,6 +1,8 @@
 // Netlify Function: lead-capture
 // Triggered by: direct same-origin JSON POST from the apply form (assets/js/forms.js)
-// Handles: lead applications → Airtable CRM (consent-stamped) + Slack #website-leads
+// Handles: contact-form enquiries (name, work email, company + optional message; role,
+//   website, timeline and interest are optional since #222) → Airtable CRM (consent-stamped)
+//   + Slack #website-leads
 // NOT responsible for: newsletter signups (handled by newsletter-subscribe.js directly)
 // Env vars required: SLACK_WEBHOOK_URL, AIRTABLE_TOKEN, AIRTABLE_BASE_ID, AIRTABLE_TABLE
 
@@ -83,7 +85,7 @@ async function upsertContact({ name, email, role, accountId, source }) {
     body: JSON.stringify({
       fields: {
         [CONTACT_FIELDS.name]: name,
-        [CONTACT_FIELDS.jobTitle]: role,
+        ...(role ? { [CONTACT_FIELDS.jobTitle]: role } : {}),
         [CONTACT_FIELDS.email]: email,
         [CONTACT_FIELDS.roleType]: 'Other',
         [CONTACT_FIELDS.account]: [accountId],
@@ -161,10 +163,13 @@ exports.handler = async (event, context) => {
     const name = safeTrim(data.name, 200);
     const email = safeTrim(data.email, 320);
     const company = safeTrim(data.company, 200);
-    const website = normalizeWebsite(data.website);
+    // website and role are OPTIONAL as of #222 (the form no longer asks for them); old cached
+    // pages still post them, so they are read and written when present.
+    const websiteSubmitted = safeTrim(data.website || '', 320);
+    let website = normalizeWebsite(data.website);
     const role = safeTrim(data.role, 200);
     const timelineRaw = safeTrim(data.timeline);
-    const problem = safeTrim(data.problem || '', 500);
+    const problem = safeTrim(data.problem || '', 2000);
     // Service interest is MULTI-select as of 2026-08-09 — the form may send a single
     // string (current) or an array (once the redesign lands). Accept both so the
     // function does not need to ship in lockstep with the form.
@@ -189,15 +194,16 @@ exports.handler = async (event, context) => {
       : new Date().toISOString();
 
     // Required fields guard
-    if (!name || !email || !company || !website || !role) {
+    if (!name || !email || !company) {
       return { statusCode: 200, headers, body: JSON.stringify({ skipped: 'missing required fields' }) };
     }
 
-    // Basic domain validation post-normalization (allows bare domains once https:// is added)
+    // Optional website: basic domain validation post-normalization (allows bare domains once
+    // https:// is added). A malformed optional field must not cost the lead, so it is dropped
+    // from the Account and the submitted value is kept in Notes.
     const domainPattern = /^https?:\/\/[\w.-]+\.[A-Za-z]{2,}.*$/;
-    if (!domainPattern.test(website)) {
-      return { statusCode: 200, headers, body: JSON.stringify({ skipped: 'invalid website' }) };
-    }
+    const websiteRejected = Boolean(website) && !domainPattern.test(website);
+    if (websiteRejected) website = '';
 
     // Same hostile-input posture as the timestamp/website checks above — this endpoint
     // accepts direct unauthenticated POSTs, so email format isn't guaranteed by the
@@ -246,7 +252,8 @@ exports.handler = async (event, context) => {
       TIMELINE_CHOICES.has(timeline) ? '' : `Timeline (unmapped): ${timeline}`,
       interestList.length !== interestForAirtable.length
         ? `Service interest (unmapped): ${interestList.filter((v) => !INTEREST_CHOICES.has(v)).join(', ')}`
-        : ''
+        : '',
+      websiteRejected ? `Website (rejected, not a valid URL): ${websiteSubmitted}` : ''
     ].filter(Boolean);
 
     // Build Slack Block Kit message
@@ -287,11 +294,19 @@ exports.handler = async (event, context) => {
 
     // Add problem block if present
     if (problem) {
+      // Slack rejects a section whose text is over 3,000 characters, and escaping (& to &amp;)
+      // and quoting each line can grow the text well past the 2,000 characters accepted
+      // here. A 400 from Slack would throw before Airtable is tried and lose the lead, so
+      // the Slack copy is cut; Airtable Notes always keeps the full text.
+      const SLACK_PROBLEM_MAX = 2800;
+      const quoted = `*Trying to solve:*\n>${escapeSlack(problem).replace(/\n/g, '\n>')}`;
       slackMessage.blocks.push({
         type: 'section',
         text: {
           type: 'mrkdwn',
-          text: `*Trying to solve:*\n>${escapeSlack(problem).replace(/\n/g, '\n>')}`
+          text: quoted.length > SLACK_PROBLEM_MAX
+            ? `${quoted.slice(0, SLACK_PROBLEM_MAX)}… (cut here; full text is in Airtable Notes)`
+            : quoted
         }
       });
     }
@@ -339,8 +354,8 @@ exports.handler = async (event, context) => {
           'Primary Contact Name': name,
           Email: email,
           Company: company,
-          Website: website,
-          'Primary Contact Role': role,
+          ...(website ? { Website: website } : {}),
+          ...(role ? { 'Primary Contact Role': role } : {}),
           ...(timelineForAirtable ? { Timeline: timelineForAirtable } : {}),
           ...(interestForAirtable.length ? { 'Service Interest': interestForAirtable } : {}),
           Notes: [

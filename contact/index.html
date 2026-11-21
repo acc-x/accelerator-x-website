@@ -161,13 +161,15 @@
       <!-- === APPLICATION FORM === -->
       <div class="ax-contact-layout">
         <div class="ax-contact-layout__inner">
-          <!-- ApplyForm — 2-section application form.
+          <!-- ApplyForm — short contact form (name, work email, company, one open question).
      Hooks into [data-lead-form] handler in assets/js/forms.js.
      Submission target: /.netlify/functions/lead-capture
      Required Airtable fields (must exist before going live):
        "Consent Given" (checkbox) + "Consent Timestamp" (single line text) -->
 
-<section class="ax-apply-form-wrap" aria-labelledby="apply-form-heading">
+<section class="ax-apply-form-wrap" aria-label="Contact form">
+
+  <p class="ax-apply-form__email-line">Prefer email? Write to <a href="mailto:info@accelerator-x.ai">info@accelerator-x.ai</a>.</p>
 
   <form
     id="apply-form"
@@ -182,87 +184,30 @@
     <input type="text" name="_honeypot" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
     <input type="hidden" name="form-name" value="lead-capture-form">
 
-    <!-- ── Section 1: Who you are ─────────────────────── -->
-    <div class="ax-apply-form__section">
-      <h3 class="ax-apply-form__section-heading">
-        <span class="ax-apply-form__section-num" aria-hidden="true">1</span>
-        Who you are
-      </h3>
-      <div class="ax-apply-form__fields">
-        <div class="field">
-          <label class="field-label" for="apply-name">Full name <span class="required" aria-hidden="true">*</span></label>
-          <input id="apply-name" type="text" name="name" class="input" placeholder="Jane Smith" autocomplete="name" required aria-required="true">
-        </div>
-        <div class="field">
-          <label class="field-label" for="apply-role">Job title <span class="required" aria-hidden="true">*</span></label>
-          <input id="apply-role" type="text" name="role" class="input" placeholder="Managing Director" autocomplete="organization-title" required aria-required="true">
-        </div>
-        <div class="field">
-          <label class="field-label" for="apply-email">Work email <span class="required" aria-hidden="true">*</span></label>
-          <input id="apply-email" type="email" name="email" class="input" placeholder="jane@company.com" autocomplete="email" required aria-required="true">
-        </div>
-        <div class="field">
-          <label class="field-label" for="apply-company">Company <span class="required" aria-hidden="true">*</span></label>
-          <input id="apply-company" type="text" name="company" class="input" placeholder="Acme Consulting" autocomplete="organization" required aria-required="true">
-        </div>
-        <div class="field">
-          <label class="field-label" for="apply-website">Company website <span class="required" aria-hidden="true">*</span></label>
-          <input id="apply-website" type="url" name="website" class="input" placeholder="https://company.com" autocomplete="url" required aria-required="true">
-        </div>
+    <div class="ax-apply-form__fields">
+      <div class="field">
+        <label class="field-label" for="apply-name">Full name <span class="required" aria-hidden="true">*</span></label>
+        <input id="apply-name" type="text" name="name" class="input" placeholder="Jane Smith" autocomplete="name" required aria-required="true">
       </div>
-    </div>
-
-    <!-- ── Section 2: The work ───────────────────────── -->
-    <div class="ax-apply-form__section">
-      <h3 class="ax-apply-form__section-heading">
-        <span class="ax-apply-form__section-num" aria-hidden="true">2</span>
-        The work
-      </h3>
-      <div class="ax-apply-form__fields">
-        <div class="field">
-          <label class="field-label" for="apply-problem">What's the main thing you're trying to solve?</label>
-          <input id="apply-problem" type="text" name="problem" class="input" placeholder="e.g. leadership doesn't know where to start with AI">
-        </div>
-        <!-- Cohort applicants are people joining a programme, not company leads, so they apply
-             on the cohort page (Coaching Enrollments) rather than here (Accounts): #172/#177.
-             lead-capture.js keeps the leadership-cohort label for older cached pages. -->
-        <p class="ax-apply-form__signpost">
-          Applying for the open cohort?
-          <a href="/what-we-do/leadership-cohort/#cohort-apply" class="ax-apply-form__signpost-link">Apply on the cohort page</a>. It takes about a minute.
-        </p>
-        <fieldset class="ax-apply-form__fieldset">
-          <legend class="field-label">Which best fits? <span class="required" aria-hidden="true">*</span></legend>
-          <div class="ax-apply-form__chip-group">
-            <input type="radio" id="interest-company" name="interest" value="company-enablement" class="chip-radio" required>
-            <label for="interest-company" class="chip">Company Enablement</label>
-
-            <input type="radio" id="interest-leadership" name="interest" value="leadership-activation" class="chip-radio">
-            <label for="interest-leadership" class="chip">Leadership Team AI Activation</label>
-
-            <input type="radio" id="interest-1to1" name="interest" value="senior-leader-acceleration" class="chip-radio">
-            <label for="interest-1to1" class="chip">1:1 Exec AI Fast Track Coaching</label>
-
-            <input type="radio" id="interest-exploring" name="interest" value="just-exploring" class="chip-radio">
-            <label for="interest-exploring" class="chip">Just exploring</label>
-          </div>
-        </fieldset>
-        <fieldset class="ax-apply-form__fieldset">
-          <legend class="field-label">When are you looking to start? <span class="required" aria-hidden="true">*</span></legend>
-          <div class="ax-apply-form__chip-group">
-            <input type="radio" id="timeline-now" name="timeline" value="immediately" class="chip-radio" required>
-            <label for="timeline-now" class="chip">Ready now</label>
-
-            <input type="radio" id="timeline-1m" name="timeline" value="within-1-month" class="chip-radio">
-            <label for="timeline-1m" class="chip">Within 1 month</label>
-
-            <input type="radio" id="timeline-3m" name="timeline" value="1-3-months" class="chip-radio">
-            <label for="timeline-3m" class="chip">1–3 months</label>
-
-            <input type="radio" id="timeline-explore" name="timeline" value="exploring" class="chip-radio">
-            <label for="timeline-explore" class="chip">Just exploring</label>
-          </div>
-        </fieldset>
+      <div class="field">
+        <label class="field-label" for="apply-email">Work email <span class="required" aria-hidden="true">*</span></label>
+        <input id="apply-email" type="email" name="email" class="input" placeholder="jane@company.com" autocomplete="email" required aria-required="true">
       </div>
+      <div class="field">
+        <label class="field-label" for="apply-company">Company <span class="required" aria-hidden="true">*</span></label>
+        <input id="apply-company" type="text" name="company" class="input" placeholder="Acme Consulting" autocomplete="organization" required aria-required="true">
+      </div>
+      <div class="field">
+        <label class="field-label" for="apply-problem">What would you like to talk about? <span class="field-optional">(optional)</span></label>
+        <textarea id="apply-problem" name="problem" class="textarea" rows="4" maxlength="2000" placeholder="A question, something you're stuck on, or what you're thinking of doing with AI"></textarea>
+      </div>
+      <!-- Cohort applicants are people joining a programme, not company leads, so they apply
+           on the cohort page (Coaching Enrollments) rather than here (Accounts): #172/#177.
+           lead-capture.js keeps the leadership-cohort label for older cached pages. -->
+      <p class="ax-apply-form__signpost">
+        Want a place on the open cohort?
+        <a href="/what-we-do/leadership-cohort/#cohort-apply" class="ax-apply-form__signpost-link">Apply on the cohort page</a>. It takes about a minute.
+      </p>
     </div>
 
     <!-- ── Consent + submit ──────────────────────────── -->
@@ -270,17 +215,17 @@
       <label class="ax-apply-form__consent">
         <input type="checkbox" name="consent_given" value="true" class="ax-apply-form__consent-check" required aria-required="true">
         <span class="ax-apply-form__consent-text">
-          I agree to be contacted about my application and for my details to be stored securely by Accelerator X Ltd in line with our
+          I agree to be contacted about my enquiry and for my details to be stored securely by Accelerator X Ltd in line with our
           <a href="/privacy.html" class="ax-apply-form__consent-link" target="_blank" rel="noopener noreferrer">Privacy Policy</a>.
         </span>
       </label>
 
       <p id="apply-error" class="field-helper field-helper--error hidden" role="alert" aria-live="assertive"></p>
 
-      <p class="ax-apply-form__sla">Average response time: 1 business day</p>
+      <p class="ax-apply-form__sla">We reply within 1 business day.</p>
 
       <button type="submit" class="btn btn--primary btn--lg ax-apply-form__submit">
-        Submit application
+        Send message
       </button>
     </div>
   </form>
@@ -288,9 +233,9 @@
   <!-- Success state — shown by forms.js on successful submission -->
   <div id="apply-success" class="ax-apply-form__success hidden" role="status" aria-live="polite">
     <span class="material-symbols-outlined ax-apply-form__success-icon" aria-hidden="true">check_circle</span>
-    <h3 class="ax-apply-form__success-heading">Application received.</h3>
+    <h3 class="ax-apply-form__success-heading">Thanks. We've got your message.</h3>
     <p class="ax-apply-form__success-body">
-      We'll be in touch within 1 business day. In the meantime, feel free to email us at
+      We'll reply within 1 business day, to the email address you gave. If it can't wait, write to
       <a href="mailto:info@accelerator-x.ai">info@accelerator-x.ai</a>.
     </p>
   </div>
