@@ -1,4 +1,4 @@
-// Unit tests for netlify/functions/lead-capture.js — the GNG-1 consent-capture money path.
+// Unit tests for netlify/lib/lead-capture.js — the GNG-1 consent-capture money path.
 // Run: node --test tests/
 //
 // The function reads env vars + fetch at module load / call time, so each test resets
@@ -9,7 +9,7 @@ const assert = require('node:assert/strict');
 const path = require('node:path');
 const fs = require('node:fs');
 
-const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'functions', 'lead-capture.js');
+const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'lib', 'lead-capture.js');
 const OFFERINGS_PATH = path.join(__dirname, '..', '..', 'content', 'data', 'offerings.json');
 
 const CONTACTS_TABLE = 'tblfTdPnRU15wAdtR';

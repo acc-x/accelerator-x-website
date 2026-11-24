@@ -5,11 +5,14 @@
   // All form submissions on the site go through this file.
   // No inline scripts. No exceptions.
   //
-  // Lead capture  (#lead-form)         → POST /.netlify/functions/lead-capture
+  // Lead capture  (#lead-form)         → POST /api/lead-capture
   //                                    → Airtable + Slack #website-leads
   //
-  // Newsletter    (#newsletter-form)   → POST /.netlify/functions/newsletter-subscribe
+  // Newsletter    (#newsletter-form)   → POST /api/newsletter-subscribe
   //                                    → Brevo list #9 + Slack #website-leads
+  //
+  // Both endpoints are rate limited at the Netlify edge (#123): 10 submissions per IP per
+  // 3 minutes. A 429 gets its own message instead of the generic failure copy.
   //
   // Both handlers are independent — either can exist on a page without the other.
   // ============================================================
@@ -32,6 +35,19 @@
     btn.disabled = disabled;
     btn.classList.toggle('opacity-70', disabled);
     if (label) btn.textContent = label;
+  };
+
+  // Edge rate limit (#123): Netlify answers 429 with a platform body, not our JSON, so it
+  // must be recognised before res.json(). Shown instead of the generic failure copy.
+  const RATE_LIMITED_MESSAGE = 'You have sent a few requests in a short time. Please wait a few minutes and try again, or email us at info@accelerator-x.ai';
+
+  const rejectIfRateLimited = (res) => {
+    if (res.status === 429) {
+      const err = new Error('Rate limited');
+      err.rateLimited = true;
+      throw err;
+    }
+    return res;
   };
 
   const showError = (el, message) => {
@@ -119,11 +135,12 @@
         consent_timestamp: new Date().toISOString()
       };
 
-      fetch('/.netlify/functions/lead-capture', {
+      fetch('/api/lead-capture', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       })
+        .then(rejectIfRateLimited)
         .then((res) => res.json())
         .then((data) => {
           if (data.error) throw new Error(data.error);
@@ -140,7 +157,9 @@
           // info@ is the consolidated public contact route (B5, 2026-07-13) — hello@ exists
           // but is unmonitored as a published channel. The {{site:INFO_EMAIL}} token can't
           // reach here: token resolution runs on templates only, not assets/js.
-          showError(leadError, 'Something went wrong sending your message. Please try again, or email us at info@accelerator-x.ai');
+          showError(leadError, err.rateLimited
+            ? RATE_LIMITED_MESSAGE
+            : 'Something went wrong sending your message. Please try again, or email us at info@accelerator-x.ai');
           setSubmitState(btn, { disabled: false, label: originalLabel });
         })
         .finally(() => {
@@ -167,6 +186,7 @@
     const scope   = form.closest('.ax-newsletter') || form.parentElement;
     const success = scope ? scope.querySelector('.ax-newsletter__status--success') : null;
     const error   = scope ? scope.querySelector('.ax-newsletter__status--error') : null;
+    let defaultErrorText = null;
 
     form.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -191,11 +211,12 @@
       setHidden(error, true);
       setSubmitState(btn, { disabled: true, label: 'Subscribing…' });
 
-      fetch('/.netlify/functions/newsletter-subscribe', {
+      fetch('/api/newsletter-subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email, source: form.dataset.newsletterSource || 'newsletter_form' }),
       })
+        .then(rejectIfRateLimited)
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
@@ -209,6 +230,12 @@
         .catch((err) => {
           console.error('Newsletter form error:', err);
           setSubmitState(btn, { disabled: false, label: originalLabel });
+          // Keep the template's own failure copy as the default; only a 429 swaps it.
+          const errorText = error ? (error.querySelector('p') || error) : null;
+          if (errorText) {
+            if (defaultErrorText === null) defaultErrorText = errorText.textContent;
+            errorText.textContent = err.rateLimited ? RATE_LIMITED_MESSAGE : defaultErrorText;
+          }
           setHidden(error, false);
         })
         .finally(() => {

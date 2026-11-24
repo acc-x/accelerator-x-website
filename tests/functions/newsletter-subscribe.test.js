@@ -1,4 +1,4 @@
-// Unit tests for netlify/functions/newsletter-subscribe.js.
+// Unit tests for netlify/lib/newsletter-subscribe.js.
 // Run: node --test tests/
 //
 // Covers the exact failure shape of the 2026-06-27 incident: a dead/missing Brevo key
@@ -8,7 +8,7 @@ const test = require('node:test');
 const assert = require('node:assert/strict');
 const path = require('node:path');
 
-const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'functions', 'newsletter-subscribe.js');
+const MODULE_PATH = path.join(__dirname, '..', '..', 'netlify', 'lib', 'newsletter-subscribe.js');
 
 const ENV_KEYS = ['SLACK_WEBHOOK_URL', 'BREVO_API_KEY'];
 
