@@ -225,7 +225,7 @@ Test each form with a real submission on the Netlify preview URL (not localhost)
 
 ### 3a — ApplyForm (`#apply-form`)
 
-Target: `/.netlify/functions/lead-capture`
+Target: `/api/lead-capture`
 
 - `[x]` Submits without JS errors — verified 2026-06-27 (B7)
 - `[x]` Success state displays correctly — verified (B7)
@@ -259,13 +259,13 @@ Target: `/.netlify/functions/lead-capture`
 - `[x]` No fields silently dropped — `Source` shows "Accelerator X Website" (no hyphen — fixed 2026-07-14, see CHANGELOG; the hyphenated form was a live bug that failed every Airtable write) and the record is otherwise complete.
 - `[ ]` Function logs (Netlify) show the Airtable insert returned 200, not an "unknown field name" error.
 
-**Fail = NO-GO.** Most likely cause if it fails: a field name in [`netlify/functions/lead-capture.js`](netlify/functions/lead-capture.js) drifted from the Airtable field name. Reconcile names, redeploy preview, re-run.
+**Fail = NO-GO.** Most likely cause if it fails: a field name in [`netlify/lib/lead-capture.js`](netlify/lib/lead-capture.js) drifted from the Airtable field name. Reconcile names, redeploy preview, re-run.
 
 _Cleanup: delete the test record after the run._
 
 ### 3b — Newsletter subscribe (footer + inline)
 
-Target: `/.netlify/functions/newsletter-subscribe`
+Target: `/api/newsletter-subscribe`
 
 - `[ ]` Submits without errors
 - `[ ]` Success state displays

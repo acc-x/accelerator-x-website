@@ -47,12 +47,8 @@ for (const name of FUNCTIONS) {
 }
 
 test('lead-capture: a normal submission through the wrapper behaves as before', async () => {
-  const saved = { ...process.env };
   const realFetch = global.fetch;
   const calls = [];
-  delete process.env.AIRTABLE_TOKEN;
-  delete process.env.AIRTABLE_BASE_ID;
-  delete process.env.AIRTABLE_TABLE;
   global.fetch = async (url) => { calls.push(String(url)); return new Response('ok', { status: 200 }); };
   try {
     const { default: fn } = await load('lead-capture');
@@ -70,15 +66,17 @@ test('lead-capture: a normal submission through the wrapper behaves as before', 
     }));
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type'), /application\/json/);
+    // A dropped submission also answers 200 ({ skipped }), so check the body is a real success.
+    const body = await res.json();
+    assert.equal(body.skipped, undefined);
+    assert.equal(body.error, undefined);
     assert.ok(calls.includes('https://slack.test/hook'), 'Slack notification was sent');
   } finally {
     global.fetch = realFetch;
-    process.env = saved;
   }
 });
 
 test('newsletter-subscribe: a normal subscribe through the wrapper still returns success', async () => {
-  const saved = { ...process.env };
   const realFetch = global.fetch;
   global.fetch = async () => new Response(JSON.stringify({ id: 1 }), { status: 201 });
   try {
@@ -92,7 +90,6 @@ test('newsletter-subscribe: a normal subscribe through the wrapper still returns
     assert.equal((await res.json()).success, true);
   } finally {
     global.fetch = realFetch;
-    process.env = saved;
   }
 });
 
