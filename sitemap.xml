@@ -2,205 +2,211 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://accelerator-x.ai/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/how-we-work/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/company-enablement/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/senior-leader-acceleration/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/leadership-activation/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/leadership-cohort/</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/talks-events/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/what-we-do/leadership-ai-coaching/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/about/</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/contact/</loc>
-    <lastmod>2026-10-15</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/</loc>
-    <lastmod>2026-11-10</lastmod>
+    <lastmod>2026-11-26</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/faq/</loc>
-    <lastmod>2026-10-09</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/privacy.html</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/terms.html</loc>
-    <lastmod>2026-11-12</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>yearly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
+    <loc>https://accelerator-x.ai/insights/articles/give-ai-a-desk-not-a-question.html</loc>
+    <lastmod>2026-11-26</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://accelerator-x.ai/insights/articles/before-you-build-anything-get-the-plan-torn-apart.html</loc>
-    <lastmod>2026-09-06</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/how-do-you-know-a-cheaper-ai-model-is-still-good-enough.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/where-the-model-came-from-and-where-your-data-goes.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/five-things-to-do-before-you-switch-ai-models.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/ai-prices-are-collapsing-and-your-bill-is-still-going-up.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/technology-is-only-half-the-battle.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-tragedy-of-the-unmoored-working-life.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/how-to-choose-an-ai-consultancy.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-most-exciting-opportunity-in-business-history.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/why-ai-pilots-die-in-the-gap.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-real-cost-of-poor-operational-alignment.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/does-ai-transformation-actually-work.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/why-ai-strategy-is-the-wrong-question.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-hard-truth-about-ai-in-the-workplace.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-implementation-gap.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/leadership-alignment-on-ai.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/building-the-ai-native-team.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-5-stage-build-sequence.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://accelerator-x.ai/insights/articles/the-end-of-prompt-engineering.html</loc>
-    <lastmod>2026-08-22</lastmod>
+    <lastmod>2026-11-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
