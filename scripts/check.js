@@ -113,7 +113,7 @@ function checkNoInlineScripts() {
 //   newsletter-subscribe.js — exposed in public GitHub repo for weeks.
 
 function checkNoHardcodedSecrets() {
-  console.log('\n[2] No hardcoded secrets in netlify/functions/');
+  console.log('\n[2] No hardcoded secrets in netlify/functions/ and netlify/lib/');
 
   const PATTERNS = [
     { re: /hooks\.slack\.com\/services\//i,  label: 'Slack webhook URL' },
@@ -121,7 +121,10 @@ function checkNoHardcodedSecrets() {
   ];
 
   let clean = true;
-  for (const file of filesIn('netlify/functions', '.js')) {
+  // netlify/lib/ holds the handler logic the functions wrap (#123); .mjs covers the v2 wrappers.
+  const files = ['netlify/functions', 'netlify/lib']
+    .flatMap((dir) => filesIn(dir).filter((f) => /\.m?js$/.test(f)));
+  for (const file of files) {
     const content = readFile(file);
     for (const { re, label } of PATTERNS) {
       if (re.test(content)) {

@@ -76,6 +76,8 @@
       "scripts/site-config.js",
       "assets/js/*.js",
       "netlify/functions/*.js",
+      "netlify/functions/*.mjs",
+      "netlify/lib/*",
       "index.html",
       "sitemap.xml",
       "CHANGELOG.md",

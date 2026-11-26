@@ -92,7 +92,7 @@ If HTTPS stops working: go to Netlify → Domain management → HTTPS → **"Ren
 - **Sending domain:** `mail.accelerator-x.ai`
 - **Sender address:** `newsletter@mail.accelerator-x.ai`
 - Authentication: SPF via Brevo, DKIM via `brevo1/2._domainkey.mail` CNAMEs, DMARC at `_dmarc.mail`
-- Signup flow: form → `/.netlify/functions/newsletter-subscribe` → Brevo API direct (bypasses Netlify Forms)
+- Signup flow: form → `/api/newsletter-subscribe` → Brevo API direct (bypasses Netlify Forms)
 - **Reply-To: `info@accelerator-x.ai`.** `mail.accelerator-x.ai` has no MX/A record — it's a send-only subdomain, so replies to the bare sender address bounce. The welcome-email automation (list #9 → contact added) has Reply-To set to `info@accelerator-x.ai` (a real Google Workspace inbox) so the "just reply" copy actually works. Fixed and verified live 2026-08-10 (accelerator-x-website#103); same pattern as `reports@mail.accelerator-x.ai` in ax-agent-hub#978.
 
 ---

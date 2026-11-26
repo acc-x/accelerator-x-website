@@ -29,8 +29,8 @@ rendering. Every page is pre-built HTML served directly from the repo root via N
 | Content Hub | Markdown → static HTML via `scripts/build-hub.js` |
 | Testimonials | JSON → HTML via `scripts/build-testimonials.js` |
 | Hero media | Config-driven cycling via `scripts/build-hero-media.js` |
-| Newsletter capture | Direct JSON POST → `netlify/functions/newsletter-subscribe.js` → Brevo list #9 + Slack `#website-leads` |
-| Lead applications | Apply form POST → `netlify/functions/lead-capture.js` → Airtable CRM + Slack `#website-leads` |
+| Newsletter capture | Direct JSON POST → `netlify/lib/newsletter-subscribe.js` → Brevo list #9 + Slack `#website-leads` |
+| Lead applications | Apply form POST → `netlify/lib/lead-capture.js` → Airtable CRM + Slack `#website-leads` |
 | Analytics | PostHog (`assets/js/analytics.js`) — cookieless, all pages |
 | Hosting | Netlify — auto-deploys from `main`; pre-built artefacts committed |
 

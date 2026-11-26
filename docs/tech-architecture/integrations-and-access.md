@@ -134,7 +134,7 @@ Hosts the AI-readiness quiz (separate Next.js app, **not in this repo**).
 
 ## Brevo (email / newsletter)
 
-- **Wiring:** newsletter forms bypass Netlify Forms → `/.netlify/functions/newsletter-subscribe`
+- **Wiring:** newsletter forms bypass Netlify Forms → `/api/newsletter-subscribe`
   → Brevo API direct. Credentials in Netlify env vars. **List #9 = "Main AX Newsletter".** Sender
   `newsletter@mail.accelerator-x.ai` (authenticated domain).
 - **API key:** `BREVO_API_KEY` (Netlify env). No IP restriction. ⚠️ Was found **deactivated** on

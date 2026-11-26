@@ -14,6 +14,7 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 ## [Unreleased]
 
 ### Added
+- **Rate limiting on the two public form endpoints** ([#123](https://github.com/acc-x/accelerator-x-website/issues/123)): `lead-capture` and `newsletter-subscribe` now sit behind Netlify's in-code rate limit, 10 submissions per IP per 3 minutes, enforced at the edge before the function runs. Netlify only documents `rateLimit` for v2 functions, so each is now a thin v2 wrapper (`netlify/functions/*.mjs`, route `/api/<name>`) over its unchanged handler, moved to `netlify/lib/`. The wrapper refuses the default `/.netlify/functions/<name>` URL so it cannot be used to skip the limit. Forms post to `/api/...` and show a specific message on a 429. New `tests/functions/rate-limit.test.js` (10 tests); Check #2 now also scans `netlify/lib/`. `cohort-application` is deliberately not covered yet: the Free plan allows only 2 code rules.
 - **Amber-as-text is now documented and enforced** ([#232](https://github.com/acc-x/accelerator-x-website/issues/232), follows [#229](https://github.com/acc-x/accelerator-x-website/issues/229)): `--ax-amber-text` (`#8A5E00`) is in DESIGN.md §3.1/§3.6/§3.7, `tokens.json`, the handoff `tokens.css` and the on-site design-system page. New `scripts/check.js` Check #11 fails the build on `color: var(--ax-amber)` and the `text-amber` utility (3 fixture tests, plus a "We never" line in `standards.md`), because DESIGN.md already said amber is never text on light and five components broke it anyway.
 
 ### Fixed
