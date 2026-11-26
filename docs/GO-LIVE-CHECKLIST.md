@@ -227,6 +227,8 @@ Test each form with a real submission on the Netlify preview URL (not localhost)
 
 Target: `/api/lead-capture`
 
+> **#123 (2026-11-26):** both form routes moved to `/api/*` behind a Netlify rate limit. The PR #238 preview was checked for routing, the 429 and the 404 on the old URLs using malformed payloads only. The passes below pre-date the move: **a real submission through each form (Airtable row, Brevo contact, Slack ping) still needs one run after merge**, then delete the test records.
+
 - `[x]` Submits without JS errors — verified 2026-06-27 (B7)
 - `[x]` Success state displays correctly — verified (B7)
 - `[x]` Honeypot invisible; not submitted — function checks `_honeypot` (B7)

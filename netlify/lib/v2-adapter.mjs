@@ -9,9 +9,10 @@
 //
 // Lives in netlify/lib/, not netlify/functions/, so Netlify does not deploy it as a function.
 
-// Rate limits attach to the custom /api/* path. The default /.netlify/functions/<name> URL
-// stays routable for every function, and Netlify's docs do not say whether a limit covers it,
-// so we refuse to serve it: otherwise an abuser would just call that URL and skip the limit.
+// Rate limits attach to the custom /api/* path. Netlify documents that setting `config.path`
+// disables the default /.netlify/functions/<name> URL, and on the #123 deploy preview that URL
+// did return 404. This check is defence in depth, not the primary guard: if the default URL
+// were ever reachable, it would be an unlimited way in, so the wrapper refuses it itself.
 const ALLOWED_PREFIX = '/api/';
 
 export function adaptHandler(handler) {
