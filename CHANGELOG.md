@@ -14,6 +14,8 @@ ever-growing agent-context tax. Nothing is deleted, only relocated.
 ## [Unreleased]
 
 ### Added
+- **Article 020 "Give AI a desk, not a question" added, for founder approval before publish**: the first of three bootcamp-derived drafts (split out of draft PR #219, which stays open for 021 and 022). Edits applied after the founder-rules review: the readiness-scorecard line no longer ends on a "not a sales pitch" contrast, the unmeasured "close to zero" promise is softened, and two "not X" phrasings are reworded. Publish date set to 26 November 2026. Nothing is live until this PR is merged.
+
 - **Amber-as-text is now documented and enforced** ([#232](https://github.com/acc-x/accelerator-x-website/issues/232), follows [#229](https://github.com/acc-x/accelerator-x-website/issues/229)): `--ax-amber-text` (`#8A5E00`) is in DESIGN.md §3.1/§3.6/§3.7, `tokens.json`, the handoff `tokens.css` and the on-site design-system page. New `scripts/check.js` Check #11 fails the build on `color: var(--ax-amber)` and the `text-amber` utility (3 fixture tests, plus a "We never" line in `standards.md`), because DESIGN.md already said amber is never text on light and five components broke it anyway.
 
 ### Fixed
